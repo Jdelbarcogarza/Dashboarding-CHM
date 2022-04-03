@@ -5,9 +5,9 @@ import {
     Box,
     Typography
 } from '@mui/material'
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
-export default function NavItem() {
+
+export default function NavItem({name, icon, route}) {
     return (
         <>
             <Link
@@ -23,7 +23,7 @@ export default function NavItem() {
                 component={NextLink}
                 underline="none"
                 color="black"
-                href='/'>
+                href={route}>
                 <Box  padding={2} sx={{
                     justifyContent: 'flex-start',
                     alignItems: 'center',
@@ -31,11 +31,11 @@ export default function NavItem() {
                     borderRadius: '10px'
                 }}>
                     {/** Aqui va a ir el icono especifico para cada seccion de nuestra pagina */}
-                    <AddLocationAltIcon />
+                    {icon}
 
                     <Typography 
                         variant='subtitle'
-                        ml={2}>Nav item</Typography>
+                        ml={2}>{name}</Typography>
                 </Box>
             </Link>
         </>
