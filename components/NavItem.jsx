@@ -13,6 +13,9 @@ export default function NavItem() {
             <Link
                 sx={{
                     width: '100%',
+                    ':hover': {
+                        backgroundColor: 'skyblue'
+                    },
                 }}
                 /** El componente link hereda la funcionalidad de NextLink con el prop 'component'*/
                 component={NextLink}
@@ -22,7 +25,6 @@ export default function NavItem() {
                 <Box  padding={2} sx={{
                     justifyContent: 'flex-start',
                     alignItems: 'center',
-                    backgroundColor: 'skyblue',
                     display: 'flex',
                     // TODO: 1. On hover change color 2. cursor does not change.
                     borderRadius: '5px'
