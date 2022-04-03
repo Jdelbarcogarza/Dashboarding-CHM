@@ -29,7 +29,6 @@ export default function Sidebar() {
     return (
 
         <Paper sx={{
-            bgcolor: "red",
             borderRadius: '0px',
         }}>
             <Box p={1} sx={{
@@ -42,7 +41,7 @@ export default function Sidebar() {
                     }}
                 >
                     {/** AQUI DEBE DE IR LA FOTO DEL HOSPITAL UNIVERSITARIO */}
-                    <Container sx={{
+                    <Box sx={{
                         objectFit: 'contain',
                         // TODO: debes definir minWidth y maxWidth.
                     }}>
@@ -52,7 +51,7 @@ export default function Sidebar() {
                             width={'200px'}
                             height={'90px'}
                         />
-                    </Container>
+                    </Box>
 
                     {
                         /* ESTO DEBERIA DE FUNCIONAR Y NO SE PORQUE NO LO HACE
