@@ -14,6 +14,7 @@ export default function NavItem() {
                 sx={{
                     cursor: 'default',
                     width: '100%',
+                    borderRadius: '5px',
                     ':hover': {
                         backgroundColor: 'skyblue',
                     },
@@ -27,7 +28,7 @@ export default function NavItem() {
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     display: 'flex',
-                    borderRadius: '5px'
+                    borderRadius: '10px'
                 }}>
                     {/** Aqui va a ir el icono especifico para cada seccion de nuestra pagina */}
                     <AddLocationAltIcon />
