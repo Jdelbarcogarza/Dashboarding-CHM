@@ -12,9 +12,10 @@ export default function NavItem() {
         <>
             <Link
                 sx={{
+                    cursor: 'default',
                     width: '100%',
                     ':hover': {
-                        backgroundColor: 'skyblue'
+                        backgroundColor: 'skyblue',
                     },
                 }}
                 /** El componente link hereda la funcionalidad de NextLink con el prop 'component'*/
