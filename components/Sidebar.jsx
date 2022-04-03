@@ -3,7 +3,8 @@ import {
     Paper,
     Box,
     Stack,
-    Container,
+    Button,
+    Divider
 } from '@mui/material'
 import NavItem from '/components/NavItem'
 import Image from 'next/image'
@@ -13,6 +14,8 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 export default function Sidebar() {
 
@@ -37,7 +40,9 @@ export default function Sidebar() {
             }}>
                 <Stack
                     sx={{
-                        justifyContent: 'center',
+                        justifyContent: 'space-between',
+                        display: 'flex',
+
                     }}
                 >
                     {/** AQUI DEBE DE IR LA FOTO DEL HOSPITAL UNIVERSITARIO */}
@@ -66,13 +71,24 @@ export default function Sidebar() {
                         */
                     }
 
-                    <NavItem name={'Inicio'} icon={<HomeOutlinedIcon/>} route={'home'} />
-                    <NavItem name={'Realizar consulta'} icon={<PersonSearchOutlinedIcon/>} route={'search'} />
-                    <NavItem name={'Cargar datos'} icon={<CloudUploadOutlinedIcon/>} route={'loadData'} />
-                    <NavItem name={'Modificar datos'} icon={<EditOutlinedIcon/>} route={'modifyData'} />
+                    <NavItem name={'Inicio'} icon={<HomeOutlinedIcon />} route={'home'} />
+                    <NavItem name={'Realizar consulta'} icon={<PersonSearchOutlinedIcon />} route={'search'} />
+                    <NavItem name={'Cargar datos'} icon={<CloudUploadOutlinedIcon />} route={'loadData'} />
+                    <NavItem name={'Modificar datos'} icon={<EditOutlinedIcon />} route={'modifyData'} />
 
+                    <Divider />
 
+                    <Button
+                        variant='outlined'
+                        size={'small'}
+                        startIcon={<ArrowBackOutlinedIcon />}
+                        sx={{
+                            my: '1em'
+                        }}
+                        >Cerrar sesión</Button>
                 </Stack>
+
+
             </Box>
         </Paper>
     )
