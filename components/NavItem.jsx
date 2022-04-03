@@ -27,7 +27,6 @@ export default function NavItem() {
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     display: 'flex',
-                    // TODO: 1. On hover change color 2. cursor does not change.
                     borderRadius: '5px'
                 }}>
                     {/** Aqui va a ir el icono especifico para cada seccion de nuestra pagina */}
