@@ -15,7 +15,6 @@ import {
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
-import { DragHandleTwoTone } from '@mui/icons-material';
 
 export default function Search() {
 
@@ -38,7 +37,7 @@ export default function Search() {
                 <Grid item xs={10}>
                     <Topbar titleText={'Realizar busqueda de un paciente'} />
 
-                    {/**Este contenedor de grid es en el cual se despliega todo el contenido de la pagina */}
+                    {/**Dentro de este contenedor de grid es en el cual se despliega todo el contenido de la pagina */}
                     <Container>
                         <Grid container spacing={2}>
 
@@ -70,7 +69,7 @@ export default function Search() {
                                     </Box>
                                 </Stack>
                             </Grid>
-
+                                    
                             <Grid item xs={4}>
                                 <Paper elevation={4} sx={{
                                     bgcolor: 'gray',
@@ -94,6 +93,9 @@ export default function Search() {
 
 
                         </Grid>
+
+                        <Divider sx={{marginY: '2em'}} />
+                        <Typography variant='body1'>Aqui se despliegan los resultados de la búsqueda?</Typography>
 
                     </Container>
 

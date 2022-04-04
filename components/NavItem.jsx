@@ -10,6 +10,22 @@ import {
 export default function NavItem({name, icon, route}) {
     return (
         <>
+
+        {/** VARIANTE DE ALGO QUE PODR[IA FUNCIONAR PARA SER MAS CONSISTENTES
+        <Button
+                href={route}
+                component={NextLink}
+                variant='text'
+                startIcon={icon}
+                sx={{
+                    padding: '1em',
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    
+                }}
+                >{name}</Button>
+                 */}
+
             <Link
                 sx={{
                     cursor: 'default',

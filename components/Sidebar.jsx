@@ -14,7 +14,6 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 export default function Sidebar() {
@@ -48,13 +47,16 @@ export default function Sidebar() {
                     {/** AQUI DEBE DE IR LA FOTO DEL HOSPITAL UNIVERSITARIO */}
                     <Box sx={{
                         objectFit: 'contain',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginY: '0.5em'
                         // TODO: debes definir minWidth y maxWidth.
                     }}>
                         <Image
                             src={'http://sds.uanl.mx/wp-content/uploads/2020/01/logo-facultad-de-medicina.png'}
                             alt={"Logo de facultad de medicina"}
-                            width={'200px'}
-                            height={'90px'}
+                            width={'200%'}
+                            height={'90%'}
                         />
                     </Box>
 
@@ -70,6 +72,7 @@ export default function Sidebar() {
                         })}
                         */
                     }
+                    <Divider />
 
                     <NavItem name={'Inicio'} icon={<HomeOutlinedIcon />} route={'home'} />
                     <NavItem name={'Realizar consulta'} icon={<PersonSearchOutlinedIcon />} route={'search'} />
