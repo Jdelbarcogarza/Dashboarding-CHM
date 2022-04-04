@@ -5,17 +5,19 @@ import {
     Box
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
+import Topbar from '../../components/Topbar'
 
-export default function modifyData() {
+export default function ModifyData() {
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={2}>
                     {/** AQUI VA EL SIDEBAR */}
                    <Sidebar />
                 </Grid>
 
                 <Grid item xs={10}>
+                <Topbar titleText={'Modificar datos de un paciente'} />
                     {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
                    
                 </Grid>
