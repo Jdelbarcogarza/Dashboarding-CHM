@@ -1,0 +1,141 @@
+CREATE TABLE Usuario(  
+    ID_Usuario INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre TEXT NOT NULL,
+    Año_Nac SMALLINT NOT NULL,
+    Id_Parroquia INT NOT NULL
+);
+CREATE TABLE Parroquia(  
+    ID_Parroquia INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre TEXT NOT NULL,
+    ID_Decanato INT NOT NULL
+);
+CREATE TABLE Decanato(  
+    ID_Decanato INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre TEXT NOT NULL,
+    ID_Zona INT NOT NULL
+);
+CREATE TABLE Zona(
+    ID_Zona INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre TEXT NOT NULL
+);
+CREATE TABLE Administrador(  
+    ID_Admin INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre TEXT NOT NULL
+);
+CREATE TABLE DetalleAdmin(
+    ID_Detalle INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    ID_Admin INT NOT NULL,
+    Id_Parroquia INT NOT NULL
+);
+CREATE TABLE ResultadosTamizaje(  
+    ID_Resultado INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Reloj INT NOT NULL,
+    Orient_Temp INT NOT NULL,
+    Orient_Esp INT NOT NULL,
+    Registro INT NOT NULL,
+    Calculo INT NOT NULL,
+    Memoria INT NOT NULL,
+    Eject INT NOT NULL,
+    GDS_Total INT NOT NULL,
+    Katz_Total INT NOT NULL,
+    LWB_Total INT NOT NULL,
+    Sarc_F INT NOT NULL,
+    Fuerza_Domin INT NOT NULL,
+    SPPB_Global INT NOT NULL,
+    CFS_Fraility INT NOT NULL,
+    Gijon INT Not NULL,
+    ID_Usuario INT NOT NULL
+);
+CREATE TABLE Juego(  
+    ID_Juego INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Tipo TEXT NOT NULL
+);
+CREATE TABLE Partida(  
+    ID_Partida INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    ID_Paciente INT NOT NULL,
+    ID_Juego INT NOT NULL,
+    Fecha DATE NOT NULL,
+    Score FLOAT NOT NULL
+);
+ALTER TABLE usuario 
+    ADD FOREIGN KEY (ID_Parroquia) REFERENCES parroquia(ID_Parroquia);
+
+ALTER TABLE parroquia 
+    ADD FOREIGN KEY (ID_Decanato) REFERENCES decanato(ID_Decanato);
+
+ALTER TABLE decanato 
+    ADD FOREIGN KEY (ID_Zona) REFERENCES zona(ID_Zona);
+
+ALTER TABLE detalleadmin
+    ADD FOREIGN KEY (ID_Admin) REFERENCES administrador(ID_Admin);
+
+ALTER TABLE detalleadmin
+    ADD FOREIGN KEY (ID_Parroquia) REFERENCES parroquia(ID_Parroquia);
+
+ALTER TABLE resultadostamizaje 
+    ADD FOREIGN KEY (ID_Usuario) REFERENCES usuario(ID_Usuario);
+
+ALTER TABLE partida 
+    ADD FOREIGN KEY (ID_Paciente) REFERENCES usuario(ID_Usuario);
+
+ALTER TABLE partida
+    ADD FOREIGN KEY (ID_Juego) REFERENCES juego(ID_Juego);
+
+INSERT INTO zona(Nombre) VALUES("Ejemplo1");
+INSERT INTO zona(Nombre) VALUES("Ejemplo2");
+
+INSERT INTO decanato(Nombre,ID_Zona) VALUES("Decanato1",1);
+INSERT INTO decanato(Nombre,ID_Zona) VALUES("Decanato2",1);
+INSERT INTO decanato(Nombre,ID_Zona) VALUES("Decanato3",2);
+INSERT INTO decanato(Nombre,ID_Zona) VALUES("Decanato4",2);
+
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia1",1);
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia2",1);
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia3",2);
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia4",2);
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia5",3);
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia6",3);
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia7",4);
+INSERT INTO parroquia(Nombre,ID_Decanato) VALUES("Parroquia8",4);
+
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario1",1951,1);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario2",1962,2);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario3",1973,3);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario4",1984,4);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario5",1915,5);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario6",1936,6);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario7",1947,7);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario8",1998,8);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario9",1951,1);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario10",1962,2);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario11",1973,3);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario12",1984,4);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario13",1915,5);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario14",1936,6);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario15",1947,7);
+INSERT INTO usuario(Nombre,Año_Nac,Id_Parroquia) VALUES("Usuario16",1998,8);
+
+INSERT INTO administrador(Nombre) VALUES ("Doc");
+
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,1);
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,2);
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,3);
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,4);
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,5);
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,6);
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,7);
+INSERT INTO detalleadmin(ID_Admin,Id_Parroquia) VALUES (1,8);
+
+INSERT INTO juego(Tipo) VALUES ("Memoria");
+INSERT INTO juego(Tipo) VALUES ("Orientacion_Temp");
+INSERT INTO juego(Tipo) VALUES ("Reaccion");
+INSERT INTO juego(Tipo) VALUES ("Calculo");
+INSERT INTO juego(Tipo) VALUES ("Reloj");
+
+SELECT avg(resultadostamizaje.Memoria) AS "promedio memoria zona 1"
+FROM resultadostamizaje,usuario,parroquia,decanato,zona
+WHERE resultadostamizaje.ID_Usuario = usuario.ID_Usuario AND
+usuario.Id_Parroquia = parroquia.ID_Parroquia AND
+parroquia.ID_Decanato = decanato.ID_Decanato AND
+decanato.ID_Zona = zona.ID_Zona AND
+zona.ID_Zona = 1
