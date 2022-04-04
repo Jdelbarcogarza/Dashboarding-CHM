@@ -19,8 +19,8 @@ export default function Home() {
 
                 <Grid item xs={10}>
                     {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
-                   
-                    <DataGrid />
+                    
+                    {/**Aqui va a ir el componente de data grid para una vista general de todos los pacientes */}
                 </Grid>
 
             </Grid>
