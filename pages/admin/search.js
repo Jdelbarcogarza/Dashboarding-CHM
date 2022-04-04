@@ -51,21 +51,22 @@ export default function Search() {
                                     <Box sx={{
                                         width: '60%'
                                     }}>
-                                        <TextField label='Nombre del paciente' 
-                                        variant='standard' 
-                                        disabled={!enableIdSearch}
-                                        fullWidth />
+                                        <TextField label='Nombre del paciente'
+                                            variant='standard'
+                                            disabled={!enableIdSearch}
+                                            fullWidth />
                                     </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%'}}>
+                                    <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
                                         <TextField
                                             label='ID del paciente'
                                             variant='standard'
-                                            helperText={'La busqueda por ID desactivará la consulta por nombre'} 
+                                            helperText={'La busqueda por ID desactivará la consulta por nombre'}
                                             disabled={enableIdSearch}
-                                            />
-                                            <Switch 
-                                            
-                                            onChange={handleSwitchChange} />
+                                        />
+                                        <Switch onChange={handleSwitchChange} />
+                                    </Box>
+                                    <Box>
+                                        <Button variant='contained'>Realizar busqueda</Button>
                                     </Box>
                                 </Stack>
                             </Grid>
@@ -76,6 +77,8 @@ export default function Search() {
 
                                 }}>
                                     <ul>
+                                    <p>Esto es mas por si se nos ofrece un pane aqui con instrucciones de uso algo.
+                                    Luego vemos que onda con eso si se borra o no ajajaj</p>
                                         <li>1sdf</li>
                                         <li>1sdf</li>
                                         <li>1sdf</li>
