@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 export default function DenseAppBar({ titleText }) {
   return (
     <Box sx={{ flexGrow: 1,
-      marginBottom: '1em',
+      marginBottom: '2.5em',
      }}>
       <AppBar position="sticky">
         <Toolbar variant="dense">
