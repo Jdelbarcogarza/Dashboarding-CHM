@@ -5,8 +5,10 @@ import {
     Box
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
+import { DataGrid } from '@mui/x-data-grid';
 
-export default function home() {
+
+export default function Home() {
     return (
         <>
             <Grid container spacing={2}>
@@ -18,6 +20,7 @@ export default function home() {
                 <Grid item xs={10}>
                     {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
                    
+                    <DataGrid />
                 </Grid>
 
             </Grid>
