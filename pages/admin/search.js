@@ -15,10 +15,11 @@ import {
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
+import GridItem from '../../components/GridItem'
 
 export default function Search() {
 
-    // Hola
+    
     const [enableIdSearch, setEnableIdSearch] = useState(true);
 
     function handleSwitchChange() {
@@ -69,15 +70,15 @@ export default function Search() {
                                     </Box>
                                 </Stack>
                             </Grid>
-                                    
+
                             <Grid item xs={4}>
                                 <Paper elevation={4} sx={{
                                     bgcolor: 'gray',
 
                                 }}>
                                     <ul>
-                                    <p>Esto es mas por si se nos ofrece un pane aqui con instrucciones de uso algo.
-                                    Luego vemos que onda con eso si se borra o no ajajaj</p>
+                                        <p>Esto es mas por si se nos ofrece un pane aqui con instrucciones de uso algo.
+                                            Luego vemos que onda con eso si se borra o no ajajaj</p>
                                         <li>1sdf</li>
                                         <li>1sdf</li>
                                         <li>1sdf</li>
@@ -89,18 +90,14 @@ export default function Search() {
 
                             <Grid item xs={8}>
                             </Grid>
-
-
-
                         </Grid>
 
-                        <Divider sx={{marginY: '2em'}} />
+                        <Divider sx={{ marginY: '2em' }} />
                         <Typography variant='body1'>Aqui se despliegan los resultados de la búsqueda?</Typography>
 
+                        <GridItem />
+
                     </Container>
-
-
-
                 </Grid>
 
 
