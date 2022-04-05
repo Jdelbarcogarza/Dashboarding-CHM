@@ -32,9 +32,9 @@ export default function Sidebar() {
 
         <Paper sx={{
             borderRadius: '0px',
+            height: '100%'
         }}>
             <Box p={1} sx={{
-                height: '100vh',
                 justifyContent: 'center',
             }}>
                 <Stack
