@@ -15,6 +15,7 @@ import {
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
+import GridItem from '../../components/GridItem'
 
 export default function Search() {
 
@@ -93,6 +94,9 @@ export default function Search() {
 
                         <Divider sx={{ marginY: '2em' }} />
                         <Typography variant='body1'>Aqui se despliegan los resultados de la búsqueda?</Typography>
+
+                        <GridItem />
+
                     </Container>
                 </Grid>
 
