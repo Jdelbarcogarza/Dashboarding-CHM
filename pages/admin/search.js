@@ -17,16 +17,35 @@ import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
 import GridItem from '../../components/GridItem'
 
-export default function Search() {
+export default function Search({res}) {
 
 
     const [enableIdSearch, setEnableIdSearch] = useState(true);
     
     // valores de textFields
     const [patientName, setPatientName] = useState("");
+    const [patientid, setPatientID] = useState('');
 
     function handleSwitchChange() {
         setEnableIdSearch(!enableIdSearch)
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const nombre = {patientName};
+        const pacID = {patientid};
+
+        if (pacID.patientid != '') {
+            console.log(pacID);
+            res = await fetch('/api/userID/' + pacID.patientid).then(res => res.json())
+            console.log(res);
+        }
+        if (nombre.patientName != '') {
+            console.log(nombre);
+            res = await fetch('/api/userName/' + nombre.patientName).then(res => res.json())
+            console.log(res);
+        }
     }
 
     return (
@@ -54,7 +73,8 @@ export default function Search() {
                                     <Box sx={{
                                         width: '60%'
                                     }}>
-                                        <TextField label='Nombre del paciente'
+                                        <TextField 
+                                            label='Nombre del paciente'
                                             value={patientName}
                                             onChange={(e) => {setPatientName(e.target.value)}}
                                             variant='standard'
@@ -65,14 +85,16 @@ export default function Search() {
                                     <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
                                         <TextField
                                             label='ID del paciente'
+                                            value={patientid}
+                                            onChange={(e) => {setPatientID(e.target.value)}}
                                             variant='standard'
                                             helperText={'La busqueda por ID desactivará la consulta por nombre'}
-                                            disabled={enableIdSearch}
-                                        />
+                                            disabled={enableIdSearch} />
+                                            {console.log("el valor es ", patientid)}
                                         <Switch onChange={handleSwitchChange} />
                                     </Box>
                                     <Box>
-                                        <Button variant='contained'>Realizar busqueda</Button>
+                                        <Button variant='contained' onClick={handleSubmit}>Realizar busqueda</Button>
                                     </Box>
                                 </Stack>
                             </Grid>
