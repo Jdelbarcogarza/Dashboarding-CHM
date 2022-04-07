@@ -19,12 +19,14 @@ import GridItem from '../../components/GridItem'
 
 export default function Search() {
 
-    
+
     const [enableIdSearch, setEnableIdSearch] = useState(true);
+    
+    // valores de textFields
+    const [patientName, setPatientName] = useState("");
 
     function handleSwitchChange() {
         setEnableIdSearch(!enableIdSearch)
-
     }
 
     return (
@@ -43,18 +45,22 @@ export default function Search() {
                         <Grid container spacing={2}>
 
                             <Grid item xs={12}>
-                                <Typography variant='subtitle1'>Favor de llenar los campos como corresponde</Typography>
+                                <Typography variant='h6'>Favor de llenar los campos como corresponde</Typography>
                             </Grid>
 
+                            {/** SECCIÓN DE CAMPOS DE BÚSQUEDA */}
                             <Grid item xs={8}>
                                 <Stack spacing={2}>
                                     <Box sx={{
                                         width: '60%'
                                     }}>
                                         <TextField label='Nombre del paciente'
+                                            value={patientName}
+                                            onChange={(e) => {setPatientName(e.target.value)}}
                                             variant='standard'
                                             disabled={!enableIdSearch}
                                             fullWidth />
+                                            {console.log("el valor es ", patientName)}
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
                                         <TextField
@@ -71,6 +77,7 @@ export default function Search() {
                                 </Stack>
                             </Grid>
 
+                            {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
                             <Grid item xs={4}>
                                 <Paper elevation={4} sx={{
                                     bgcolor: 'gray',
@@ -88,14 +95,18 @@ export default function Search() {
                                 </Paper>
                             </Grid>
 
-                            <Grid item xs={8}>
+                            {/** SECCIÓN DE RESULTADOS CON TABLA */}
+                            <Grid item xs={12}>
+
+                                <Divider />
+                                <Typography 
+                                variant='h6'
+                                sx={{ 
+                                    marginY: '2em' 
+                                    }}>Aqui se despliegan los resultados de la búsqueda?</Typography>
+                                <GridItem />
                             </Grid>
                         </Grid>
-
-                        <Divider sx={{ marginY: '2em' }} />
-                        <Typography variant='body1'>Aqui se despliegan los resultados de la búsqueda?</Typography>
-
-                        <GridItem />
 
                     </Container>
                 </Grid>
