@@ -17,7 +17,7 @@ import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
 import GridItem from '../../components/GridItem'
 
-export default function Search({res}) {
+export default function Search() {
 
 
     const [enableIdSearch, setEnableIdSearch] = useState(true);
@@ -26,6 +26,9 @@ export default function Search({res}) {
     const [patientName, setPatientName] = useState("");
     const [patientid, setPatientID] = useState('');
 
+    // Resultado
+    const [patientdata, setPatientData]=useState('');
+ 
     function handleSwitchChange() {
         setEnableIdSearch(!enableIdSearch)
     }
@@ -35,16 +38,17 @@ export default function Search({res}) {
 
         const nombre = {patientName};
         const pacID = {patientid};
+        const habilitado = {enableIdSearch};
 
-        if (pacID.patientid != '') {
+        if (pacID.patientid != '' & !habilitado.enableIdSearch) {
             console.log(pacID);
-            res = await fetch('/api/userID/' + pacID.patientid).then(res => res.json())
-            console.log(res);
+            const res = await fetch('/api/userID/' + pacID.patientid).then(res => res.json())
+            setPatientData(JSON.stringify(res));
         }
-        if (nombre.patientName != '') {
+        if (nombre.patientName != '' & habilitado.enableIdSearch) {
             console.log(nombre);
-            res = await fetch('/api/userName/' + nombre.patientName).then(res => res.json())
-            console.log(res);
+            const res = await fetch('/api/userName/' + nombre.patientName).then(res => res.json())
+            setPatientData(JSON.stringify(res));
         }
     }
 
@@ -121,6 +125,8 @@ export default function Search({res}) {
                             <Grid item xs={12}>
 
                                 <Divider />
+                                <div>{patientdata}</div>
+                                {console.log(patientdata)}
                                 <Typography 
                                 variant='h6'
                                 sx={{ 
