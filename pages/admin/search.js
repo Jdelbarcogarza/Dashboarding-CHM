@@ -42,13 +42,15 @@ export default function Search() {
 
         if (pacID.patientid != '' & !habilitado.enableIdSearch) {
             console.log(pacID);
-            const res = await fetch('/api/userID/' + pacID.patientid).then(res => res.json())
-            setPatientData(JSON.stringify(res));
+            const resID = await fetch('/api/userID/' + pacID.patientid).then(resID => resID.json())
+            console.log(resID);
+            setPatientData(resID);
         }
         if (nombre.patientName != '' & habilitado.enableIdSearch) {
             console.log(nombre);
-            const res = await fetch('/api/userName/' + nombre.patientName).then(res => res.json())
-            setPatientData(JSON.stringify(res));
+            const resNom = await fetch('/api/userName/' + nombre.patientName).then(resNom => resNom.json())
+            console.log(resNom);
+            setPatientData(resNom);
         }
     }
 
@@ -125,8 +127,9 @@ export default function Search() {
                             <Grid item xs={12}>
 
                                 <Divider />
-                                <div>{patientdata}</div>
-                                {console.log(patientdata)}
+                                <div>{JSON.stringify(patientdata)}</div>
+                                <div>{patientdata.ID_Usuario}</div>
+                                <div>{patientdata.Nombre}</div>
                                 <Typography 
                                 variant='h6'
                                 sx={{ 
