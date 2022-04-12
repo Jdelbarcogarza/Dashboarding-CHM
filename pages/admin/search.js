@@ -10,7 +10,8 @@ import {
     Switch,
     Divider,
     Stack,
-    Checkbox,
+    Slider,
+    Autocomplete,
 
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
@@ -19,19 +20,38 @@ import GridItem from '../../components/GridItem'
 
 export default function Search() {
 
+    //////////////////////////////////// Constantes useState ////////////////////////////////////
 
+    // Valores para habilitar los switches
     const [enableIdSearch, setEnableIdSearch] = useState(true);
+    const [enableAtributo, setEnableAtributo] = useState(true);
     
-    // valores de textFields
+    // Valores de textFields
     const [patientName, setPatientName] = useState("");
     const [patientid, setPatientID] = useState('');
-
-    // Resultado
+    
+    // Valores de atributo
+    const [atributo, setAtributo] = useState('');
+    
+    // Valores de calificacion
+    const [grade, setGrade] = useState([0, 100]);
+    
+    // Resultado de query
     const [patientdata, setPatientData]=useState('');
- 
+
+    ///////////////////////////// Funciones y Constantes handle /////////////////////////////
+
     function handleSwitchChange() {
         setEnableIdSearch(!enableIdSearch)
     }
+    
+    const handleAtributoChange = (event, newAtributo) => {
+        setAtributo(newAtributo);
+    };
+    
+    const handleGradeChange = (event, newGrade) => {
+        setGrade(newGrade);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,19 +60,31 @@ export default function Search() {
         const pacID = {patientid};
         const habilitado = {enableIdSearch};
 
+        const a2 = {atributo};
+        const g = {grade};
+
+        console.log(a2.atributo.length);
+
+        var i=0; for (i=0; i<a2.atributo.length; i++) {
+            console.log(a2.atributo[i].value);
+        }
+
+        console.log(g.grade);
+
         if (pacID.patientid != '' & !habilitado.enableIdSearch) {
             console.log(pacID);
-            const resID = await fetch('/api/userID/' + pacID.patientid).then(resID => resID.json())
+            const resID = await fetch('/api/userID/' + pacID.patientid, {method: 'GET'}).then(resID => resID.json())
             console.log(resID);
             setPatientData(resID);
         }
         if (nombre.patientName != '' & habilitado.enableIdSearch) {
             console.log(nombre);
-            const resNom = await fetch('/api/userName/' + nombre.patientName).then(resNom => resNom.json())
+            const resNom = await fetch('/api/userName/' + nombre.patientName, {method: 'GET'}).then(resNom => resNom.json())
             console.log(resNom);
             setPatientData(resNom);
         }
     }
+
 
     return (
         <>
@@ -74,7 +106,7 @@ export default function Search() {
                             </Grid>
 
                             {/** SECCIÓN DE CAMPOS DE BÚSQUEDA */}
-                            <Grid item xs={8}>
+                            <Grid item xs={6}>
                                 <Stack spacing={2}>
                                     <Box sx={{
                                         width: '60%'
@@ -86,8 +118,9 @@ export default function Search() {
                                             variant='standard'
                                             disabled={!enableIdSearch}
                                             fullWidth />
-                                            {console.log("el valor es ", patientName)}
+                                            {/*console.log("el valor es ", patientName)*/}
                                     </Box>
+
                                     <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
                                         <TextField
                                             label='ID del paciente'
@@ -96,7 +129,7 @@ export default function Search() {
                                             variant='standard'
                                             helperText={'La busqueda por ID desactivará la consulta por nombre'}
                                             disabled={enableIdSearch} />
-                                            {console.log("el valor es ", patientid)}
+                                            {/*console.log("el valor es ", patientid)*/}
                                         <Switch onChange={handleSwitchChange} />
                                     </Box>
                                     <Box>
@@ -106,30 +139,44 @@ export default function Search() {
                             </Grid>
 
                             {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
-                            <Grid item xs={4}>
-                                <Paper elevation={4} sx={{
-                                    bgcolor: 'gray',
+                            <Stack spacing={5} sx={{ width: 400 }}>
+                                <Autocomplete
+                                    multiple
+                                    options={atributosPrueba}
+                                    groupBy={(option) => option.prueba}
+                                    getOptionLabel={(option) => option.atributo}
+                                    onChange={handleAtributoChange}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Seleccione los atributos de la prueba"
+                                            placeholder="Atributos"
+                                        />
+                                    )}
+                                />
 
-                                }}>
-                                    <ul>
-                                        <p>Esto es mas por si se nos ofrece un pane aqui con instrucciones de uso algo.
-                                            Luego vemos que onda con eso si se borra o no ajajaj</p>
-                                        <li>1sdf</li>
-                                        <li>1sdf</li>
-                                        <li>1sdf</li>
-                                        <li>1sdf</li>
-                                        <li>1sdf</li>
-                                    </ul>
-                                </Paper>
-                            </Grid>
+                                <Box>
+                                    <Typography id="non-linear-slider" gutterBottom>
+                                        Calificación: {grade[0]} - {grade[1]}
+                                    </Typography>
+                                    <Slider
+                                        value={grade}
+                                        onChange={handleGradeChange}
+                                        valueLabelDisplay="auto"
+                                    />
+                                </Box>
+                            </Stack>
 
                             {/** SECCIÓN DE RESULTADOS CON TABLA */}
                             <Grid item xs={12}>
 
-                                <Divider />
+                                <Divider/>
+
                                 <div>{JSON.stringify(patientdata)}</div>
                                 <div>{patientdata.ID_Usuario}</div>
                                 <div>{patientdata.Nombre}</div>
+
                                 <Typography 
                                 variant='h6'
                                 sx={{ 
@@ -161,3 +208,21 @@ export default function Search() {
         </>
     )
 }
+
+const atributosPrueba = [
+    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj'},
+    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp'},
+    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp'},
+    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro'},
+    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo'},
+    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria'},
+    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject'},
+    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total'},
+    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total'},
+    { prueba: 'LWB', atributo: 'LWB', value: 'LWB'},
+    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F'},
+    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin'},
+    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global'},
+    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility'},
+    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon'},
+];

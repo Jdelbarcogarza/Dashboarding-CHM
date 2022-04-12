@@ -1,16 +1,25 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
     Grid,
     Paper,
     Box,
     Container,
+    Button,
+    IconButton,
+    Stack,
+    Input,
 
 } from '@mui/material'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
 
-
 export default function LoadData() {
+
+    const handleSubmit = async (e) => {
+        
+    }
+
     return (
         <>
             <Grid container>
@@ -24,13 +33,16 @@ export default function LoadData() {
                     {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
 
                     <Container>
-                        <Grid container spacing={2}>
-                            <Grid item xs={5}>
-                                <Paper sx={{bgcolor: 'red'}}>This is placeholder text</Paper>
-                            </Grid>
-                        </Grid>
+                        <Stack direction="row" spacing={2}>
+                            <label htmlFor="contained-button-file">
+                                <Input accept="image/*" id="contained-button-file" type="file" />
+                            </label>
+                            
+                            <Button variant="contained" startIcon={<CloudUploadIcon />} onClick={handleSubmit}>
+                                Upload
+                            </Button>
+                        </Stack>
                     </Container>
-
                 </Grid>
 
             </Grid>
