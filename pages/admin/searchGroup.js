@@ -10,6 +10,7 @@ import {
     Switch,
     Divider,
     Stack,
+    Slider,
     Autocomplete,
 
 } from '@mui/material'
@@ -23,6 +24,7 @@ export default function Search() {
 
     // Valores para habilitar los switches
     const [enableIdSearch, setEnableIdSearch] = useState(true);
+    const [enableAtributo, setEnableAtributo] = useState(true);
     
     // Valores de textFields
     const [patientName, setPatientName] = useState("");
@@ -30,6 +32,9 @@ export default function Search() {
     
     // Valores de atributo
     const [atributo, setAtributo] = useState('');
+    
+    // Valores de calificacion
+    const [grade, setGrade] = useState([0, 100]);
     
     // Resultado de query
     const [patientdata, setPatientData]=useState('');
@@ -43,6 +48,10 @@ export default function Search() {
     const handleAtributoChange = (event, newAtributo) => {
         setAtributo(newAtributo);
     };
+    
+    const handleGradeChange = (event, newGrade) => {
+        setGrade(newGrade);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,8 +59,12 @@ export default function Search() {
         const nombre = {patientName};
         const pacID = {patientID};
         const habilitado = {enableIdSearch};
+
         const a = {atributo};
+        const g = {grade};
+
         const tests = "";
+        const calif = g.grade[0] + " " + g.grade[1];
 
         console.log(a.atributo.length);
 
@@ -61,22 +74,24 @@ export default function Search() {
         else {
             var i=0; for (i=0; i<a.atributo.length; i++) {
                 if (a.atributo.length >= 1 ) {
-                    tests = tests + "!" + a.atributo[i].value;
+                    tests = tests + "-" + a.atributo[i].value;
                 }
             }
         }
 
         console.log(tests);
+        console.log(calif);
+        console.log(g.grade);
 
         if (pacID.patientID != '' & !habilitado.enableIdSearch) {
             console.log(pacID);
-            const resID = await fetch('/api/searchPrueba/one/ID/' + tests + '/' + pacID.patientID, {method: 'GET'}).then(resID => resID.json())
+            const resID = await fetch('/api/searchPrueba/ID/sinCalif/' + tests + '/' + pacID.patientID, {method: 'GET'}).then(resID => resID.json())
             console.log(resID);
             setPatientData(resID);
         }
         if (nombre.patientName != '' & habilitado.enableIdSearch) {
             console.log(nombre);
-            const resNom = await fetch('/api/searchPrueba/one/Name/' + tests + '/' + nombre.patientName, {method: 'GET'}).then(resNom => resNom.json())
+            const resNom = await fetch('/api/searchPrueba/Name/sinCalif/' + tests + '/' + nombre.patientName, {method: 'GET'}).then(resNom => resNom.json())
             console.log(resNom);
             setPatientData(resNom);
         }
@@ -152,6 +167,17 @@ export default function Search() {
                                         />
                                     )}
                                 />
+
+                                <Box>
+                                    <Typography id="non-linear-slider" gutterBottom>
+                                        Calificación: {grade[0]} - {grade[1]}
+                                    </Typography>
+                                    <Slider
+                                        value={grade}
+                                        onChange={handleGradeChange}
+                                        valueLabelDisplay="auto"
+                                    />
+                                </Box>
                             </Stack>
 
                             {/** SECCIÓN DE RESULTADOS CON TABLA */}
@@ -196,19 +222,19 @@ export default function Search() {
 }
 
 const atributosPrueba = [
-    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj'},
-    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp'},
-    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp'},
-    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro'},
-    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo'},
-    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria'},
-    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject'},
-    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total'},
-    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total'},
-    { prueba: 'LWB', atributo: 'LWB', value: 'LWB'},
-    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F'},
-    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin'},
-    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global'},
-    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility'},
-    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon'},
+    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj', key: 'A'},
+    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp', key: 'B'},
+    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp', key: 'C'},
+    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro', key: 'D'},
+    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo', key: 'E'},
+    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria', key: 'F'},
+    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject', key: 'G'},
+    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total', key: 'H'},
+    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total', key: 'I'},
+    { prueba: 'LWB', atributo: 'LWB', value: 'LWB', key: 'J'},
+    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F', key: 'K'},
+    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin', key: 'L'},
+    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global', key: 'M'},
+    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility', key: 'N'},
+    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon', key: 'O'},
 ];
