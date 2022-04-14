@@ -14,6 +14,6 @@ export default async function handler(req, res) {
 
     const [rows] = await connection.query(consulta, [req.query.id])
     
-    console.log(rows[0])
-    return res.status(200).json(rows[0])
+    console.log(rows)
+    return res.status(200).json(rows)
 };
