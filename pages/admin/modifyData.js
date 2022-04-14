@@ -23,7 +23,6 @@ export default function ModifyData() {
 
     // Valores para habilitar los switches
     const [enableIdSearch, setEnableIdSearch] = useState(true);
-    const [enableAtributo, setEnableAtributo] = useState(true);
 
     // Valores de textFields
     const [patientName, setPatientName] = useState("");
@@ -172,7 +171,7 @@ const atributosPrueba = [
     { prueba: 'MMSE', atributo: 'Eject', value: 'Eject'},
     { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total'},
     { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total'},
-    { prueba: 'LWB', atributo: 'LWB', value: 'LWB'},
+    { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total'},
     { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F'},
     { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin'},
     { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global'},

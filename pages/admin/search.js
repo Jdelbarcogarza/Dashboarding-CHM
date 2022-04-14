@@ -184,6 +184,8 @@ export default function Search() {
                                         />
                                     )}
                                 />
+
+                                <Button href={'searchGroup'} variant='contained'>Busqueda General</Button>
                             </Stack>
 
                             {/** SECCIÓN DE RESULTADOS CON TABLA */}
@@ -192,8 +194,6 @@ export default function Search() {
                                 <Divider />
 
                                 <div>{JSON.stringify(patientData)}</div>
-                                <div>{patientData.ID_Usuario}</div>
-                                <div>{patientData.Nombre}</div>
 
                                 <Typography
                                     variant='h6'
@@ -212,10 +212,8 @@ export default function Search() {
 
                             </Grid>
                         </Grid>
-
                     </Container>
                 </Grid>
-
 
                 {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
                 <Grid container>
@@ -237,19 +235,19 @@ export default function Search() {
 }
 
 const atributosPrueba = [
-    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj' },
-    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp' },
-    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp' },
-    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro' },
-    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo' },
-    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria' },
-    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject' },
-    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total' },
-    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total' },
-    { prueba: 'LWB', atributo: 'LWB', value: 'LWB' },
-    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F' },
-    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin' },
-    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global' },
-    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility' },
-    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon' },
+    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj'},
+    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp'},
+    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp'},
+    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro'},
+    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo'},
+    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria'},
+    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject'},
+    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total'},
+    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total'},
+    { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total'},
+    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F'},
+    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin'},
+    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global'},
+    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility'},
+    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon'},
 ];

@@ -12,6 +12,12 @@ import {
     Stack,
     Slider,
     Autocomplete,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    NativeSelect,
+    FormControlLabel,
 
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
@@ -23,77 +29,128 @@ export default function Search() {
     //////////////////////////////////// Constantes useState ////////////////////////////////////
 
     // Valores para habilitar los switches
-    const [enableIdSearch, setEnableIdSearch] = useState(true);
-    const [enableAtributo, setEnableAtributo] = useState(true);
-    
-    // Valores de textFields
-    const [patientName, setPatientName] = useState("");
-    const [patientID, setpatientID] = useState('');
+    const [enableCalificacion, setEnableCalificacion] = useState(true);
+    const [enableUbi, setEnableUbi] = useState(true);
+
+    // Valores de género
+    const [gender, setGender] = useState('A');
     
     // Valores de atributo
     const [atributo, setAtributo] = useState('');
     
     // Valores de calificacion
     const [grade, setGrade] = useState([0, 100]);
+
+    // Valores de edad
+    const [age, setAge] = useState([0, 110]);
+
+    // Valores de edad
+    const [zona, setZona] = useState('');
+
+    // Valores de edad
+    const [decanato, setDecanato] = useState('');
+
+    // Valores de edad
+    const [parroquia, setParroquia] = useState('');
+
+    // Valores de edad
+    const [gradeAtr, setGradeAtr] = useState('');
+    // Verificacion
+    const [verif, setVerif] = useState('');
     
     // Resultado de query
     const [patientdata, setPatientData]=useState('');
 
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
-    function handleSwitchChange() {
-        setEnableIdSearch(!enableIdSearch)
+    function handleSwitchUbi() {
+        setEnableUbi(!enableUbi)
     }
     
     const handleAtributoChange = (event, newAtributo) => {
         setAtributo(newAtributo);
     };
-    
+
+    function handleSwitchChange() {
+        setEnableCalificacion(!enableCalificacion);
+    }
+
+    const handleGradeAtributoChange = (event, newAtributo) => {
+        setGradeAtr(newAtributo);
+    };
+
     const handleGradeChange = (event, newGrade) => {
         setGrade(newGrade);
+    };
+
+    const handleAgeChange = (event, newAge) => {
+        setAge(newAge);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const nombre = {patientName};
-        const pacID = {patientID};
-        const habilitado = {enableIdSearch};
+        const edad = age[0] + "-" + age[1];
 
-        const a = {atributo};
-        const g = {grade};
+        if (enableCalificacion) {
 
-        const tests = "";
-        const calif = g.grade[0] + " " + g.grade[1];
+            var tests = "";
 
-        console.log(a.atributo.length);
-
-        if (a.atributo.length == 0) {
-            tests = "$"
-        }
-        else {
-            var i=0; for (i=0; i<a.atributo.length; i++) {
-                if (a.atributo.length >= 1 ) {
-                    tests = tests + "-" + a.atributo[i].value;
+            // Envia "$" si no se selecciono ninguna prueba (por default se seleccionan todas)
+            // o concatena todas las pruebas que se seleccionaron en un mismo string
+            if (atributo.length == 0) {
+                tests = "$"
+            }
+            else {
+                var i=0; for (i=0; i<atributo.length; i++) {
+                    if (atributo.length >= 1 ) {
+                        tests = tests + "!" + atributo[i].value;
+                    }
                 }
             }
-        }
 
-        console.log(tests);
-        console.log(calif);
-        console.log(g.grade);
+            if (enableUbi) {
+                const res1 = await fetch('/api/searchPrueba/group/prueba/' + gender + '/' + edad + '/' + tests, {method: 'GET'}).then(resID => resID.json())
+                console.log(gender);
+                console.log(edad);
+                console.log(tests);
+                console.log(res1);
+                setPatientData(res1);
+            }
+            else if (parroquia != '' & decanato != '' & zona != '') {
+                const ubi = parroquia + '-' + decanato + '-' + zona;
+                const res2 = await fetch('/api/searchPrueba/group/ubi-prueba/' + gender + '/' + edad + '/' + ubi + '/' + tests, {method: 'GET'}).then(resID => resID.json())
+                console.log(gender);
+                console.log(edad);
+                console.log(ubi);
+                console.log(tests);
+                console.log(res2);
+                setPatientData(res2);
+            }
 
-        if (pacID.patientID != '' & !habilitado.enableIdSearch) {
-            console.log(pacID);
-            const resID = await fetch('/api/searchPrueba/ID/sinCalif/' + tests + '/' + pacID.patientID, {method: 'GET'}).then(resID => resID.json())
-            console.log(resID);
-            setPatientData(resID);
         }
-        if (nombre.patientName != '' & habilitado.enableIdSearch) {
-            console.log(nombre);
-            const resNom = await fetch('/api/searchPrueba/Name/sinCalif/' + tests + '/' + nombre.patientName, {method: 'GET'}).then(resNom => resNom.json())
-            console.log(resNom);
-            setPatientData(resNom);
+        else if (gradeAtr != verif) {
+
+            const gA = grade[0] + "-" + grade[1] + "-" + gradeAtr.value;
+
+            if (enableUbi) {
+                const res3 = await fetch('/api/searchPrueba/group/calif/' + gender + '/' + edad + '/' + gA, {method: 'GET'}).then(resID => resID.json())
+                console.log(gender);
+                console.log(edad);
+                console.log(gA);
+                console.log(res3);
+                setPatientData(res3);
+            }
+            else if (parroquia != '' & decanato != '' & zona != '') {
+                const ubi = parroquia + '-' + decanato + '-' + zona;
+                const res4 = await fetch('/api/searchPrueba/group/ubi-calif/' + gender + '/' + edad + '/' + ubi + '/' + gA, {method: 'GET'}).then(resID => resID.json())
+                console.log(gender);
+                console.log(edad);
+                console.log(ubi);
+                console.log(gA);
+                console.log(res4);
+                setPatientData(res4);
+            }
         }
     }
 
@@ -119,31 +176,90 @@ export default function Search() {
 
                             {/** SECCIÓN DE CAMPOS DE BÚSQUEDA */}
                             <Grid item xs={6}>
-                                <Stack spacing={2}>
-                                    <Box sx={{
-                                        width: '60%'
-                                    }}>
-                                        <TextField 
-                                            label='Nombre del paciente'
-                                            value={patientName}
-                                            onChange={(e) => {setPatientName(e.target.value)}}
-                                            variant='standard'
-                                            disabled={!enableIdSearch}
-                                            fullWidth />
-                                            {/*console.log("el valor es ", patientName)*/}
+                                <Stack spacing={4}>
+                                    <Box sx={{ width: 300 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel variant='standard' htmlFor="uncontrolled-native">Género</InputLabel>
+                                            <NativeSelect 
+                                                defaultValue={'A'}
+                                                onChange={(e) => {setGender(e.target.value)}}
+                                                inputProps={{
+                                                    name: 'Género',
+                                                    id: 'uncontrolled-native',
+                                                }}> 
+                                                <option value={'H'}>Hombre</option>
+                                                <option value={'M'}>Mujer</option>
+                                                <option value={'A'}>Todos</option>
+                                            </NativeSelect>
+                                        </FormControl>
                                     </Box>
 
-                                    <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
-                                        <TextField
-                                            label='ID del paciente'
-                                            value={patientID}
-                                            onChange={(e) => {setpatientID(e.target.value)}}
-                                            variant='standard'
-                                            helperText={'La busqueda por ID desactivará la consulta por nombre'}
-                                            disabled={enableIdSearch} />
-                                            {/*console.log("el valor es ", patientID)*/}
-                                        <Switch onChange={handleSwitchChange} />
+                                    <Box sx={{ display: 'flex', alignItems: 'baseline', width: 300 }}>
+                                        <Box sx={{ width: 300 }}>
+                                            <Typography id="non-linear-slider" gutterBottom>
+                                                Edad: {age[0]} - {age[1]}
+                                            </Typography>
+                                            <Slider
+                                                value={age}
+                                                onChange={handleAgeChange}
+                                                valueLabelDisplay="auto"
+                                                min={0}
+                                                max={110}
+                                            />
+                                        </Box>
                                     </Box>
+
+                                    <FormControlLabel
+                                        control={<Switch color="primary" onChange={handleSwitchUbi}/>}
+                                        label="Habilitar filtro por ubicación"
+                                        labelPlacement="end"
+                                    />
+
+                                    <Box sx={{ width: '60%' }}>
+                                        <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
+                                            <InputLabel>Zona</InputLabel>
+                                            <Select
+                                                value={zona}
+                                                label="Zona"
+                                                onChange={(e) => {setZona(e.target.value)}}
+                                                disabled={enableUbi}
+                                                >
+                                                <MenuItem value={1}>Zona 1</MenuItem>
+                                                <MenuItem value={2}>Zona 2</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box sx={{ width: '60%' }}>
+                                        <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
+                                            <InputLabel>Decanato</InputLabel>
+                                            <Select
+                                                value={decanato}
+                                                label="Decanato"
+                                                onChange={(e) => {setDecanato(e.target.value)}}
+                                                disabled={enableUbi}
+                                                >
+                                                <MenuItem value={1}>Decanato 1</MenuItem>
+                                                <MenuItem value={2}>Decanato 2</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box sx={{ width: '60%' }}>
+                                        <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
+                                            <InputLabel>Parroquia</InputLabel>
+                                            <Select
+                                                value={parroquia}
+                                                label="Parroquia"
+                                                onChange={(e) => {setParroquia(e.target.value)}}
+                                                disabled={enableUbi}
+                                                >
+                                                <MenuItem value={1}>Parroquia 1</MenuItem>
+                                                <MenuItem value={2}>Parroquia 2</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
                                     <Box>
                                         <Button variant='contained' onClick={handleSubmit}>Realizar busqueda</Button>
                                     </Box>
@@ -158,6 +274,7 @@ export default function Search() {
                                     groupBy={(option) => option.prueba}
                                     getOptionLabel={(option) => option.atributo}
                                     onChange={handleAtributoChange}
+                                    disabled={!enableCalificacion}
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
@@ -168,6 +285,12 @@ export default function Search() {
                                     )}
                                 />
 
+                                    <FormControlLabel
+                                        control={<Switch color="primary" onChange={handleSwitchChange}/>}
+                                        label="Habilitar filtro por calificación"
+                                        labelPlacement="end"
+                                    />
+
                                 <Box>
                                     <Typography id="non-linear-slider" gutterBottom>
                                         Calificación: {grade[0]} - {grade[1]}
@@ -176,8 +299,28 @@ export default function Search() {
                                         value={grade}
                                         onChange={handleGradeChange}
                                         valueLabelDisplay="auto"
+                                        disabled={enableCalificacion}
                                     />
                                 </Box>
+
+                                <Autocomplete
+                                    options={atributosPrueba}
+                                    groupBy={(option) => option.prueba}
+                                    getOptionLabel={(option) => option.atributo}
+                                    onChange={handleGradeAtributoChange}
+                                    disabled={enableCalificacion}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Seleccione el atributos de la prueba a actualizar"
+                                            placeholder="Atributos"
+                                        />
+                                    )}
+                                />
+
+                                <Button href={'search'} variant='contained'>Busqueda Especifica</Button>
+
                             </Stack>
 
                             {/** SECCIÓN DE RESULTADOS CON TABLA */}
@@ -185,9 +328,7 @@ export default function Search() {
 
                                 <Divider/>
 
-                                <div>{JSON.stringify(patientdata)}</div>
-                                <div>{patientdata.ID_Usuario}</div>
-                                <div>{patientdata.Nombre}</div>
+                                {JSON.stringify(patientdata)}
 
                                 <Typography 
                                 variant='h6'
@@ -196,6 +337,7 @@ export default function Search() {
                                     }}>Aqui se despliegan los resultados de la búsqueda?</Typography>
                                 <GridItem />
                             </Grid>
+
                         </Grid>
 
                     </Container>
@@ -231,7 +373,7 @@ const atributosPrueba = [
     { prueba: 'MMSE', atributo: 'Eject', value: 'Eject', key: 'G'},
     { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total', key: 'H'},
     { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total', key: 'I'},
-    { prueba: 'LWB', atributo: 'LWB', value: 'LWB', key: 'J'},
+    { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total', key: 'J'},
     { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F', key: 'K'},
     { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin', key: 'L'},
     { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global', key: 'M'},
