@@ -193,8 +193,6 @@ export default function Search() {
 
                                 <Divider />
 
-                                <div>{JSON.stringify(patientData)}</div>
-
                                 <Typography
                                     variant='h6'
                                     sx={{
