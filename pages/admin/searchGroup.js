@@ -23,6 +23,7 @@ import {
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
 import GridItem from '../../components/GridItem'
+import { DataGrid } from '@mui/x-data-grid'
 
 export default function Search() {
 
@@ -59,7 +60,7 @@ export default function Search() {
     const [verif, setVerif] = useState('');
     
     // Resultado de query
-    const [patientdata, setPatientData]=useState('');
+    const [patientData, setPatientData]=useState('');
 
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
@@ -153,6 +154,32 @@ export default function Search() {
             }
         }
     }
+
+    let columns = [
+
+        { field: "ID_Usuario" },
+        { field: "Nombre" },
+        { field: "Año_Nac" },
+        { field: "Genero" },
+        { field: "ID_Parroquia" },
+        { field: "ID_Resultado" },
+        { field: "Reloj" },
+        { field: "Orient_Temp" },
+        { field: "Orient_Esp" },
+        { field: "Registro" },
+        { field: "Calculo" },
+        { field: "Memoria" },
+        { field: "Eject" },
+        { field: "GDS_Total" },
+        { field: "Katz_Total" },
+        { field: "LWB_Total" },
+        { field: "Sarc_F" },
+        { field: "Fuerza_Domin" },
+        { field: "SPPB_Global" },
+        { field: "CFS_Fraility" },
+        { field: "Gijon" }
+
+    ]
 
 
     return (
@@ -328,14 +355,20 @@ export default function Search() {
 
                                 <Divider/>
 
-                                {JSON.stringify(patientdata)}
-
                                 <Typography 
                                 variant='h6'
                                 sx={{ 
                                     marginY: '2em' 
                                     }}>Aqui se despliegan los resultados de la búsqueda?</Typography>
-                                <GridItem />
+
+                                    <DataGrid
+                                        getRowId={(id) => id.ID_Usuario} // Asigna que el id unico es el atributo ID_Usuario
+                                        columns={columns}
+                                        rows={patientData}
+                                        pageSize={5}
+                                        rowsPerPageOptions={[5]}
+                                    />
+                                    
                             </Grid>
 
                         </Grid>
