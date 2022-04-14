@@ -60,7 +60,7 @@ export default function Search() {
     const [verif, setVerif] = useState('');
     
     // Resultado de query
-    const [patientData, setPatientData]=useState('');
+    const [patientData, setPatientData]=useState([]);
 
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
