@@ -74,15 +74,15 @@ export default function Search() {
             const resID = await fetch('/api/searchPrueba/one/ID/' + tests + '/' + pacID.patientID, { method: 'GET' }).then(resID => resID.json())
             //console.log("Esto es resID");
             //console.log(resID);
-            setPatientData([resID]);
+            setPatientData(resID);
         }
         if (nombre.patientName != '' & habilitado.enableIdSearch) {
             //console.log(nombre);
             const resNom = await fetch('/api/searchPrueba/one/Name/' + tests + '/' + nombre.patientName, { method: 'GET' }).then(resNom => resNom.json())
             //console.log("Esto es resNom");
             //console.log(resNom);
-            setPatientData([resNom]);
-            console.log(resNom.ID_Usuario)
+            setPatientData(resNom);
+            console.log(resNom[0].ID_Usuario)
         }
     }
 
@@ -201,7 +201,7 @@ export default function Search() {
                                 
                                     {/** AQUI VA EL DATAGRID */}
                                     <DataGrid
-                                        getRowId={(id) => id.ID_Usuario} // Asigna que el id unico es el atributo ID_Usuario
+                                        getRowId={(id) => id.ID_Resultado} // Asigna que el id unico es el atributo ID_Usuario
                                         columns={columns}
                                         rows={patientData}
                                         pageSize={5}
