@@ -22,7 +22,6 @@ import {
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
-import GridItem from '../../components/GridItem'
 import { DataGrid } from '@mui/x-data-grid'
 
 export default function Search() {
