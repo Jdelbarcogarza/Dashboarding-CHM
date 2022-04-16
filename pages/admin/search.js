@@ -1,25 +1,115 @@
-import React, { useState } from 'react'
-import {
-    Grid,
-    Paper,
-    Box,
-    Button,
-    Container,
-    Typography,
-    TextField,
-    Switch,
-    Divider,
-    Stack,
-    Autocomplete,
+import React, { useState } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
-} from '@mui/material'
-import Sidebar from '../../components/Sidebar'
-import Topbar from '../../components/Topbar'
+// mis imports
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+
+import { NextLink } from 'next/Link'
+import { Link,
+Grid,
+Container,
+TextField,
+Autocomplete,
+Stack,
+Switch,
+Button } from '@mui/material'
+
 import { DataGrid } from '@mui/x-data-grid'
 
-export default function Search() {
 
-    //////////////////////////////////// Constantes useState ////////////////////////////////////
+
+const drawerWidth = 240;
+
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+
+
+export default function MiniDrawer() {
+
+  // LOGICA PROPIA DE LA PAGINA 
+//////////////////////////////////// Constantes useState ////////////////////////////////////
 
     // Valores para habilitar los switches
     const [enableIdSearch, setEnableIdSearch] = useState(true);
@@ -114,19 +204,99 @@ export default function Search() {
     ]
 
 
-    return (
-        <>
-            <Grid container>
-                <Grid item xs={2}>
-                    {/** AQUI VA EL SIDEBAR */}
-                    <Sidebar />
-                </Grid>
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
 
-                <Grid item xs={10}>
-                    <Topbar titleText={'Realizar busqueda de un paciente'} />
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
 
-                    {/**Dentro de este contenedor de grid es en el cual se despliega todo el contenido de la pagina */}
-                    <Container>
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  // Dictionary with wbsite routes
+  const sidebarElements = [
+    { name: 'Inicio', icon: <HomeOutlinedIcon />, route: 'home' },
+    { name: 'Realizar consulta', icon: <PersonSearchOutlinedIcon />, route: 'search' },
+    { name: 'Cargar datos', icon: <CloudUploadOutlinedIcon />, route: 'loadData' },
+    { name: 'Modificar datos', icon: <EditOutlinedIcon />, route: 'modifyData' },
+    { name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, route: '/'},
+];
+
+const appBarText = 'Realizar busqueda de pacientes'
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={open}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              marginRight: 5,
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            {appBarText}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+        
+          {sidebarElements.map((item, index) => (
+            <Link
+            component={NextLink}
+            href={item.route}
+            underline={'none'}
+            key={index}
+            color={'gray'}>
+            {item.name === 'Cerrar sesión' ? <Divider key={'divider'} /> : null}
+
+                <ListItemButton
+                key={index}
+                sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                }}
+                >
+
+                <ListItemIcon
+                    
+                    sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                    }}
+                >
+                    {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+            </Link>
+          ))}
+
+        </List>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <DrawerHeader />
+
+      {/** AQUI VA EL CODIGO DE CADA PAGINA */}
+      <Container>
                         <Grid container spacing={2}>
 
                             <Grid item xs={12}>
@@ -210,41 +380,30 @@ export default function Search() {
                             </Grid>
                         </Grid>
                     </Container>
-                </Grid>
-
-                {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
-                <Grid container>
-                    <Grid item xs={3}>
-
-
-                    </Grid>
-                </Grid>
 
 
 
+        </Box>
+    </Box>
 
-
-
-
-            </Grid>
-        </>
-    )
+      
+  );
 }
 
 const atributosPrueba = [
-    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj'},
-    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp'},
-    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp'},
-    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro'},
-    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo'},
-    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria'},
-    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject'},
-    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total'},
-    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total'},
-    { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total'},
-    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F'},
-    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin'},
-    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global'},
-    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility'},
-    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon'},
+  { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj'},
+  { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp'},
+  { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp'},
+  { prueba: 'MMSE', atributo: 'Registro', value: 'Registro'},
+  { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo'},
+  { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria'},
+  { prueba: 'MMSE', atributo: 'Eject', value: 'Eject'},
+  { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total'},
+  { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total'},
+  { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total'},
+  { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F'},
+  { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin'},
+  { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global'},
+  { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility'},
+  { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon'},
 ];
