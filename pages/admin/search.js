@@ -110,7 +110,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 
 
-export default function MiniDrawer() {
+export default function Search() {
 
   // LOGICA PROPIA DE LA PAGINA 
   //////////////////////////////////// Constantes useState ////////////////////////////////////
