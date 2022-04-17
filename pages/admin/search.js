@@ -23,6 +23,7 @@ import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { NextLink } from 'next/Link'
 import {
@@ -34,7 +35,8 @@ import {
   Stack,
   Switch,
   Button,
-  Paper
+  Paper,
+  Tooltip
 } from '@mui/material'
 
 import { DataGrid } from '@mui/x-data-grid'
@@ -200,6 +202,15 @@ export default function Search() {
     }
   }
 
+  /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
+  // ESCALA DE 5 COLORES. Acomodados de mejor estado a peor estado
+  const superGreen = 'rgb(15, 189, 8)'
+  const green = 'rgb(80, 204, 75)'
+  const orange = 'rgb(237, 210, 36)'
+  const superOrange = 'rgb(230, 139, 11)'
+  const red = 'rgb(242, 131, 124)'
+  const superRed = 'rgb(209, 25, 0)'
+
   /////////////////////////////// COLUMNAS DEL DATAGRID /////////////////////////////////
 
   let columns = [
@@ -211,21 +222,34 @@ export default function Search() {
         if (params.value == -1) {
           return '';
         }
-      
+
         return clsx('reloj', {
           normal: params.value == 2,
           deterioro: params.value == 1,
-          probableDemencia: params.value == 0
+          pbDemencia: params.value == 0
         });
       }
-  },
+    },
     { field: "Orient_Temp" },
     { field: "Orient_Esp" },
     { field: "Registro" },
     { field: "Calculo" },
     { field: "Memoria" },
     { field: "Eject" },
-    { field: "GDS_Total" },
+    {
+      field: "GDS_Total",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('GDS', {
+          normal: params.value <= 5,
+          pbDepresion: 6 <= params.value <= 9,
+          depresion: params.value >= 10
+        });
+      }
+    },
     { field: "Katz_Total" },
     { field: "LWB_Total" },
     { field: "Sarc_F" },
@@ -423,25 +447,54 @@ export default function Search() {
 
               <Divider />
 
-              <Typography
-                variant='h6'
-                sx={{
-                  marginY: '1em'
-                }}>Aqui se despliegan los resultados de la búsqueda</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography
+                  variant='h6'
+                  sx={{
+                    marginY: '1em'
+                  }}>Aqui se despliegan los resultados de la búsqueda </Typography>
+                <Tooltip
+                  sx={{ ml: '0.5em' }}
+                  placement={'right'}
+                  title={
+                    <Typography variant="subtitle2" color="white">
+                      Cada prueba tiene su escala. Algunas cuentan con 3 interpretaciones
+                      pero otras terminan con 5. Los colores con <em><strong>tonalidades más claras</strong></em> de verde, amarillo y rojo son utilizadas para brindar
+                      una <em><strong>semaforización más descriptiva</strong></em>
+                    </Typography>
+                  }
+                >
+                  <InfoOutlinedIcon />
+                </Tooltip>
+              </Box>
 
 
 
               {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
               <Box
                 sx={{
+                  // prueba de Reloj
                   '& .reloj.normal': {
-                    backgroundColor: 'rgb(80, 204, 75)'
+                    backgroundColor: superGreen // verde
                   },
                   '& .reloj.deterioro': {
-                    backgroundColor: 'rgb(212, 163, 57)'
+                    backgroundColor: superOrange // naranja
                   },
-                  '& .reloj.probableDemencia': {
-                    backgroundColor: 'rgb(222, 81, 62)'
+                  '& .reloj.pbDemencia': {
+                    backgroundColor: superRed  // rojo
+                  },
+                  // prueba MMSE (LUEGO LO PONGO)
+
+
+                  // prueba GDS 
+                  '& .GDS.normal': {
+                    backgroundColor: green // verde
+                  },
+                  '&  .GDS.pbDepresion': {
+                    backgroundColor: superOrange // naranja
+                  },
+                  '& .GDS.depresion': {
+                    backgroundColor: red  // rojo
                   }
                 }}>
                 <DataGrid
@@ -452,6 +505,7 @@ export default function Search() {
                   rowsPerPageOptions={[5]}
                   autoHeight
                 />
+
               </Box>
 
             </Grid>

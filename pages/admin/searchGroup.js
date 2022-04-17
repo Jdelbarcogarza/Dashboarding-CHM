@@ -25,6 +25,7 @@ import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 
 import {
@@ -44,6 +45,7 @@ import {
     MenuItem,
     NativeSelect,
     FormControlLabel,
+    Tooltip
 
 } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
@@ -536,11 +538,26 @@ export default function SearchGroup() {
 
                             <Divider />
 
-                            <Typography
-                                variant='h6'
-                                sx={{
-                                    marginY: '2em'
-                                }}>Aqui se despliegan los resultados de la búsqueda</Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography
+                  variant='h6'
+                  sx={{
+                    marginY: '1em'
+                  }}>Aqui se despliegan los resultados de la búsqueda </Typography>
+                <Tooltip
+                  sx={{ ml: '0.5em' }}
+                  placement={'right'}
+                  title={
+                    <Typography variant="subtitle2" color="white">
+                      Cada prueba tiene su escala. Algunas cuentan con 3 interpretaciones
+                      pero otras terminan con 5. Los colores con <em><strong>tonalidades más claras</strong></em> de verde, amarillo y rojo son utilizadas para brindar
+                      una <em><strong>semaforización más descriptiva</strong></em>
+                    </Typography>
+                  }
+                >
+                  <InfoOutlinedIcon />
+                </Tooltip>
+              </Box>
 
                             <DataGrid
                                 getRowId={(id) => id.ID_Usuario} // Asigna que el id unico es el atributo ID_Usuario
