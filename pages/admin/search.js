@@ -127,6 +127,11 @@ export default function MiniDrawer() {
   // Resultado de query
   const [patientData, setPatientData] = useState([]);
 
+  // datos permanentes de paciente
+  const [patientPersonalInfo, setPatientPersonalInfo] = useState([]);
+
+  const [queryMade, setQueryMade] = useState(false);
+
   ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
   function handleSwitchChange() {
@@ -162,11 +167,19 @@ export default function MiniDrawer() {
     console.log(tests);
 
     if (pacID.patientID != '' & !habilitado.enableIdSearch) {
-      //console.log(pacID);
+      // endpoint que devuelve solo resultados del tamizaje
       const resID = await fetch('/api/searchPrueba/one/ID/' + tests + '/' + pacID.patientID, { method: 'GET' }).then(resID => resID.json())
       //console.log("Esto es resID");
       //console.log(resID);
       setPatientData(resID);
+
+      // endpoint que retorna informacion del paciente
+      const info = await fetch('/api/userID/' + pacID.patientID + '/').then( info => info.json())
+      console.log(info)
+      setPatientPersonalInfo(info)
+
+      setQueryMade(true)
+
     }
     if (nombre.patientName != '' & habilitado.enableIdSearch) {
       //console.log(nombre);
@@ -174,7 +187,14 @@ export default function MiniDrawer() {
       //console.log("Esto es resNom");
       //console.log(resNom);
       setPatientData(resNom);
-      console.log(resNom[0].ID_Usuario)
+
+
+      // endpoint que retorna informacion del paciente
+      const info = await fetch('/api/userName/' + nombre.patientName + '/').then( info => info.json())
+      console.log(info)
+      setPatientPersonalInfo(info)
+
+      setQueryMade(true)
     }
   }
 
@@ -345,13 +365,16 @@ export default function MiniDrawer() {
 
                 <Paper sx={{bgcolor: 'red'}} elevation={2}>
                 <Container>
+                {/** agregar use effect para que en el primer render solo ponga placeholder values y no deba de leer el objeto vacio de patientData */}
+                  
                   <Typography variant="subtitle1" color="initial">Datos del paciente</Typography>
-                  <Typography variant="body1" color="initial">ID De usuario: <em>{patientData[0].ID_Usuario}</em></Typography>
-                  <Typography variant="body1" color="initial">Nombre: <em>{patientData[0].Nombre}</em></Typography>
-                  <Typography variant="body1" color="initial">Año de nacimiento: <em>{patientData[0].Año_Nac}</em></Typography>
-                  <Typography variant="body1" color="initial">Genero: <em>{patientData[0].Genero == 1 ? 'Masculino' : 'Femenino'}</em></Typography>
-
-
+                  <Typography variant="body1" color="initial"><strong>ID de parroquia:</strong> <em>{queryMade ? patientPersonalInfo.ID_Parroquia : '#'}</em></Typography>
+                  <Typography variant="body1" color="initial"><strong>ID de usuario:</strong> <em>{queryMade ? patientPersonalInfo.ID_Usuario : '#'}</em></Typography>
+                  <Typography variant="body1" color="initial"><strong>Nombre:</strong> <em>{queryMade ? patientPersonalInfo.Nombre : '#'}</em></Typography>
+                  <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
+                  <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
+                   
+                  
 
                   </Container>
                 </Paper>
