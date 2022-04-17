@@ -476,61 +476,60 @@ export default function SearchGroup() {
                         </Grid>
 
                         {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
-                        <Stack spacing={5} sx={{ width: 400 }}>
-                            <Autocomplete
-                                multiple
-                                options={atributosPrueba}
-                                groupBy={(option) => option.prueba}
-                                getOptionLabel={(option) => option.atributo}
-                                onChange={handleAtributoChange}
-                                disabled={!enableCalificacion}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Seleccione los atributos de la prueba"
-                                        placeholder="Atributos"
-                                    />
-                                )}
-                            />
-
-                            <FormControlLabel
-                                control={<Switch color="primary" onChange={handleSwitchChange} />}
-                                label="Habilitar filtro por calificación"
-                                labelPlacement="end"
-                            />
-
-                            <Box>
-                                <Typography id="non-linear-slider" gutterBottom>
-                                    Calificación: {grade[0]} - {grade[1]}
-                                </Typography>
-                                <Slider
-                                    value={grade}
-                                    onChange={handleGradeChange}
-                                    valueLabelDisplay="auto"
-                                    disabled={enableCalificacion}
+                        <Grid item xs={6}>
+                            <Stack spacing={5} sx={{ width: 400 }}>
+                                <Autocomplete
+                                    multiple
+                                    options={atributosPrueba}
+                                    groupBy={(option) => option.prueba}
+                                    getOptionLabel={(option) => option.atributo}
+                                    onChange={handleAtributoChange}
+                                    disabled={!enableCalificacion}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Seleccione los atributos de la prueba"
+                                            placeholder="Atributos"
+                                        />
+                                    )}
                                 />
-                            </Box>
 
-                            <Autocomplete
-                                options={atributosPrueba}
-                                groupBy={(option) => option.prueba}
-                                getOptionLabel={(option) => option.atributo}
-                                onChange={handleGradeAtributoChange}
-                                disabled={enableCalificacion}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Seleccione el atributos de la prueba a actualizar"
-                                        placeholder="Atributos"
+                                <FormControlLabel
+                                    control={<Switch color="primary" onChange={handleSwitchChange} />}
+                                    label="Habilitar filtro por calificación"
+                                    labelPlacement="end"
+                                />
+
+                                <Box>
+                                    <Typography id="non-linear-slider" gutterBottom>
+                                        Calificación: {grade[0]} - {grade[1]}
+                                    </Typography>
+                                    <Slider
+                                        value={grade}
+                                        onChange={handleGradeChange}
+                                        valueLabelDisplay="auto"
+                                        disabled={enableCalificacion}
                                     />
-                                )}
-                            />
+                                </Box>
 
-
-
-                        </Stack>
+                                <Autocomplete
+                                    options={atributosPrueba}
+                                    groupBy={(option) => option.prueba}
+                                    getOptionLabel={(option) => option.atributo}
+                                    onChange={handleGradeAtributoChange}
+                                    disabled={enableCalificacion}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Seleccione el atributos de la prueba a actualizar"
+                                            placeholder="Atributos"
+                                        />
+                                    )}
+                                />
+                            </Stack>
+                        </Grid>
 
                         {/** SECCIÓN DE RESULTADOS CON TABLA */}
                         <Grid item xs={12}>
@@ -541,7 +540,7 @@ export default function SearchGroup() {
                                 variant='h6'
                                 sx={{
                                     marginY: '2em'
-                                }}>Aqui se despliegan los resultados de la búsqueda?</Typography>
+                                }}>Aqui se despliegan los resultados de la búsqueda</Typography>
 
                             <DataGrid
                                 getRowId={(id) => id.ID_Usuario} // Asigna que el id unico es el atributo ID_Usuario
