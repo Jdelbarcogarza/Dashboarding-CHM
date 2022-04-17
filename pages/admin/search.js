@@ -38,6 +38,7 @@ import {
 } from '@mui/material'
 
 import { DataGrid } from '@mui/x-data-grid'
+import clsx from 'clsx'
 
 
 
@@ -175,7 +176,7 @@ export default function Search() {
       setPatientData(resID);
 
       // endpoint que retorna informacion del paciente
-      const info = await fetch('/api/userID/' + pacID.patientID + '/').then( info => info.json())
+      const info = await fetch('/api/userID/' + pacID.patientID + '/').then(info => info.json())
       console.log(info)
       setPatientPersonalInfo(info)
 
@@ -191,7 +192,7 @@ export default function Search() {
 
 
       // endpoint que retorna informacion del paciente
-      const info = await fetch('/api/userName/' + nombre.patientName + '/').then( info => info.json())
+      const info = await fetch('/api/userName/' + nombre.patientName + '/').then(info => info.json())
       console.log(info)
       setPatientPersonalInfo(info)
 
@@ -204,7 +205,20 @@ export default function Search() {
   let columns = [
 
     { field: "ID_Resultado" },
-    { field: "Reloj" },
+    {
+      field: "Reloj",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+      
+        return clsx('reloj', {
+          normal: params.value == 2,
+          deterioro: params.value == 1,
+          probableDemencia: params.value == 0
+        });
+      }
+  },
     { field: "Orient_Temp" },
     { field: "Orient_Esp" },
     { field: "Registro" },
@@ -238,7 +252,7 @@ export default function Search() {
   const sidebarElements = [
     { name: 'Inicio', icon: <HomeOutlinedIcon />, route: 'home' },
     { name: 'Realizar consulta', icon: <PersonSearchOutlinedIcon />, route: 'search' },
-    { name: 'Consulta general', icon: <LeaderboardOutlinedIcon/>, route: 'searchGroup'},
+    { name: 'Consulta general', icon: <LeaderboardOutlinedIcon />, route: 'searchGroup' },
     { name: 'Cargar datos', icon: <CloudUploadOutlinedIcon />, route: 'loadData' },
     { name: 'Modificar datos', icon: <EditOutlinedIcon />, route: 'modifyData' },
     { name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, route: '/' },
@@ -358,34 +372,34 @@ export default function Search() {
 
             {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
 
-            <Grid item  xs={6}>
+            <Grid item xs={6}>
 
-                <Paper sx={{p: 2}} elevation={2}>
+              <Paper sx={{ p: 2 }} elevation={2}>
                 <Container
                 >
-                {/** agregar use effect para que en el primer render solo ponga placeholder values y no deba de leer el objeto vacio de patientData */}
-                  
-                  <Typography sx={{textAlign: 'center', pb: 1}} variant="h6" color="initial" >Datos del paciente</Typography>
-                  <Stack>
-                  <Typography variant="body1" color="initial"><strong>ID de parroquia:</strong> <em>{queryMade ? patientPersonalInfo.ID_Parroquia : '#'}</em></Typography>
-                  <Typography variant="body1" color="initial"><strong>ID de usuario:</strong> <em>{queryMade ? patientPersonalInfo.ID_Usuario : '#'}</em></Typography>
-                  <Typography variant="body1" color="initial"><strong>Nombre:</strong> <em>{queryMade ? patientPersonalInfo.Nombre : '#'}</em></Typography>
-                  <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
-                  <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
-                  </Stack>
-                  
+                  {/** agregar use effect para que en el primer render solo ponga placeholder values y no deba de leer el objeto vacio de patientData */}
 
-                  </Container>
-                </Paper>
+                  <Typography sx={{ textAlign: 'center', pb: 1 }} variant="h6" color="initial" >Datos del paciente</Typography>
+                  <Stack>
+                    <Typography variant="body1" color="initial"><strong>ID de parroquia:</strong> <em>{queryMade ? patientPersonalInfo.ID_Parroquia : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>ID de usuario:</strong> <em>{queryMade ? patientPersonalInfo.ID_Usuario : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Nombre:</strong> <em>{queryMade ? patientPersonalInfo.Nombre : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
+                  </Stack>
+
+
+                </Container>
+              </Paper>
 
             </Grid>
 
             <Stack spacing={5} sx={{ width: 400 }}>
-              
 
-              
+
+
               <Autocomplete
-              hidden // QUITAR ESTE PROP PARA HACER VISIBLE EL COMPONENTE
+                hidden // QUITAR ESTE PROP PARA HACER VISIBLE EL COMPONENTE
                 multiple
                 options={atributosPrueba}
                 groupBy={(option) => option.prueba}
@@ -401,7 +415,7 @@ export default function Search() {
                 )}
               />
 
-              
+
             </Stack>
 
             {/** SECCIÓN DE RESULTADOS CON TABLA */}
@@ -415,17 +429,30 @@ export default function Search() {
                   marginY: '1em'
                 }}>Aqui se despliegan los resultados de la búsqueda</Typography>
 
-                
 
-              {/** AQUI VA EL DATAGRID */}
-              <DataGrid
-                getRowId={(id) => id.ID_Resultado} // Asigna que el id unico es el atributo ID_Usuario
-                columns={columns}
-                rows={patientData}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                autoHeight
-              />
+
+              {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
+              <Box
+                sx={{
+                  '& .reloj.normal': {
+                    backgroundColor: 'rgb(80, 204, 75)'
+                  },
+                  '& .reloj.deterioro': {
+                    backgroundColor: 'rgb(212, 163, 57)'
+                  },
+                  '& .reloj.probableDemencia': {
+                    backgroundColor: 'rgb(222, 81, 62)'
+                  }
+                }}>
+                <DataGrid
+                  getRowId={(id) => id.ID_Resultado} // Asigna que el id unico es el atributo ID_Usuario
+                  columns={columns}
+                  rows={patientData}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  autoHeight
+                />
+              </Box>
 
             </Grid>
           </Grid>
