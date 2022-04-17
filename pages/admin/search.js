@@ -19,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 // mis imports
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
@@ -202,11 +203,6 @@ export default function MiniDrawer() {
 
   let columns = [
 
-    { field: "ID_Usuario" },
-    { field: "Nombre" },
-    { field: "Año_Nac" },
-    { field: "Genero" },
-    { field: "ID_Parroquia" },
     { field: "ID_Resultado" },
     { field: "Reloj" },
     { field: "Orient_Temp" },
@@ -242,6 +238,7 @@ export default function MiniDrawer() {
   const sidebarElements = [
     { name: 'Inicio', icon: <HomeOutlinedIcon />, route: 'home' },
     { name: 'Realizar consulta', icon: <PersonSearchOutlinedIcon />, route: 'search' },
+    { name: 'Consulta general', icon: <LeaderboardOutlinedIcon/>, route: 'searchGroup'},
     { name: 'Cargar datos', icon: <CloudUploadOutlinedIcon />, route: 'loadData' },
     { name: 'Modificar datos', icon: <EditOutlinedIcon />, route: 'modifyData' },
     { name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, route: '/' },
@@ -361,19 +358,21 @@ export default function MiniDrawer() {
 
             {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
 
-            <Grid item xs={6}>
+            <Grid item  xs={6}>
 
-                <Paper sx={{bgcolor: 'red'}} elevation={2}>
-                <Container>
+                <Paper sx={{p: 2}} elevation={2}>
+                <Container
+                >
                 {/** agregar use effect para que en el primer render solo ponga placeholder values y no deba de leer el objeto vacio de patientData */}
                   
-                  <Typography variant="subtitle1" color="initial">Datos del paciente</Typography>
+                  <Typography sx={{textAlign: 'center', pb: 1}} variant="h6" color="initial" >Datos del paciente</Typography>
+                  <Stack>
                   <Typography variant="body1" color="initial"><strong>ID de parroquia:</strong> <em>{queryMade ? patientPersonalInfo.ID_Parroquia : '#'}</em></Typography>
                   <Typography variant="body1" color="initial"><strong>ID de usuario:</strong> <em>{queryMade ? patientPersonalInfo.ID_Usuario : '#'}</em></Typography>
                   <Typography variant="body1" color="initial"><strong>Nombre:</strong> <em>{queryMade ? patientPersonalInfo.Nombre : '#'}</em></Typography>
                   <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
                   <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
-                   
+                  </Stack>
                   
 
                   </Container>
@@ -386,6 +385,7 @@ export default function MiniDrawer() {
 
               
               <Autocomplete
+              hidden // QUITAR ESTE PROP PARA HACER VISIBLE EL COMPONENTE
                 multiple
                 options={atributosPrueba}
                 groupBy={(option) => option.prueba}
@@ -401,7 +401,7 @@ export default function MiniDrawer() {
                 )}
               />
 
-              <Button href={'searchGroup'} variant='contained' color={'secondary'}>Busqueda General</Button>
+              
             </Stack>
 
             {/** SECCIÓN DE RESULTADOS CON TABLA */}
