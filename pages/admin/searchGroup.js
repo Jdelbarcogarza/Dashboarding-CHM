@@ -1,14 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
+
+
+// mis imports
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+
+
 import {
     Grid,
     Paper,
-    Box,
+    Link,
     Button,
     Container,
-    Typography,
     TextField,
     Switch,
-    Divider,
     Stack,
     Slider,
     Autocomplete,
@@ -23,8 +49,79 @@ import {
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
 import { DataGrid } from '@mui/x-data-grid'
+import { NextLink } from 'next/Link'
 
-export default function Search() {
+
+// themes para el sidebar
+
+const drawerWidth = 240;
+
+const openedMixin = (theme) => ({
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: `calc(${theme.spacing(7)} + 1px)`,
+    [theme.breakpoints.up('sm')]: {
+        width: `calc(${theme.spacing(8)} + 1px)`,
+    },
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+}));
+
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+        ...(open && {
+            ...openedMixin(theme),
+            '& .MuiDrawer-paper': openedMixin(theme),
+        }),
+        ...(!open && {
+            ...closedMixin(theme),
+            '& .MuiDrawer-paper': closedMixin(theme),
+        }),
+    }),
+);
+
+export default function SearchGroup() {
 
     //////////////////////////////////// Constantes useState ////////////////////////////////////
 
@@ -34,10 +131,10 @@ export default function Search() {
 
     // Valores de género
     const [gender, setGender] = useState('A');
-    
+
     // Valores de atributo
     const [atributo, setAtributo] = useState('');
-    
+
     // Valores de calificacion
     const [grade, setGrade] = useState([0, 100]);
 
@@ -57,16 +154,16 @@ export default function Search() {
     const [gradeAtr, setGradeAtr] = useState('');
     // Verificacion
     const [verif, setVerif] = useState('');
-    
+
     // Resultado de query
-    const [patientData, setPatientData]=useState([]);
+    const [patientData, setPatientData] = useState([]);
 
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
     function handleSwitchUbi() {
         setEnableUbi(!enableUbi)
     }
-    
+
     const handleAtributoChange = (event, newAtributo) => {
         setAtributo(newAtributo);
     };
@@ -102,15 +199,15 @@ export default function Search() {
                 tests = "$"
             }
             else {
-                var i=0; for (i=0; i<atributo.length; i++) {
-                    if (atributo.length >= 1 ) {
+                var i = 0; for (i = 0; i < atributo.length; i++) {
+                    if (atributo.length >= 1) {
                         tests = tests + "!" + atributo[i].value;
                     }
                 }
             }
 
             if (enableUbi) {
-                const res1 = await fetch('/api/searchPrueba/group/prueba/' + gender + '/' + edad + '/' + tests, {method: 'GET'}).then(resID => resID.json())
+                const res1 = await fetch('/api/searchPrueba/group/prueba/' + gender + '/' + edad + '/' + tests, { method: 'GET' }).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(tests);
@@ -119,7 +216,7 @@ export default function Search() {
             }
             else if (parroquia != '' & decanato != '' & zona != '') {
                 const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res2 = await fetch('/api/searchPrueba/group/ubi-prueba/' + gender + '/' + edad + '/' + ubi + '/' + tests, {method: 'GET'}).then(resID => resID.json())
+                const res2 = await fetch('/api/searchPrueba/group/ubi-prueba/' + gender + '/' + edad + '/' + ubi + '/' + tests, { method: 'GET' }).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(ubi);
@@ -134,7 +231,7 @@ export default function Search() {
             const gA = grade[0] + "-" + grade[1] + "-" + gradeAtr.value;
 
             if (enableUbi) {
-                const res3 = await fetch('/api/searchPrueba/group/calif/' + gender + '/' + edad + '/' + gA, {method: 'GET'}).then(resID => resID.json())
+                const res3 = await fetch('/api/searchPrueba/group/calif/' + gender + '/' + edad + '/' + gA, { method: 'GET' }).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(gA);
@@ -143,7 +240,7 @@ export default function Search() {
             }
             else if (parroquia != '' & decanato != '' & zona != '') {
                 const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res4 = await fetch('/api/searchPrueba/group/ubi-calif/' + gender + '/' + edad + '/' + ubi + '/' + gA, {method: 'GET'}).then(resID => resID.json())
+                const res4 = await fetch('/api/searchPrueba/group/ubi-calif/' + gender + '/' + edad + '/' + ubi + '/' + gA, { method: 'GET' }).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(ubi);
@@ -180,235 +277,305 @@ export default function Search() {
 
     ]
 
+    //////////////// FUNCIONAMIENTO DEL SIDEBAR ////////////////
+
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    // Dictionary with wbsite routes
+    const sidebarElements = [
+        { name: 'Inicio', icon: <HomeOutlinedIcon />, route: 'home' },
+        { name: 'Realizar consulta', icon: <PersonSearchOutlinedIcon />, route: 'search' },
+        { name: 'Consulta general', icon: <LeaderboardOutlinedIcon />, route: 'searchGroup' },
+        { name: 'Cargar datos', icon: <CloudUploadOutlinedIcon />, route: 'loadData' },
+        { name: 'Modificar datos', icon: <EditOutlinedIcon />, route: 'modifyData' },
+        { name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, route: '/' },
+    ];
+
+    const appBarText = 'Realizar busqueda de estadísticas generales de CHM'
+
 
     return (
-        <>
-            <Grid container>
-                <Grid item xs={2}>
-                    {/** AQUI VA EL SIDEBAR */}
-                    <Sidebar />
-                </Grid>
 
-                <Grid item xs={10}>
-                    <Topbar titleText={'Realizar busqueda de un paciente'} />
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{
+                            marginRight: 5,
+                            ...(open && { display: 'none' }),
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        {appBarText}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Drawer variant="permanent" open={open}>
+                <DrawerHeader>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
 
-                    {/**Dentro de este contenedor de grid es en el cual se despliega todo el contenido de la pagina */}
-                    <Container>
-                        <Grid container spacing={2}>
+                    {sidebarElements.map((item, index) => (
+                        <Link
+                            component={NextLink}
+                            href={item.route}
+                            underline={'none'}
+                            key={index}
+                            color={'gray'}>
+                            {item.name === 'Cerrar sesión' ? <Divider key={'divider'} /> : null}
 
-                            <Grid item xs={12}>
-                                <Typography variant='h6'>Favor de llenar los campos como corresponde</Typography>
-                            </Grid>
+                            <ListItemButton
+                                key={index}
+                                sx={{
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
+                                }}
+                            >
 
-                            {/** SECCIÓN DE CAMPOS DE BÚSQUEDA */}
-                            <Grid item xs={6}>
-                                <Stack spacing={4}>
-                                    <Box sx={{ width: 300 }}>
-                                        <FormControl fullWidth>
-                                            <InputLabel variant='standard' htmlFor="uncontrolled-native">Género</InputLabel>
-                                            <NativeSelect 
-                                                defaultValue={'A'}
-                                                onChange={(e) => {setGender(e.target.value)}}
-                                                inputProps={{
-                                                    name: 'Género',
-                                                    id: 'uncontrolled-native',
-                                                }}> 
-                                                <option value={'H'}>Hombre</option>
-                                                <option value={'M'}>Mujer</option>
-                                                <option value={'A'}>Todos</option>
-                                            </NativeSelect>
-                                        </FormControl>
-                                    </Box>
+                                <ListItemIcon
 
-                                    <Box sx={{ display: 'flex', alignItems: 'baseline', width: 300 }}>
-                                        <Box sx={{ width: 300 }}>
-                                            <Typography id="non-linear-slider" gutterBottom>
-                                                Edad: {age[0]} - {age[1]}
-                                            </Typography>
-                                            <Slider
-                                                value={age}
-                                                onChange={handleAgeChange}
-                                                valueLabelDisplay="auto"
-                                                min={0}
-                                                max={110}
-                                            />
-                                        </Box>
-                                    </Box>
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    {item.icon}
+                                </ListItemIcon>
+                                <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </Link>
+                    ))}
 
-                                    <FormControlLabel
-                                        control={<Switch color="primary" onChange={handleSwitchUbi}/>}
-                                        label="Habilitar filtro por ubicación"
-                                        labelPlacement="end"
-                                    />
+                </List>
+            </Drawer>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <DrawerHeader />
 
-                                    <Box sx={{ width: '60%' }}>
-                                        <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
-                                            <InputLabel>Zona</InputLabel>
-                                            <Select
-                                                value={zona}
-                                                label="Zona"
-                                                onChange={(e) => {setZona(e.target.value)}}
-                                                disabled={enableUbi}
-                                                >
-                                                <MenuItem value={1}>Zona 1</MenuItem>
-                                                <MenuItem value={2}>Zona 2</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
+                {/** AQUI DEBAJO VA LO PROPIO DE LA PAGINA */}
 
-                                    <Box sx={{ width: '60%' }}>
-                                        <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
-                                            <InputLabel>Decanato</InputLabel>
-                                            <Select
-                                                value={decanato}
-                                                label="Decanato"
-                                                onChange={(e) => {setDecanato(e.target.value)}}
-                                                disabled={enableUbi}
-                                                >
-                                                <MenuItem value={1}>Decanato 1</MenuItem>
-                                                <MenuItem value={2}>Decanato 2</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
+                {/**Dentro de este contenedor de grid es en el cual se despliega todo el contenido de la pagina */}
+                <Container>
+                    <Grid container spacing={2}>
 
-                                    <Box sx={{ width: '60%' }}>
-                                        <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
-                                            <InputLabel>Parroquia</InputLabel>
-                                            <Select
-                                                value={parroquia}
-                                                label="Parroquia"
-                                                onChange={(e) => {setParroquia(e.target.value)}}
-                                                disabled={enableUbi}
-                                                >
-                                                <MenuItem value={1}>Parroquia 1</MenuItem>
-                                                <MenuItem value={2}>Parroquia 2</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
+                        <Grid item xs={12}>
+                            <Typography variant='h6'>Favor de llenar los campos como corresponde</Typography>
+                        </Grid>
 
-                                    <Box>
-                                        <Button variant='contained' onClick={handleSubmit}>Realizar busqueda</Button>
-                                    </Box>
-                                </Stack>
-                            </Grid>
-
-                            {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
-                            <Stack spacing={5} sx={{ width: 400 }}>
-                                <Autocomplete
-                                    multiple
-                                    options={atributosPrueba}
-                                    groupBy={(option) => option.prueba}
-                                    getOptionLabel={(option) => option.atributo}
-                                    onChange={handleAtributoChange}
-                                    disabled={!enableCalificacion}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            label="Seleccione los atributos de la prueba"
-                                            placeholder="Atributos"
-                                        />
-                                    )}
-                                />
-
-                                    <FormControlLabel
-                                        control={<Switch color="primary" onChange={handleSwitchChange}/>}
-                                        label="Habilitar filtro por calificación"
-                                        labelPlacement="end"
-                                    />
-
-                                <Box>
-                                    <Typography id="non-linear-slider" gutterBottom>
-                                        Calificación: {grade[0]} - {grade[1]}
-                                    </Typography>
-                                    <Slider
-                                        value={grade}
-                                        onChange={handleGradeChange}
-                                        valueLabelDisplay="auto"
-                                        disabled={enableCalificacion}
-                                    />
+                        {/** SECCIÓN DE CAMPOS DE BÚSQUEDA */}
+                        <Grid item xs={6}>
+                            <Stack spacing={4}>
+                                <Box sx={{ width: 300 }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel variant='standard' htmlFor="uncontrolled-native">Género</InputLabel>
+                                        <NativeSelect
+                                            defaultValue={'A'}
+                                            onChange={(e) => { setGender(e.target.value) }}
+                                            inputProps={{
+                                                name: 'Género',
+                                                id: 'uncontrolled-native',
+                                            }}>
+                                            <option value={'H'}>Hombre</option>
+                                            <option value={'M'}>Mujer</option>
+                                            <option value={'A'}>Todos</option>
+                                        </NativeSelect>
+                                    </FormControl>
                                 </Box>
 
-                                <Autocomplete
-                                    options={atributosPrueba}
-                                    groupBy={(option) => option.prueba}
-                                    getOptionLabel={(option) => option.atributo}
-                                    onChange={handleGradeAtributoChange}
-                                    disabled={enableCalificacion}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            label="Seleccione el atributos de la prueba a actualizar"
-                                            placeholder="Atributos"
+                                <Box sx={{ display: 'flex', alignItems: 'baseline', width: 300 }}>
+                                    <Box sx={{ width: 300 }}>
+                                        <Typography id="non-linear-slider" gutterBottom>
+                                            Edad: {age[0]} - {age[1]}
+                                        </Typography>
+                                        <Slider
+                                            value={age}
+                                            onChange={handleAgeChange}
+                                            valueLabelDisplay="auto"
+                                            min={0}
+                                            max={110}
                                         />
-                                    )}
+                                    </Box>
+                                </Box>
+
+                                <FormControlLabel
+                                    control={<Switch color="primary" onChange={handleSwitchUbi} />}
+                                    label="Habilitar filtro por ubicación"
+                                    labelPlacement="end"
                                 />
 
-                                <Button href={'search'} variant='contained'>Busqueda Especifica</Button>
+                                <Box sx={{ width: '60%' }}>
+                                    <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
+                                        <InputLabel>Zona</InputLabel>
+                                        <Select
+                                            value={zona}
+                                            label="Zona"
+                                            onChange={(e) => { setZona(e.target.value) }}
+                                            disabled={enableUbi}
+                                        >
+                                            <MenuItem value={1}>Zona 1</MenuItem>
+                                            <MenuItem value={2}>Zona 2</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Box>
 
+                                <Box sx={{ width: '60%' }}>
+                                    <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
+                                        <InputLabel>Decanato</InputLabel>
+                                        <Select
+                                            value={decanato}
+                                            label="Decanato"
+                                            onChange={(e) => { setDecanato(e.target.value) }}
+                                            disabled={enableUbi}
+                                        >
+                                            <MenuItem value={1}>Decanato 1</MenuItem>
+                                            <MenuItem value={2}>Decanato 2</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+
+                                <Box sx={{ width: '60%' }}>
+                                    <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
+                                        <InputLabel>Parroquia</InputLabel>
+                                        <Select
+                                            value={parroquia}
+                                            label="Parroquia"
+                                            onChange={(e) => { setParroquia(e.target.value) }}
+                                            disabled={enableUbi}
+                                        >
+                                            <MenuItem value={1}>Parroquia 1</MenuItem>
+                                            <MenuItem value={2}>Parroquia 2</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+
+                                <Box>
+                                    <Button variant='contained' onClick={handleSubmit}>Realizar busqueda</Button>
+                                </Box>
                             </Stack>
+                        </Grid>
 
-                            {/** SECCIÓN DE RESULTADOS CON TABLA */}
-                            <Grid item xs={12}>
-
-                                <Divider/>
-
-                                <Typography 
-                                variant='h6'
-                                sx={{ 
-                                    marginY: '2em' 
-                                    }}>Aqui se despliegan los resultados de la búsqueda?</Typography>
-
-                                    <DataGrid
-                                        getRowId={(id) => id.ID_Usuario} // Asigna que el id unico es el atributo ID_Usuario
-                                        columns={columns}
-                                        rows={patientData}
-                                        pageSize={5}
-                                        rowsPerPageOptions={[5]}
+                        {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
+                        <Stack spacing={5} sx={{ width: 400 }}>
+                            <Autocomplete
+                                multiple
+                                options={atributosPrueba}
+                                groupBy={(option) => option.prueba}
+                                getOptionLabel={(option) => option.atributo}
+                                onChange={handleAtributoChange}
+                                disabled={!enableCalificacion}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label="Seleccione los atributos de la prueba"
+                                        placeholder="Atributos"
                                     />
-                                    
-                            </Grid>
+                                )}
+                            />
+
+                            <FormControlLabel
+                                control={<Switch color="primary" onChange={handleSwitchChange} />}
+                                label="Habilitar filtro por calificación"
+                                labelPlacement="end"
+                            />
+
+                            <Box>
+                                <Typography id="non-linear-slider" gutterBottom>
+                                    Calificación: {grade[0]} - {grade[1]}
+                                </Typography>
+                                <Slider
+                                    value={grade}
+                                    onChange={handleGradeChange}
+                                    valueLabelDisplay="auto"
+                                    disabled={enableCalificacion}
+                                />
+                            </Box>
+
+                            <Autocomplete
+                                options={atributosPrueba}
+                                groupBy={(option) => option.prueba}
+                                getOptionLabel={(option) => option.atributo}
+                                onChange={handleGradeAtributoChange}
+                                disabled={enableCalificacion}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label="Seleccione el atributos de la prueba a actualizar"
+                                        placeholder="Atributos"
+                                    />
+                                )}
+                            />
+
+
+
+                        </Stack>
+
+                        {/** SECCIÓN DE RESULTADOS CON TABLA */}
+                        <Grid item xs={12}>
+
+                            <Divider />
+
+                            <Typography
+                                variant='h6'
+                                sx={{
+                                    marginY: '2em'
+                                }}>Aqui se despliegan los resultados de la búsqueda?</Typography>
+
+                            <DataGrid
+                                getRowId={(id) => id.ID_Usuario} // Asigna que el id unico es el atributo ID_Usuario
+                                columns={columns}
+                                rows={patientData}
+                                pageSize={5}
+                                rowsPerPageOptions={[5]}
+                                autoHeight
+                            />
 
                         </Grid>
 
-                    </Container>
-                </Grid>
-
-
-                {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
-                <Grid container>
-                    <Grid item xs={3}>
-
-
                     </Grid>
-                </Grid>
 
-
-
-
-
-
-
-            </Grid>
-        </>
+                </Container>
+            </Box>
+        </Box>
     )
 }
 
 const atributosPrueba = [
-    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj', key: 'A'},
-    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp', key: 'B'},
-    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp', key: 'C'},
-    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro', key: 'D'},
-    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo', key: 'E'},
-    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria', key: 'F'},
-    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject', key: 'G'},
-    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total', key: 'H'},
-    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total', key: 'I'},
-    { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total', key: 'J'},
-    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F', key: 'K'},
-    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin', key: 'L'},
-    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global', key: 'M'},
-    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility', key: 'N'},
-    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon', key: 'O'},
+    { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj', key: 'A' },
+    { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp', key: 'B' },
+    { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp', key: 'C' },
+    { prueba: 'MMSE', atributo: 'Registro', value: 'Registro', key: 'D' },
+    { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo', key: 'E' },
+    { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria', key: 'F' },
+    { prueba: 'MMSE', atributo: 'Eject', value: 'Eject', key: 'G' },
+    { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total', key: 'H' },
+    { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total', key: 'I' },
+    { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total', key: 'J' },
+    { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F', key: 'K' },
+    { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin', key: 'L' },
+    { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global', key: 'M' },
+    { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility', key: 'N' },
+    { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon', key: 'O' },
 ];
