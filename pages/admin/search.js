@@ -245,18 +245,92 @@ export default function Search() {
 
         return clsx('GDS', {
           normal: params.value <= 5,
-          pbDepresion: 6 <= params.value <= 9,
+          pbDepresion: 6 <= params.value && params.value <= 9,
           depresion: params.value >= 10
         });
       }
     },
-    { field: "Katz_Total" },
-    { field: "LWB_Total" },
-    { field: "Sarc_F" },
-    { field: "Fuerza_Domin" },
-    { field: "SPPB_Global" },
-    { field: "CFS_Fraility" },
-    { field: "Gijon" }
+    {
+      field: "Katz_Total",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Katz', {
+          normal: params.value == 6,
+          incLeve: 4 <= params.value && params.value <= 5,
+          incModerada: 2 <= params.value && params.value <= 3,
+          incSevera: 0 <= params.value && params.value <= 1,
+
+        });
+      }
+    },
+    {
+      field: "LWB_Total"
+      // pendiete la coloracion de esta celda.
+      // DEBO REVISAR 2 PARAMETROS Y SOBRE
+      // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
+    },
+    {
+      field: "Sarc_F",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Sarc_F', {
+          normal: params.value <= 4,
+          riesgo: 4 < params.value,
+
+        });
+      }
+    },
+    { 
+      field: "Fuerza_Domin",
+      // AQUI DEPENDE DEL GENERO Y LA CALIFICACION DE LA FUERZA EL COLOR QUE SE LE DA
+   },
+    { 
+      field: "SPPB_Global",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('SPPB', {
+          normal: params.value >= 8,
+          anormal: params.value < 8,
+        });
+      }
+   },
+    { 
+      field: "CFS_Fraility",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('CFS_Fraility', {
+          normal: params.value == 0,
+          prefragil: 1 <= params.value && params.value <= 2,
+          fragil: 3 <= params.value && params.value <= 5,
+        });
+      }
+   },
+    { 
+      field: "Gijon",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Gijon', {
+          normal: 7 >= params.value,
+          riesgoIntermedio: 8 <= params.value && params.value <= 9,
+          riesgoAlto: 10 <= params.value,
+        });
+      }
+   }
 
   ]
 
@@ -488,13 +562,63 @@ export default function Search() {
 
                   // prueba GDS 
                   '& .GDS.normal': {
-                    backgroundColor: green // verde
+                    backgroundColor: superGreen // verde
                   },
                   '&  .GDS.pbDepresion': {
                     backgroundColor: superOrange // naranja
                   },
                   '& .GDS.depresion': {
-                    backgroundColor: red  // rojo
+                    backgroundColor: superRed  // rojo
+                  },
+                  // prueba Katz
+                  '& .Katz.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Katz.incLeve': {
+                    backgroundColor: green
+                  },
+                  '& .Katz.incModerada': {
+                    backgroundColor: orange
+                  },
+                  '& .Katz.incSevera': {
+                    backgroundColor: superRed
+                  },
+                  // Prueba LWB EL COLOR DEPENDE DEL GENERO. DEBO REVISAR 2 PARAMETROS Y SOBRE
+                  // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
+
+                  // Prueba Sarc F
+                  '& .Sarc_F.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Sarc_F.riesgo': {
+                    backgroundColor: superRed
+                  },
+                  // Prueba SPPB
+                  '& .SPPB.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .SPPB.anormal': {
+                    backgroundColor: superRed
+                  },
+                  // prueba CFS_Fraility
+                  '& CFS_Fraility.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& CFS_Fraility.prefragil': {
+                    backgroundColor: superOrange
+                  },
+                  '& CFS_Fraility.fragil': {
+                    backgroundColor: superRed
+                  },
+                  // Prueba Gijon
+                  '& Gijon.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& Gijon.riesgoIntermedio': {
+                    backgroundColor: superOrange
+                  },
+                  '& Gijon.riesgoAlto': {
+                    backgroundColor: superRed
                   }
                 }}>
                 <DataGrid
