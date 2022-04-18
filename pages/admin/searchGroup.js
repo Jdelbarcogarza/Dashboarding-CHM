@@ -51,6 +51,7 @@ import {
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
 import { DataGrid } from '@mui/x-data-grid'
+import clsx from 'clsx'
 import { NextLink } from 'next/Link'
 
 
@@ -253,31 +254,137 @@ export default function SearchGroup() {
         }
     }
 
-    let columns = [
+    /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
+  // ESCALA DE 5 COLORES. Acomodados de mejor estado a peor estado
+  const superGreen = 'rgb(15, 189, 8)'
+  const green = 'rgb(80, 204, 75)'
+  const orange = 'rgb(237, 210, 36)'
+  const superOrange = 'rgb(230, 139, 11)'
+  const red = 'rgb(242, 131, 124)'
+  const superRed = 'rgb(209, 25, 0)'
 
-        { field: "ID_Usuario" },
-        { field: "Nombre" },
-        { field: "Año_Nac" },
-        { field: "Genero" },
-        { field: "ID_Parroquia" },
-        { field: "ID_Resultado" },
-        { field: "Reloj" },
-        { field: "Orient_Temp" },
-        { field: "Orient_Esp" },
-        { field: "Registro" },
-        { field: "Calculo" },
-        { field: "Memoria" },
-        { field: "Eject" },
-        { field: "GDS_Total" },
-        { field: "Katz_Total" },
-        { field: "LWB_Total" },
-        { field: "Sarc_F" },
-        { field: "Fuerza_Domin" },
-        { field: "SPPB_Global" },
-        { field: "CFS_Fraility" },
-        { field: "Gijon" }
+  /////////////////////////////// COLUMNAS DEL DATAGRID /////////////////////////////////
 
-    ]
+  let columns = [
+
+    { field: "ID_Resultado" },
+    {
+      field: "Reloj",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('reloj', {
+          normal: params.value == 2,
+          deterioro: params.value == 1,
+          pbDemencia: params.value == 0
+        });
+      }
+    },
+    { field: "Orient_Temp" },
+    { field: "Orient_Esp" },
+    { field: "Registro" },
+    { field: "Calculo" },
+    { field: "Memoria" },
+    { field: "Eject" },
+    {
+      field: "GDS_Total",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('GDS', {
+          normal: params.value <= 5,
+          pbDepresion: 6 <= params.value && params.value <= 9,
+          depresion: params.value >= 10
+        });
+      }
+    },
+    {
+      field: "Katz_Total",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Katz', {
+          normal: params.value == 6,
+          incLeve: 4 <= params.value && params.value <= 5,
+          incModerada: 2 <= params.value && params.value <= 3,
+          incSevera: 0 <= params.value && params.value <= 1,
+
+        });
+      }
+    },
+    {
+      field: "LWB_Total"
+      // pendiete la coloracion de esta celda.
+      // DEBO REVISAR 2 PARAMETROS Y SOBRE
+      // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
+    },
+    {
+      field: "Sarc_F",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Sarc_F', {
+          normal: params.value <= 4,
+          riesgo: 4 < params.value,
+
+        });
+      }
+    },
+    { 
+      field: "Fuerza_Domin"
+      // AQUI DEPENDE DEL GENERO Y LA CALIFICACION DE LA FUERZA EL COLOR QUE SE LE DA
+   },
+    { 
+      field: "SPPB_Global",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('SPPB', {
+          normal: params.value >= 8,
+          anormal: params.value < 8,
+        });
+      }
+   },
+    { 
+      field: "CFS_Fraility",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('CFS_Fraility', {
+          normal: params.value == 0,
+          prefragil: 1 <= params.value && params.value <= 2,
+          fragil: 3 <= params.value && params.value <= 5,
+        });
+      }
+   },
+    { 
+      field: "Gijon",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Gijon', {
+          normal: 7 >= params.value,
+          riesgoIntermedio: 8 <= params.value && params.value <= 9,
+          riesgoAlto: 10 <= params.value,
+        });
+      }
+   }
+
+  ]
 
     //////////////// FUNCIONAMIENTO DEL SIDEBAR ////////////////
 
@@ -559,14 +666,93 @@ export default function SearchGroup() {
                 </Tooltip>
               </Box>
 
-                            <DataGrid
-                                getRowId={(id) => id.ID_Usuario} // Asigna que el id unico es el atributo ID_Usuario
-                                columns={columns}
-                                rows={patientData}
-                                pageSize={5}
-                                rowsPerPageOptions={[5]}
-                                autoHeight
-                            />
+                            {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
+              <Box
+                sx={{
+                  // prueba de Reloj
+                  '& .reloj.normal': {
+                    backgroundColor: superGreen // verde
+                  },
+                  '& .reloj.deterioro': {
+                    backgroundColor: superOrange // naranja
+                  },
+                  '& .reloj.pbDemencia': {
+                    backgroundColor: superRed  // rojo
+                  },
+                  // prueba MMSE (LUEGO LO PONGO)
+
+
+                  // prueba GDS 
+                  '& .GDS.normal': {
+                    backgroundColor: superGreen // verde
+                  },
+                  '& .GDS.pbDepresion': {
+                    backgroundColor: superOrange // naranja
+                  },
+                  '& .GDS.depresion': {
+                    backgroundColor: superRed  // rojo
+                  },
+                  // prueba Katz
+                  '& .Katz.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Katz.incLeve': {
+                    backgroundColor: green
+                  },
+                  '& .Katz.incModerada': {
+                    backgroundColor: orange
+                  },
+                  '& .Katz.incSevera': {
+                    backgroundColor: superRed
+                  },
+                  // Prueba LWB EL COLOR DEPENDE DEL GENERO. DEBO REVISAR 2 PARAMETROS Y SOBRE
+                  // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
+
+                  // Prueba Sarc F
+                  '& .Sarc_F.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Sarc_F.riesgo': {
+                    backgroundColor: superRed
+                  },
+                  // Prueba SPPB
+                  '& .SPPB.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .SPPB.anormal': {
+                    backgroundColor: superRed
+                  },
+                  // prueba CFS_Fraility
+                  '& .CFS_Fraility.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .CFS_Fraility.prefragil': {
+                    backgroundColor: superOrange
+                  },
+                  '& .CFS_Fraility.fragil': {
+                    backgroundColor: superRed
+                  },
+                  // Prueba Gijon
+                  '& .Gijon.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Gijon.riesgoIntermedio': {
+                    backgroundColor: superOrange
+                  },
+                  '& .Gijon.riesgoAlto': {
+                    backgroundColor: superRed
+                  }
+                }}>
+                <DataGrid
+                  getRowId={(id) => id.ID_Resultado} // Asigna que el id unico es el atributo ID_Usuario
+                  columns={columns}
+                  rows={patientData}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  autoHeight
+                />
+
+              </Box>
 
                         </Grid>
 
