@@ -287,7 +287,7 @@ export default function Search() {
       }
     },
     { 
-      field: "Fuerza_Domin",
+      field: "Fuerza_Domin"
       // AQUI DEPENDE DEL GENERO Y LA CALIFICACION DE LA FUERZA EL COLOR QUE SE LE DA
    },
     { 
@@ -564,7 +564,7 @@ export default function Search() {
                   '& .GDS.normal': {
                     backgroundColor: superGreen // verde
                   },
-                  '&  .GDS.pbDepresion': {
+                  '& .GDS.pbDepresion': {
                     backgroundColor: superOrange // naranja
                   },
                   '& .GDS.depresion': {
@@ -601,23 +601,23 @@ export default function Search() {
                     backgroundColor: superRed
                   },
                   // prueba CFS_Fraility
-                  '& CFS_Fraility.normal': {
+                  '& .CFS_Fraility.normal': {
                     backgroundColor: superGreen
                   },
-                  '& CFS_Fraility.prefragil': {
+                  '& .CFS_Fraility.prefragil': {
                     backgroundColor: superOrange
                   },
-                  '& CFS_Fraility.fragil': {
+                  '& .CFS_Fraility.fragil': {
                     backgroundColor: superRed
                   },
                   // Prueba Gijon
-                  '& Gijon.normal': {
+                  '& .Gijon.normal': {
                     backgroundColor: superGreen
                   },
-                  '& Gijon.riesgoIntermedio': {
+                  '& .Gijon.riesgoIntermedio': {
                     backgroundColor: superOrange
                   },
-                  '& Gijon.riesgoAlto': {
+                  '& .Gijon.riesgoAlto': {
                     backgroundColor: superRed
                   }
                 }}>
