@@ -16,8 +16,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-
-
 // mis imports
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
@@ -210,7 +208,7 @@ export default function SearchGroup() {
             }
 
             if (enableUbi) {
-                const res1 = await fetch('/api/searchPrueba/group/prueba/' + gender + '/' + edad + '/' + tests, { method: 'GET' }).then(resID => resID.json())
+                const res1 = await fetch(`/api/searchPrueba/group/prueba/${gender}/${edad}/${tests}`).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(tests);
@@ -219,7 +217,7 @@ export default function SearchGroup() {
             }
             else if (parroquia != '' & decanato != '' & zona != '') {
                 const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res2 = await fetch('/api/searchPrueba/group/ubi-prueba/' + gender + '/' + edad + '/' + ubi + '/' + tests, { method: 'GET' }).then(resID => resID.json())
+                const res2 = await fetch(`/api/searchPrueba/group/ubi-prueba/${gender}/${edad}/${ubi}/${tests}`).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(ubi);
@@ -234,7 +232,7 @@ export default function SearchGroup() {
             const gA = grade[0] + "-" + grade[1] + "-" + gradeAtr.value;
 
             if (enableUbi) {
-                const res3 = await fetch('/api/searchPrueba/group/calif/' + gender + '/' + edad + '/' + gA, { method: 'GET' }).then(resID => resID.json())
+                const res3 = await fetch(`/api/searchPrueba/group/calif/${gender}/${edad}/${gA}`).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(gA);
@@ -243,7 +241,7 @@ export default function SearchGroup() {
             }
             else if (parroquia != '' & decanato != '' & zona != '') {
                 const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res4 = await fetch('/api/searchPrueba/group/ubi-calif/' + gender + '/' + edad + '/' + ubi + '/' + gA, { method: 'GET' }).then(resID => resID.json())
+                const res4 = await fetch(`/api/searchPrueba/group/ubi-calif/${gender}/${edad}/${ubi}/${gA}`).then(resID => resID.json())
                 console.log(gender);
                 console.log(edad);
                 console.log(ubi);
