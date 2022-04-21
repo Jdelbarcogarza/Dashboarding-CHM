@@ -10,9 +10,11 @@ import {
     Input,
 
 } from '@mui/material'
+import { NextLink } from 'next/Link'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Sidebar from '../../components/Sidebar'
 import Topbar from '../../components/Topbar'
+import DownloadIcon from '@mui/icons-material/Download';
 
 export default function LoadData() {
 
@@ -22,7 +24,7 @@ export default function LoadData() {
     // Constante que guarda el estatus de la carga del archivo
     const [estatus, setEstatus] = useState();
 
-    async function handleOnSubmit(e) {
+    async function handleUpload(e) {
         e.preventDefault();
 
         setEstatus("");
@@ -39,23 +41,13 @@ export default function LoadData() {
     
             // Se le adjunta el archivo a cargar
             formData.append("file",document);
-    
+            
             // Endpoint que carga el archivo en los docs del proyecto
             const resUpload = await fetch('/api/uploadData/uploadExcel', { 
                 method: 'POST',
                 body: formData,
             });
-
-            // Procede a cargar los datos procesados del Excel en la base de datos
-            if (resUpload.status == 200) {
-                setTimeout(2000);
-                const resTxt = await fetch('/api/uploadData/readTxt', {method: 'POST'});
-
-                if (resTxt.status == 200) {
-                    setEstatus("Archivo cargado exitosamente");
-                }
-            }
-    
+            
             // Verifica que el archivo haya sido subido exitosamente
             // para proceder a correr el archivo de Python
             if (resUpload.status == 200) {
@@ -64,11 +56,18 @@ export default function LoadData() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nombre: name })
                 });
-            }
 
+                // Procede a cargar los datos procesados del Excel en la base de datos
+                //setTimeout(2000);
+                const resTxt = await fetch('/api/uploadData/readTxt');
+                if (resTxt.status == 200) {
+                    setEstatus("Archivo cargado exitosamente");
+                }
+            }
         } catch (err) {
             setEstatus("Necesita cargar un archivo");
         }
+
     }
 
     function handleOnChange(e) {
@@ -88,18 +87,24 @@ export default function LoadData() {
                     {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
 
                     <Container>
-                        <Stack direction="row" spacing={2}>
-                            <label htmlFor="contained-button-file">
-                                <Input accept="xlsx/*" type="file" onChange={handleOnChange} />
-                            </label>
-                            
-                            <Button variant="contained" startIcon={<CloudUploadIcon />} onClick={handleOnSubmit}>
-                                Upload
+                        <Stack spacing={5}>
+                            <Stack direction="row" spacing={2}>
+                                <label htmlFor="contained-button-file">
+                                    <Input accept=".xls, .xlsx" type="file" onChange={handleOnChange} />
+                                </label>
+                                
+                                <Button variant="contained" startIcon={<CloudUploadIcon/>} onClick={handleUpload} download="example.xlsx">
+                                    Upload
+                                </Button>
+
+                            </Stack>
+
+                            {estatus}
+
+                            <Button sx={{ width: 300 }} variant="contained" startIcon={<DownloadIcon/>} href="http://localhost:3000/api/download/example" >
+                                Download
                             </Button>
-
                         </Stack>
-
-                        {estatus}
 
                     </Container>
                 </Grid>

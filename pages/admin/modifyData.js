@@ -59,12 +59,12 @@ export default function ModifyData() {
 
         if (pacID.patientid != '' & !habilitado.enableIdSearch) {
             console.log(pacID);
-            const resID = await fetch('/api/update/userID/' + pacID.patientid + '/' + a2.atributo2.value + '/' + g.grade, {method: 'PUT'}).then(resID => resID.json())
+            const resID = await fetch(`/api/update/userID/${pacID.patientid}/${a2.atributo2.value}/${g.grade}`, {method: 'PUT'}).then(resID => resID.json())
             console.log(resID);
         }
         if (nombre.patientName != '' & habilitado.enableIdSearch) {
             console.log(nombre);
-            const resNom = await fetch('/api/update/userName/' + nombre.patientName + '/' + a2.atributo2.value + '/' + g.grade, {method: 'PUT'}).then(resNom => resNom.json())
+            const resNom = await fetch(`/api/update/userName/${nombre.patientName}/${a2.atributo2.value}/${g.grade}`, {method: 'PUT'}).then(resNom => resNom.json())
             console.log(resNom);
         }
     }

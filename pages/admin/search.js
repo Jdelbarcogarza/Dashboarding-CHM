@@ -170,35 +170,45 @@ export default function Search() {
 
     console.log(tests);
 
-    if (pacID.patientID != '' & !habilitado.enableIdSearch) {
-      // endpoint que devuelve solo resultados del tamizaje
-      const resID = await fetch('/api/searchPrueba/one/ID/' + tests + '/' + pacID.patientID, { method: 'GET' }).then(resID => resID.json())
-      //console.log("Esto es resID");
-      //console.log(resID);
-      setPatientData(resID);
-
-      // endpoint que retorna informacion del paciente
-      const info = await fetch('/api/userID/' + pacID.patientID + '/').then(info => info.json())
-      console.log(info)
-      setPatientPersonalInfo(info)
-
-      setQueryMade(true)
-
+    try {
+      if (pacID.patientID != '' & !habilitado.enableIdSearch) {
+        // endpoint que devuelve solo resultados del tamizaje
+        const resID = await fetch(`/api/searchPrueba/one/ID/${tests}/${pacID.patientID}`).then(resID => resID.json())
+        //console.log("Esto es resID");
+        //console.log(resID);
+        setPatientData(resID);
+  
+        // endpoint que retorna informacion del paciente
+        const info = await fetch(`/api/userID/${pacID.patientID}`).then(info => info.json())
+        console.log(info)
+        setPatientPersonalInfo(info)
+  
+        setQueryMade(true)
+  
+      }
+      else if (nombre.patientName != '' & habilitado.enableIdSearch) {
+        //console.log(nombre);
+        const resNom = await fetch(`/api/searchPrueba/one/Name/${tests}/${nombre.patientName}`).then(resNom => resNom.json())
+        //console.log("Esto es resNom");
+        //console.log(resNom);
+        setPatientData(resNom);
+  
+  
+        // endpoint que retorna informacion del paciente
+        const info = await fetch(`/api/userName/${nombre.patientName}`).then(info => info.json())
+        console.log(info)
+        setPatientPersonalInfo(info)
+  
+        setQueryMade(true)
+      }
+      else {
+        setQueryMade(false)
+        setPatientPersonalInfo([])
+        setPatientData([])
+      }
     }
-    if (nombre.patientName != '' & habilitado.enableIdSearch) {
-      //console.log(nombre);
-      const resNom = await fetch('/api/searchPrueba/one/Name/' + tests + '/' + nombre.patientName, { method: 'GET' }).then(resNom => resNom.json())
-      //console.log("Esto es resNom");
-      //console.log(resNom);
-      setPatientData(resNom);
-
-
-      // endpoint que retorna informacion del paciente
-      const info = await fetch('/api/userName/' + nombre.patientName + '/').then(info => info.json())
-      console.log(info)
-      setPatientPersonalInfo(info)
-
-      setQueryMade(true)
+    catch {
+      setQueryMade(false)
     }
   }
 
