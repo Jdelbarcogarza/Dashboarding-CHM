@@ -52,7 +52,6 @@ import { DataGrid } from '@mui/x-data-grid'
 import clsx from 'clsx'
 import { NextLink } from 'next/Link'
 
-
 // themes para el sidebar
 
 const drawerWidth = 240;
@@ -159,6 +158,9 @@ export default function SearchGroup() {
     // Resultado de query
     const [patientData, setPatientData] = useState([]);
 
+    // datos permanentes de paciente
+    const [patientPersonalInfo, setPatientPersonalInfo] = useState([]);
+
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
     function handleSwitchUbi() {
@@ -213,6 +215,11 @@ export default function SearchGroup() {
                 console.log(edad);
                 console.log(tests);
                 console.log(res1);
+                for (var i = 0; i < res1.length; i++) {
+                  var fecha = res1[i].Fecha
+                  fecha = fecha.substring(0,10)
+                  res1[i].Fecha = fecha
+                }
                 setPatientData(res1);
             }
             else if (parroquia != '' & decanato != '' & zona != '') {
@@ -223,6 +230,11 @@ export default function SearchGroup() {
                 console.log(ubi);
                 console.log(tests);
                 console.log(res2);
+                for (var i = 0; i < res2.length; i++) {
+                  var fecha = res2[i].Fecha
+                  fecha = fecha.substring(0,10)
+                  res2[i].Fecha = fecha
+                }
                 setPatientData(res2);
             }
 
@@ -237,6 +249,11 @@ export default function SearchGroup() {
                 console.log(edad);
                 console.log(gA);
                 console.log(res3);
+                for (var i = 0; i < res3.length; i++) {
+                  var fecha = res3[i].Fecha
+                  fecha = fecha.substring(0,10)
+                  res3[i].Fecha = fecha
+                }
                 setPatientData(res3);
             }
             else if (parroquia != '' & decanato != '' & zona != '') {
@@ -247,6 +264,11 @@ export default function SearchGroup() {
                 console.log(ubi);
                 console.log(gA);
                 console.log(res4);
+                for (var i = 0; i < res4.length; i++) {
+                  var fecha = res4[i].Fecha
+                  fecha = fecha.substring(0,10)
+                  res4[i].Fecha = fecha
+                }
                 setPatientData(res4);
             }
         }
