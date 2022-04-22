@@ -21,9 +21,7 @@ import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import clsx from 'clsx'
 import {
     Link,
     Grid,
@@ -37,8 +35,6 @@ import {
 } from '@mui/material'
 import { NextLink } from 'next/Link'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import Sidebar from '../../components/Sidebar'
-import Topbar from '../../components/Topbar'
 import DownloadIcon from '@mui/icons-material/Download';
 
 const drawerWidth = 240;

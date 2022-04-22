@@ -173,9 +173,14 @@ export default function Search() {
     try {
       if (pacID.patientID != '' & !habilitado.enableIdSearch) {
         // endpoint que devuelve solo resultados del tamizaje
-        const resID = await fetch(`/api/searchPrueba/one/ID/${tests}/${pacID.patientID}`).then(resID => resID.json())
+        var resID = await fetch(`/api/searchPrueba/one/ID/${tests}/${pacID.patientID}`).then(resID => resID.json())
         //console.log("Esto es resID");
         //console.log(resID);
+        for (var i = 0; i < resID.length; i++) {
+          var fecha = resID[i].Fecha
+          fecha = fecha.substring(0,10)
+          resID[i].Fecha = fecha
+        }
         setPatientData(resID);
   
         // endpoint que retorna informacion del paciente
@@ -188,9 +193,14 @@ export default function Search() {
       }
       else if (nombre.patientName != '' & habilitado.enableIdSearch) {
         //console.log(nombre);
-        const resNom = await fetch(`/api/searchPrueba/one/Name/${tests}/${nombre.patientName}`).then(resNom => resNom.json())
+        var resNom = await fetch(`/api/searchPrueba/one/Name/${tests}/${nombre.patientName}`).then(resNom => resNom.json())
         //console.log("Esto es resNom");
         //console.log(resNom);
+        for (var i = 0; i < resNom.length; i++) {
+          var fecha = resNom[i].Fecha
+          fecha = fecha.substring(0,10)
+          resNom[i].Fecha = fecha
+        }
         setPatientData(resNom);
   
   
