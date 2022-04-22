@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useRouter } from "next/router"
 
 const theme = createTheme();
 
@@ -16,13 +17,14 @@ export default function SignInSide() {
   const [userName, setUsername] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isValidUser, setIsValidUser] = useState(true);
+  const router = useRouter();
 
   const doSignIn = (e) => {
     e.preventDefault();
-    if(!isAdmin){
-      confirmarUser();
-    } else {
+    if(isAdmin){
       confirmarAdmin();
+    } else {
+      confirmarUser();
     }
   }
 
@@ -31,20 +33,21 @@ export default function SignInSide() {
     const userID = await fetch(`../api/loginUsuario/${userName}`).then(x => x.json());
     if(userID.length === 0) {
       setIsValidUser(false);
-      return;
+    } else {
+      setIsValidUser(true);
+      console.log("Usuario: ".concat(userID[0].ID_Usuario));
     }
-    setIsValidUser(true);
-    console.log("Usuario: ".concat(userID[0].ID_Usuario));
   }
   const confirmarAdmin = async (e) => {
     if (userName === "") return;
     const userID = await fetch(`../api/loginAdmin/${userName}`).then(x => x.json());
     if(userID.length === 0) {
       setIsValidUser(false);
-      return;
+    } else {
+      setIsValidUser(true);
+      router.push("admin/home");
+      console.log("Admin Valido");
     }
-    setIsValidUser(true);
-    console.log("Admin: ".concat(userID[0].ID_Admin));
   }
 
   return (
