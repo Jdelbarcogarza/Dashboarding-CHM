@@ -567,8 +567,23 @@ export default function Search() {
                   '& .reloj.pbDemencia': {
                     backgroundColor: superRed  // rojo
                   },
-                  // prueba MMSE (LUEGO LO PONGO)
 
+                  // prueba MMSE
+                  '& .MMSE.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .MMSE.dcl': {
+                    backgroundColor: green
+                  },
+                  '& .MMSE.demenciaLeve': {
+                    backgroundColor: orange
+                  },
+                  '& .MMSE.demenciaModerada': {
+                    backgroundColor: red
+                  },
+                  '& .MMSE.demenciaSevera': {
+                    backgroundColor: superRed
+                  },
 
                   // prueba GDS 
                   '& .GDS.normal': {
@@ -593,9 +608,13 @@ export default function Search() {
                   '& .Katz.incSevera': {
                     backgroundColor: superRed
                   },
-                  // Prueba LWB EL COLOR DEPENDE DEL GENERO. DEBO REVISAR 2 PARAMETROS Y SOBRE
-                  // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
-
+                  // Prueba LWB 
+                  '& .LWB.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .LWB.anormal': {
+                    backgroundColor: superRed
+                  },
                   // Prueba Sarc F
                   '& .Sarc_F.normal': {
                     backgroundColor: superGreen
@@ -603,6 +622,14 @@ export default function Search() {
                   '& .Sarc_F.riesgo': {
                     backgroundColor: superRed
                   },
+                  // Prueba de Fuerza
+                  '& .Fuerza.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Fuerza.sarcodinia': {
+                    backgroundColor: superRed
+                  },
+
                   // Prueba SPPB
                   '& .SPPB.normal': {
                     backgroundColor: superGreen
