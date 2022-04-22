@@ -288,7 +288,7 @@ export default function SearchGroup() {
   let columns = [
 
     { field: "ID_Resultado" },
-    { field: "Fecha", width: 200 },
+    { field: "Fecha", description: "hola com oestas", width: 200 },
     {
       field: "Reloj",
       cellClassName: (params) => {
@@ -433,8 +433,8 @@ export default function SearchGroup() {
       }
    }
 
-  ]
-
+  ];
+  
     //////////////// FUNCIONAMIENTO DEL SIDEBAR ////////////////
 
     const theme = useTheme();

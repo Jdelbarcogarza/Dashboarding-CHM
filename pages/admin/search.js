@@ -217,121 +217,155 @@ export default function Search() {
   /////////////////////////////// COLUMNAS DEL DATAGRID /////////////////////////////////
 
   let columns = [
+
     { field: "ID_Resultado" },
+    { field: "Fecha", description: "hola com oestas", width: 200 },
     {
       field: "Reloj",
       cellClassName: (params) => {
         if (params.value == -1) {
-          return "";
+          return '';
         }
 
-        return clsx("reloj", {
+        return clsx('reloj', {
           normal: params.value == 2,
           deterioro: params.value == 1,
-          pbDemencia: params.value == 0,
+          pbDemencia: params.value == 0
         });
-      },
+      }
     },
-    { field: "Orient_Temp" },
-    { field: "Orient_Esp" },
-    { field: "Registro" },
-    { field: "Calculo" },
-    { field: "Memoria" },
-    { field: "Eject" },
+    { field: "MMSE_Total", 
+    cellClassName: (params) => {
+      if (params.value == -1) {
+        return '';
+      }
+
+      return clsx('MMSE', {
+        normal: 25 <= params.value && params.value <= 30,
+        dcl: 22 <= params.value && params.value <= 24,
+        demenciaLeve: 18 <= params.value && params.value < 22,
+        demenciaModerada: 12 <= params.value && params.value <= 18,
+        demenciaSevera: params.value < 12,
+
+      });
+    }
+    },
     {
       field: "GDS_Total",
       cellClassName: (params) => {
         if (params.value == -1) {
-          return "";
+          return '';
         }
 
-        return clsx("GDS", {
+        return clsx('GDS', {
           normal: params.value <= 5,
           pbDepresion: 6 <= params.value && params.value <= 9,
-          depresion: params.value >= 10,
+          depresion: params.value >= 10
         });
-      },
+      }
     },
     {
       field: "Katz_Total",
       cellClassName: (params) => {
         if (params.value == -1) {
-          return "";
+          return '';
         }
 
-        return clsx("Katz", {
+        return clsx('Katz', {
           normal: params.value == 6,
           incLeve: 4 <= params.value && params.value <= 5,
           incModerada: 2 <= params.value && params.value <= 3,
           incSevera: 0 <= params.value && params.value <= 1,
+
         });
-      },
+      }
     },
     {
       field: "LWB_Total",
-      // pendiete la coloracion de esta celda.
-      // DEBO REVISAR 2 PARAMETROS Y SOBRE
-      // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+        // 1 es masculino. 2 es femenino
+        return clsx('LWB', {
+          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H'  || params.value >= 7 && patientPersonalInfo.Genero === 'M',
+          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H'  || params.value < 7 && patientPersonalInfo.Genero === 'M',
+
+        });
+      }
     },
     {
       field: "Sarc_F",
       cellClassName: (params) => {
         if (params.value == -1) {
-          return "";
+          return '';
         }
 
-        return clsx("Sarc_F", {
+        return clsx('Sarc_F', {
           normal: params.value <= 4,
           riesgo: 4 < params.value,
+
         });
-      },
+      }
     },
-    {
+    { 
       field: "Fuerza_Domin",
-      // AQUI DEPENDE DEL GENERO Y LA CALIFICACION DE LA FUERZA EL COLOR QUE SE LE DA
-    },
-    {
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Fuerza', {
+          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M' ,
+          sarcodinia: params.value <= 27 && patientPersonalInfo.Genero === 'H' || params.value <= 20 && patientPersonalInfo.Genero === 'M'
+
+        });
+      }
+   },
+    { 
       field: "SPPB_Global",
       cellClassName: (params) => {
         if (params.value == -1) {
-          return "";
+          return '';
         }
 
-        return clsx("SPPB", {
+        return clsx('SPPB', {
           normal: params.value >= 8,
           anormal: params.value < 8,
         });
-      },
-    },
-    {
+      }
+   },
+    { 
       field: "CFS_Fraility",
       cellClassName: (params) => {
         if (params.value == -1) {
-          return "";
+          return '';
         }
 
-        return clsx("CFS_Fraility", {
+        return clsx('CFS_Fraility', {
           normal: params.value == 0,
           prefragil: 1 <= params.value && params.value <= 2,
           fragil: 3 <= params.value && params.value <= 5,
         });
-      },
-    },
-    {
+      }
+   },
+    { 
       field: "Gijon",
       cellClassName: (params) => {
         if (params.value == -1) {
-          return "";
+          return '';
         }
 
-        return clsx("Gijon", {
+        return clsx('Gijon', {
           normal: 7 >= params.value,
           riesgoIntermedio: 8 <= params.value && params.value <= 9,
           riesgoAlto: 10 <= params.value,
         });
-      },
-    },
+      }
+   }
+
   ];
+  
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
