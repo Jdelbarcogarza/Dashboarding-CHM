@@ -645,77 +645,105 @@ export default function Search() {
               <Box
                 sx={{
                   // prueba de Reloj
-                  "& .reloj.normal": {
-                    backgroundColor: superGreen, // verde
+                  '& .reloj.normal': {
+                    backgroundColor: superGreen // verde
                   },
-                  "& .reloj.deterioro": {
-                    backgroundColor: superOrange, // naranja
+                  '& .reloj.deterioro': {
+                    backgroundColor: superOrange // naranja
                   },
-                  "& .reloj.pbDemencia": {
-                    backgroundColor: superRed, // rojo
+                  '& .reloj.pbDemencia': {
+                    backgroundColor: superRed  // rojo
                   },
-                  // prueba MMSE (LUEGO LO PONGO)
 
-                  // prueba GDS
-                  "& .GDS.normal": {
-                    backgroundColor: superGreen, // verde
+                  // prueba MMSE
+                  '& .MMSE.normal': {
+                    backgroundColor: superGreen
                   },
-                  "& .GDS.pbDepresion": {
-                    backgroundColor: superOrange, // naranja
+                  '& .MMSE.dcl': {
+                    backgroundColor: green
                   },
-                  "& .GDS.depresion": {
-                    backgroundColor: superRed, // rojo
+                  '& .MMSE.demenciaLeve': {
+                    backgroundColor: orange
+                  },
+                  '& .MMSE.demenciaModerada': {
+                    backgroundColor: red
+                  },
+                  '& .MMSE.demenciaSevera': {
+                    backgroundColor: superRed
+                  },
+
+                  // prueba GDS 
+                  '& .GDS.normal': {
+                    backgroundColor: superGreen // verde
+                  },
+                  '& .GDS.pbDepresion': {
+                    backgroundColor: superOrange // naranja
+                  },
+                  '& .GDS.depresion': {
+                    backgroundColor: superRed  // rojo
                   },
                   // prueba Katz
-                  "& .Katz.normal": {
-                    backgroundColor: superGreen,
+                  '& .Katz.normal': {
+                    backgroundColor: superGreen
                   },
-                  "& .Katz.incLeve": {
-                    backgroundColor: green,
+                  '& .Katz.incLeve': {
+                    backgroundColor: green
                   },
-                  "& .Katz.incModerada": {
-                    backgroundColor: orange,
+                  '& .Katz.incModerada': {
+                    backgroundColor: orange
                   },
-                  "& .Katz.incSevera": {
-                    backgroundColor: superRed,
+                  '& .Katz.incSevera': {
+                    backgroundColor: superRed
                   },
-                  // Prueba LWB EL COLOR DEPENDE DEL GENERO. DEBO REVISAR 2 PARAMETROS Y SOBRE
-                  // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
-
+                  // Prueba LWB 
+                  '& .LWB.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .LWB.anormal': {
+                    backgroundColor: superRed
+                  },
                   // Prueba Sarc F
-                  "& .Sarc_F.normal": {
-                    backgroundColor: superGreen,
+                  '& .Sarc_F.normal': {
+                    backgroundColor: superGreen
                   },
-                  "& .Sarc_F.riesgo": {
-                    backgroundColor: superRed,
+                  '& .Sarc_F.riesgo': {
+                    backgroundColor: superRed
                   },
+                  // Prueba de Fuerza
+                  '& .Fuerza.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Fuerza.sarcodinia': {
+                    backgroundColor: superRed
+                  },
+
                   // Prueba SPPB
-                  "& .SPPB.normal": {
-                    backgroundColor: superGreen,
+                  '& .SPPB.normal': {
+                    backgroundColor: superGreen
                   },
-                  "& .SPPB.anormal": {
-                    backgroundColor: superRed,
+                  '& .SPPB.anormal': {
+                    backgroundColor: superRed
                   },
                   // prueba CFS_Fraility
-                  "& .CFS_Fraility.normal": {
-                    backgroundColor: superGreen,
+                  '& .CFS_Fraility.normal': {
+                    backgroundColor: superGreen
                   },
-                  "& .CFS_Fraility.prefragil": {
-                    backgroundColor: superOrange,
+                  '& .CFS_Fraility.prefragil': {
+                    backgroundColor: superOrange
                   },
-                  "& .CFS_Fraility.fragil": {
-                    backgroundColor: superRed,
+                  '& .CFS_Fraility.fragil': {
+                    backgroundColor: superRed
                   },
                   // Prueba Gijon
-                  "& .Gijon.normal": {
-                    backgroundColor: superGreen,
+                  '& .Gijon.normal': {
+                    backgroundColor: superGreen
                   },
-                  "& .Gijon.riesgoIntermedio": {
-                    backgroundColor: superOrange,
+                  '& .Gijon.riesgoIntermedio': {
+                    backgroundColor: superOrange
                   },
-                  "& .Gijon.riesgoAlto": {
-                    backgroundColor: superRed,
-                  },
+                  '& .Gijon.riesgoAlto': {
+                    backgroundColor: superRed
+                  }
                 }}
               >
                 <DataGrid
