@@ -226,6 +226,7 @@ export default function Search() {
   let columns = [
 
     { field: "ID_Resultado" },
+    { field: "Fecha", width: 200 },
     {
       field: "Reloj",
       cellClassName: (params) => {
@@ -240,12 +241,22 @@ export default function Search() {
         });
       }
     },
-    { field: "Orient_Temp" },
-    { field: "Orient_Esp" },
-    { field: "Registro" },
-    { field: "Calculo" },
-    { field: "Memoria" },
-    { field: "Eject" },
+    { field: "MMSE_Total", 
+    cellClassName: (params) => {
+      if (params.value == -1) {
+        return '';
+      }
+
+      return clsx('MMSE', {
+        normal: 25 <= params.value && params.value <= 30,
+        dcl: 22 <= params.value && params.value <= 24,
+        demenciaLeve: 18 <= params.value && params.value < 22,
+        demenciaModerada: 12 <= params.value && params.value <= 18,
+        demenciaSevera: params.value < 12,
+
+      });
+    }
+    },
     {
       field: "GDS_Total",
       cellClassName: (params) => {
@@ -277,10 +288,18 @@ export default function Search() {
       }
     },
     {
-      field: "LWB_Total"
-      // pendiete la coloracion de esta celda.
-      // DEBO REVISAR 2 PARAMETROS Y SOBRE
-      // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
+      field: "LWB_Total",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+        // 1 es masculino. 2 es femenino
+        return clsx('LWB', {
+          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H'  || params.value >= 7 && patientPersonalInfo.Genero === 'M',
+          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H'  || params.value < 7 && patientPersonalInfo.Genero === 'M',
+
+        });
+      }
     },
     {
       field: "Sarc_F",
@@ -297,8 +316,18 @@ export default function Search() {
       }
     },
     { 
-      field: "Fuerza_Domin"
-      // AQUI DEPENDE DEL GENERO Y LA CALIFICACION DE LA FUERZA EL COLOR QUE SE LE DA
+      field: "Fuerza_Domin",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Fuerza', {
+          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M' ,
+          sarcodinia: params.value <= 27 && patientPersonalInfo.Genero === 'H' || params.value <= 20 && patientPersonalInfo.Genero === 'M'
+
+        });
+      }
    },
     { 
       field: "SPPB_Global",
