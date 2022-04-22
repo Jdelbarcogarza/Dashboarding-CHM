@@ -266,6 +266,7 @@ export default function SearchGroup() {
   let columns = [
 
     { field: "ID_Resultado" },
+    { field: "Fecha", width: 200 },
     {
       field: "Reloj",
       cellClassName: (params) => {
@@ -280,12 +281,22 @@ export default function SearchGroup() {
         });
       }
     },
-    { field: "Orient_Temp" },
-    { field: "Orient_Esp" },
-    { field: "Registro" },
-    { field: "Calculo" },
-    { field: "Memoria" },
-    { field: "Eject" },
+    { field: "MMSE_Total", 
+    cellClassName: (params) => {
+      if (params.value == -1) {
+        return '';
+      }
+
+      return clsx('MMSE', {
+        normal: 25 <= params.value && params.value <= 30,
+        dcl: 22 <= params.value && params.value <= 24,
+        demenciaLeve: 18 <= params.value && params.value < 22,
+        demenciaModerada: 12 <= params.value && params.value <= 18,
+        demenciaSevera: params.value < 12,
+
+      });
+    }
+    },
     {
       field: "GDS_Total",
       cellClassName: (params) => {
@@ -317,10 +328,18 @@ export default function SearchGroup() {
       }
     },
     {
-      field: "LWB_Total"
-      // pendiete la coloracion de esta celda.
-      // DEBO REVISAR 2 PARAMETROS Y SOBRE
-      // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
+      field: "LWB_Total",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+        // 1 es masculino. 2 es femenino
+        return clsx('LWB', {
+          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H'  || params.value >= 7 && patientPersonalInfo.Genero === 'M',
+          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H'  || params.value < 7 && patientPersonalInfo.Genero === 'M',
+
+        });
+      }
     },
     {
       field: "Sarc_F",
@@ -337,8 +356,18 @@ export default function SearchGroup() {
       }
     },
     { 
-      field: "Fuerza_Domin"
-      // AQUI DEPENDE DEL GENERO Y LA CALIFICACION DE LA FUERZA EL COLOR QUE SE LE DA
+      field: "Fuerza_Domin",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('Fuerza', {
+          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M' ,
+          sarcodinia: params.value <= 27 && patientPersonalInfo.Genero === 'H' || params.value <= 20 && patientPersonalInfo.Genero === 'M'
+
+        });
+      }
    },
     { 
       field: "SPPB_Global",
@@ -677,8 +706,23 @@ export default function SearchGroup() {
                   '& .reloj.pbDemencia': {
                     backgroundColor: superRed  // rojo
                   },
-                  // prueba MMSE (LUEGO LO PONGO)
 
+                  // prueba MMSE
+                  '& .MMSE.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .MMSE.dcl': {
+                    backgroundColor: green
+                  },
+                  '& .MMSE.demenciaLeve': {
+                    backgroundColor: orange
+                  },
+                  '& .MMSE.demenciaModerada': {
+                    backgroundColor: red
+                  },
+                  '& .MMSE.demenciaSevera': {
+                    backgroundColor: superRed
+                  },
 
                   // prueba GDS 
                   '& .GDS.normal': {
@@ -703,9 +747,13 @@ export default function SearchGroup() {
                   '& .Katz.incSevera': {
                     backgroundColor: superRed
                   },
-                  // Prueba LWB EL COLOR DEPENDE DEL GENERO. DEBO REVISAR 2 PARAMETROS Y SOBRE
-                  // ESO COLOREAR LA CELDA. NECESITO CHECAR GENERO Y EL LWB.
-
+                  // Prueba LWB 
+                  '& .LWB.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .LWB.anormal': {
+                    backgroundColor: superRed
+                  },
                   // Prueba Sarc F
                   '& .Sarc_F.normal': {
                     backgroundColor: superGreen
@@ -713,6 +761,14 @@ export default function SearchGroup() {
                   '& .Sarc_F.riesgo': {
                     backgroundColor: superRed
                   },
+                  // Prueba de Fuerza
+                  '& .Fuerza.normal': {
+                    backgroundColor: superGreen
+                  },
+                  '& .Fuerza.sarcodinia': {
+                    backgroundColor: superRed
+                  },
+
                   // Prueba SPPB
                   '& .SPPB.normal': {
                     backgroundColor: superGreen
