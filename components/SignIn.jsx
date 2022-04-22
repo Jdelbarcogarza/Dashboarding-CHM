@@ -35,6 +35,7 @@ export default function SignInSide() {
       setIsValidUser(false);
     } else {
       setIsValidUser(true);
+      router.push("user/home");
       console.log("Usuario: ".concat(userID[0].ID_Usuario));
     }
   }
