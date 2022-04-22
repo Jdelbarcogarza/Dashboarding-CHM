@@ -1,112 +1,116 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Box from "@mui/material/Box";
+import * as React from 'react';
+import { useState } from 'react';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function SignInSide() {
   const [userName, setUsername] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isValidUser, setIsValidUser] = useState(true);
 
   const doSignIn = (e) => {
     e.preventDefault();
     if(!isAdmin){
       confirmarUser();
     } else {
-      console.log("Is Admin");
+      confirmarAdmin();
     }
   }
 
   const confirmarUser = async (e) => {
     if (userName === "") return;
-    const userID = await fetch(`../api/login/${userName}`).then(x => x.json());
+    const userID = await fetch(`../api/loginUsuario/${userName}`).then(x => x.json());
     if(userID.length === 0) {
-      console.log("No existe este usuario"); 
+      setIsValidUser(false);
       return;
     }
+    setIsValidUser(true);
     console.log("Usuario: ".concat(userID[0].ID_Usuario));
+  }
+  const confirmarAdmin = async (e) => {
+    if (userName === "") return;
+    const userID = await fetch(`../api/loginAdmin/${userName}`).then(x => x.json());
+    if(userID.length === 0) {
+      setIsValidUser(false);
+      return;
+    }
+    setIsValidUser(true);
+    console.log("Admin: ".concat(userID[0].ID_Admin));
   }
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
-        <Box
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
           sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            backgroundImage: 'url(https://picsum.photos/1000/1000)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
-            component="form"
-            noValidate
-            sx={{ mt: 1 }}
+            sx={{
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="user"
-              label="Usuario"
-              name="user"
-              autoComplete="user"
-              autoFocus
-              onChange = {(e) => {setUsername(e.target.value)}}
-            />
-            <FormControlLabel 
-              control={<Checkbox />} 
-              label="¿Eres Administrador?" 
-              onChange = {(e) => {setIsAdmin(!isAdmin)}}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick = {doSignIn}
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
+            <Grid>
+              <img width= "50%" src="http://sds.uanl.mx/wp-content/uploads/2020/01/logo-facultad-de-medicina.png"/>
+              <img width= "50%" src="http://www.carmenurdiales.org/wp-content/uploads/2015/07/logo_CHM.jpg"/>
+            </Grid>
+            <Box component="form" noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="userName"
+                label="Nombre de Usuario"
+                name="userName"
+                variant="standard"
+                autoComplete="userName"
+                onChange = {(e) => {setUsername(e.target.value)}}
+                autoFocus
+                error={!isValidUser}
+                helperText={isValidUser? null:"Usuario Invalido"}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Soy Administrador"
+                onChange = {(e) => {setIsAdmin(!isAdmin)}}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick = {doSignIn}
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Iniciar Sesión
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Container>
+        </Grid>
+      </Grid>
     </ThemeProvider>
   );
 }
