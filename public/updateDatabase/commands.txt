@@ -1,1 +1,0 @@
-checkIfUserExists('David Campos','H',1)$checkIfPruebaExists('David Campos','1957-05-10')$insertUsuario('DC18443','David Campos',1959,'H',1)$insertResTamizaje('',2,1,2,3,5,7,8,2,4,2,1,18.3,8,2,8,'1957-05-10')
