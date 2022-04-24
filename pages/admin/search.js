@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import React, { useState } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 // mis imports
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PersonSearchOutlinedIcon from "@mui/icons-material/PersonSearchOutlined";
-import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
-import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import { NextLink } from "next/Link";
+import { NextLink } from 'next/Link'
 import {
   Link,
   Grid,
@@ -36,81 +36,81 @@ import {
   Switch,
   Button,
   Paper,
-  Tooltip,
-} from "@mui/material";
+  Tooltip
+} from '@mui/material'
 
-import { DataGrid } from "@mui/x-data-grid";
-import clsx from "clsx";
+import { DataGrid } from '@mui/x-data-grid'
+import clsx from 'clsx'
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create("width", {
+  transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: "hidden",
+  overflowX: 'hidden',
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create("width", {
+  transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: "hidden",
+  overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
+  [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
+  transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
   }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
-}));
+);
 
 export default function Search() {
-  // LOGICA PROPIA DE LA PAGINA
+  // LOGICA PROPIA DE LA PAGINA 
   //////////////////////////////////// Constantes useState ////////////////////////////////////
 
   // Valores para habilitar los switches
@@ -118,10 +118,10 @@ export default function Search() {
 
   // Valores de textFields
   const [patientName, setPatientName] = useState("");
-  const [patientID, setpatientID] = useState("");
+  const [patientID, setpatientID] = useState('');
 
   // Valores de atributo
-  const [atributo, setAtributo] = useState("");
+  const [atributo, setAtributo] = useState('');
 
   // Resultado de query
   const [patientData, setPatientData] = useState([]);
@@ -134,7 +134,7 @@ export default function Search() {
   ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
   function handleSwitchChange() {
-    setEnableIdSearch(!enableIdSearch);
+    setEnableIdSearch(!enableIdSearch)
   }
 
   const handleAtributoChange = (event, newAtributo) => {
@@ -153,10 +153,10 @@ export default function Search() {
     console.log(a.atributo.length);
 
     if (a.atributo.length == 0) {
-      tests = "$";
-    } else {
-      var i = 0;
-      for (i = 0; i < a.atributo.length; i++) {
+      tests = "$"
+    }
+    else {
+      var i = 0; for (i = 0; i < a.atributo.length; i++) {
         if (a.atributo.length >= 1) {
           tests = tests + "!" + a.atributo[i].value;
         }
@@ -165,61 +165,73 @@ export default function Search() {
 
     console.log(tests);
 
-    if ((pacID.patientID != "") & !habilitado.enableIdSearch) {
-      // endpoint que devuelve solo resultados del tamizaje
-      const resID = await fetch(
-        "/api/searchPrueba/one/ID/" + tests + "/" + pacID.patientID,
-        { method: "GET" }
-      ).then((resID) => resID.json());
-      //console.log("Esto es resID");
-      //console.log(resID);
-      setPatientData(resID);
-
-      // endpoint que retorna informacion del paciente
-      const info = await fetch("/api/userID/" + pacID.patientID + "/").then(
-        (info) => info.json()
-      );
-      console.log(info);
-      setPatientPersonalInfo(info);
-
-      setQueryMade(true);
+    try {
+      if (pacID.patientID != '' & !habilitado.enableIdSearch) {
+        // endpoint que devuelve solo resultados del tamizaje
+        var resID = await fetch(`/api/searchPrueba/one/ID/${tests}/${pacID.patientID}`).then(resID => resID.json())
+        //console.log("Esto es resID");
+        //console.log(resID);
+        for (var i = 0; i < resID.length; i++) {
+          var fecha = resID[i].Fecha
+          fecha = fecha.substring(0,10)
+          resID[i].Fecha = fecha
+        }
+        setPatientData(resID);
+  
+        // endpoint que retorna informacion del paciente
+        const info = await fetch(`/api/userID/${pacID.patientID}`).then(info => info.json())
+        console.log(info)
+        setPatientPersonalInfo(info)
+  
+        setQueryMade(true)
+  
+      }
+      else if (nombre.patientName != '' & habilitado.enableIdSearch) {
+        //console.log(nombre);
+        var resNom = await fetch(`/api/searchPrueba/one/Name/${tests}/${nombre.patientName}`).then(resNom => resNom.json())
+        //console.log("Esto es resNom");
+        //console.log(resNom);
+        for (var i = 0; i < resNom.length; i++) {
+          var fecha = resNom[i].Fecha
+          fecha = fecha.substring(0,10)
+          resNom[i].Fecha = fecha
+        }
+        setPatientData(resNom);
+  
+  
+        // endpoint que retorna informacion del paciente
+        const info = await fetch(`/api/userName/${nombre.patientName}`).then(info => info.json())
+        console.log(info)
+        setPatientPersonalInfo(info)
+  
+        setQueryMade(true)
+      }
+      else {
+        setQueryMade(false)
+        setPatientPersonalInfo([])
+        setPatientData([])
+      }
     }
-    if ((nombre.patientName != "") & habilitado.enableIdSearch) {
-      //console.log(nombre);
-      const resNom = await fetch(
-        "/api/searchPrueba/one/Name/" + tests + "/" + nombre.patientName,
-        { method: "GET" }
-      ).then((resNom) => resNom.json());
-      //console.log("Esto es resNom");
-      //console.log(resNom);
-      setPatientData(resNom);
-
-      // endpoint que retorna informacion del paciente
-      const info = await fetch(
-        "/api/userName/" + nombre.patientName + "/"
-      ).then((info) => info.json());
-      console.log(info);
-      setPatientPersonalInfo(info);
-
-      setQueryMade(true);
+    catch {
+      setQueryMade(false)
     }
-  };
+  }
 
   /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
   // ESCALA DE 5 COLORES. Acomodados de mejor estado a peor estado
-  const superGreen = "rgb(15, 189, 8)";
-  const green = "rgb(80, 204, 75)";
-  const orange = "rgb(237, 210, 36)";
-  const superOrange = "rgb(230, 139, 11)";
-  const red = "rgb(242, 131, 124)";
-  const superRed = "rgb(209, 25, 0)";
+  const superGreen = 'rgb(15, 189, 8)'
+  const green = 'rgb(80, 204, 75)'
+  const orange = 'rgb(237, 210, 36)'
+  const superOrange = 'rgb(230, 139, 11)'
+  const red = 'rgb(242, 131, 124)'
+  const superRed = 'rgb(209, 25, 0)'
 
   /////////////////////////////// COLUMNAS DEL DATAGRID /////////////////////////////////
 
   let columns = [
 
     { field: "ID_Resultado" },
-    { field: "Fecha", description: "hola com oestas", width: 200 },
+    { field: "Fecha"},
     {
       field: "Reloj",
       cellClassName: (params) => {
@@ -364,8 +376,8 @@ export default function Search() {
       }
    }
 
-  ];
-  
+  ]
+
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -380,34 +392,18 @@ export default function Search() {
 
   // Dictionary with wbsite routes
   const sidebarElements = [
-    { name: "Inicio", icon: <HomeOutlinedIcon />, route: "home" },
-    {
-      name: "Realizar consulta",
-      icon: <PersonSearchOutlinedIcon />,
-      route: "search",
-    },
-    {
-      name: "Consulta general",
-      icon: <LeaderboardOutlinedIcon />,
-      route: "searchGroup",
-    },
-    {
-      name: "Cargar datos",
-      icon: <CloudUploadOutlinedIcon />,
-      route: "loadData",
-    },
-    {
-      name: "Modificar datos",
-      icon: <EditOutlinedIcon />,
-      route: "modifyData",
-    },
-    { name: "Cerrar sesión", icon: <LogoutOutlinedIcon />, route: "/" },
+    { name: 'Inicio', icon: <HomeOutlinedIcon />, route: 'home' },
+    { name: 'Realizar consulta', icon: <PersonSearchOutlinedIcon />, route: 'search' },
+    { name: 'Consulta general', icon: <LeaderboardOutlinedIcon />, route: 'searchGroup' },
+    { name: 'Cargar datos', icon: <CloudUploadOutlinedIcon />, route: 'loadData' },
+    { name: 'Modificar datos', icon: <EditOutlinedIcon />, route: 'modifyData' },
+    { name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, route: '/' },
   ];
 
-  const appBarText = "Realizar busqueda de pacientes";
+  const appBarText = 'Realizar busqueda de pacientes'
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -418,7 +414,7 @@ export default function Search() {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: "none" }),
+              ...(open && { display: 'none' }),
             }}
           >
             <MenuIcon />
@@ -431,51 +427,45 @@ export default function Search() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
+
           {sidebarElements.map((item, index) => (
             <Link
               component={NextLink}
               href={item.route}
-              underline={"none"}
+              underline={'none'}
               key={index}
-              color={"gray"}
-            >
-              {item.name === "Cerrar sesión" ? (
-                <Divider key={"divider"} />
-              ) : null}
+              color={'gray'}>
+              {item.name === 'Cerrar sesión' ? <Divider key={'divider'} /> : null}
 
               <ListItemButton
                 key={index}
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
               >
+
                 <ListItemIcon
+
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
                   }}
                 >
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
+                <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </Link>
           ))}
+
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -484,55 +474,40 @@ export default function Search() {
         {/** AQUI VA EL CODIGO DE CADA PAGINA */}
         <Container>
           <Grid container spacing={2}>
+
             <Grid item xs={12}>
-              <Typography variant="h6">
-                Favor de llenar los campos como corresponde
-              </Typography>
+              <Typography variant='h6'>Favor de llenar los campos como corresponde</Typography>
             </Grid>
 
             {/** SECCIÓN DE CAMPOS DE BÚSQUEDA */}
             <Grid item xs={6}>
               <Stack spacing={2}>
-                <Box
-                  sx={{
-                    width: "60%",
-                  }}
-                >
+                <Box sx={{
+                  width: '60%'
+                }}>
                   <TextField
-                    label="Nombre del paciente"
+                    label='Nombre del paciente'
                     value={patientName}
-                    onChange={(e) => {
-                      setPatientName(e.target.value);
-                    }}
-                    variant="standard"
+                    onChange={(e) => { setPatientName(e.target.value) }}
+                    variant='standard'
                     disabled={!enableIdSearch}
-                    fullWidth
-                  />
+                    fullWidth />
                   {/*console.log("el valor es ", patientName)*/}
                 </Box>
 
-                <Box
-                  sx={{ display: "flex", alignItems: "baseline", width: "60%" }}
-                >
+                <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
                   <TextField
-                    label="ID del paciente"
+                    label='ID del paciente'
                     value={patientID}
-                    onChange={(e) => {
-                      setpatientID(e.target.value);
-                    }}
-                    variant="standard"
-                    helperText={
-                      "La busqueda por ID desactivará la consulta por nombre"
-                    }
-                    disabled={enableIdSearch}
-                  />
+                    onChange={(e) => { setpatientID(e.target.value) }}
+                    variant='standard'
+                    helperText={'La busqueda por ID desactivará la consulta por nombre'}
+                    disabled={enableIdSearch} />
                   {/*console.log("el valor es ", patientID)*/}
                   <Switch onChange={handleSwitchChange} />
                 </Box>
                 <Box>
-                  <Button variant="contained" onClick={handleSubmit}>
-                    Realizar busqueda
-                  </Button>
+                  <Button variant='contained' onClick={handleSubmit}>Realizar busqueda</Button>
                 </Box>
               </Stack>
             </Grid>
@@ -540,54 +515,31 @@ export default function Search() {
             {/** PANEL DE INSTRUCCIONES Y DE INFO ADICIONAL */}
 
             <Grid item xs={6}>
+
               <Paper sx={{ p: 2 }} elevation={2}>
-                <Container>
+                <Container
+                >
                   {/** agregar use effect para que en el primer render solo ponga placeholder values y no deba de leer el objeto vacio de patientData */}
 
-                  <Typography
-                    sx={{ textAlign: "center", pb: 1 }}
-                    variant="h6"
-                    color="initial"
-                  >
-                    Datos del paciente
-                  </Typography>
+                  <Typography sx={{ textAlign: 'center', pb: 1 }} variant="h6" color="initial" >Datos del paciente</Typography>
                   <Stack>
-                    <Typography variant="body1" color="initial">
-                      <strong>ID de parroquia:</strong>{" "}
-                      <em>
-                        {queryMade ? patientPersonalInfo.ID_Parroquia : "#"}
-                      </em>
-                    </Typography>
-                    <Typography variant="body1" color="initial">
-                      <strong>ID de usuario:</strong>{" "}
-                      <em>
-                        {queryMade ? patientPersonalInfo.ID_Usuario : "#"}
-                      </em>
-                    </Typography>
-                    <Typography variant="body1" color="initial">
-                      <strong>Nombre:</strong>{" "}
-                      <em>{queryMade ? patientPersonalInfo.Nombre : "#"}</em>
-                    </Typography>
-                    <Typography variant="body1" color="initial">
-                      <strong>Año de nacimiento:</strong>{" "}
-                      <em>{queryMade ? patientPersonalInfo.Año_Nac : "#"}</em>
-                    </Typography>
-                    <Typography variant="body1" color="initial">
-                      <strong>Genero:</strong>{" "}
-                      <em>
-                        {queryMade
-                          ? patientPersonalInfo.Genero == 1
-                            ? "Masculino"
-                            : "Femenino"
-                          : "#"}
-                      </em>
-                    </Typography>
+                    <Typography variant="body1" color="initial"><strong>ID de parroquia:</strong> <em>{queryMade ? patientPersonalInfo.ID_Parroquia : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>ID de usuario:</strong> <em>{queryMade ? patientPersonalInfo.ID_Usuario : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Nombre:</strong> <em>{queryMade ? patientPersonalInfo.Nombre : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
                   </Stack>
+
+
                 </Container>
               </Paper>
+
             </Grid>
 
             <Stack spacing={5} sx={{ width: 400 }}>
+
+
+
               <Autocomplete
                 hidden // QUITAR ESTE PROP PARA HACER VISIBLE EL COMPONENTE
                 multiple
@@ -604,42 +556,37 @@ export default function Search() {
                   />
                 )}
               />
+
+
             </Stack>
 
             {/** SECCIÓN DE RESULTADOS CON TABLA */}
             <Grid item xs={12}>
+
               <Divider />
 
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography
-                  variant="h6"
+                  variant='h6'
                   sx={{
-                    marginY: "1em",
-                  }}
-                >
-                  Aqui se despliegan los resultados de la búsqueda{" "}
-                </Typography>
+                    marginY: '1em'
+                  }}>Aqui se despliegan los resultados de la búsqueda </Typography>
                 <Tooltip
-                  sx={{ ml: "0.5em" }}
-                  placement={"right"}
+                  sx={{ ml: '0.5em' }}
+                  placement={'right'}
                   title={
                     <Typography variant="subtitle2" color="white">
-                      Cada prueba tiene su escala. Algunas cuentan con 3
-                      interpretaciones pero otras terminan con 5. Los colores
-                      con{" "}
-                      <em>
-                        <strong>tonalidades más claras</strong>
-                      </em>{" "}
-                      de verde, amarillo y rojo son utilizadas para brindar una{" "}
-                      <em>
-                        <strong>semaforización más descriptiva</strong>
-                      </em>
+                      Cada prueba tiene su escala. Algunas cuentan con 3 interpretaciones
+                      pero otras terminan con 5. Los colores con <em><strong>tonalidades más claras</strong></em> de verde, amarillo y rojo son utilizadas para brindar
+                      una <em><strong>semaforización más descriptiva</strong></em>
                     </Typography>
                   }
                 >
                   <InfoOutlinedIcon />
                 </Tooltip>
               </Box>
+
+
 
               {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
               <Box
@@ -754,29 +701,34 @@ export default function Search() {
                   rowsPerPageOptions={[5]}
                   autoHeight
                 />
+
               </Box>
+
             </Grid>
           </Grid>
+
         </Container>
       </Box>
     </Box>
+
+
   );
 }
 
 const atributosPrueba = [
-  { prueba: "Reloj", atributo: "Reloj", value: "Reloj" },
-  { prueba: "MMSE", atributo: "Orientacion Temporal", value: "Orient_Temp" },
-  { prueba: "MMSE", atributo: "Orientacion Espacial", value: "Orient_Esp" },
-  { prueba: "MMSE", atributo: "Registro", value: "Registro" },
-  { prueba: "MMSE", atributo: "Calculo", value: "Calculo" },
-  { prueba: "MMSE", atributo: "Memoria", value: "Memoria" },
-  { prueba: "MMSE", atributo: "Eject", value: "Eject" },
-  { prueba: "GDS", atributo: "GDS", value: "GDS_Total" },
-  { prueba: "Katz", atributo: "Katz", value: "Katz_Total" },
-  { prueba: "LWB", atributo: "LWB", value: "LWB_Total" },
-  { prueba: "Sarc F", atributo: "Sarc F", value: "Sarc_F" },
-  { prueba: "Fuerza", atributo: "Fuerza", value: "Fuerza_Domin" },
-  { prueba: "SPPB", atributo: "SPPB", value: "SPPB_Global" },
-  { prueba: "CFS Fraility", atributo: "CFS Fraility", value: "CFS_Fraility" },
-  { prueba: "Gijon", atributo: "Gijon", value: "Gijon" },
+  { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj' },
+  { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp' },
+  { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp' },
+  { prueba: 'MMSE', atributo: 'Registro', value: 'Registro' },
+  { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo' },
+  { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria' },
+  { prueba: 'MMSE', atributo: 'Eject', value: 'Eject' },
+  { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total' },
+  { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total' },
+  { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total' },
+  { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F' },
+  { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin' },
+  { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global' },
+  { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility' },
+  { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon' },
 ];

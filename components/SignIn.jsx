@@ -17,10 +17,16 @@ export default function SignInSide() {
   const [userName, setUsername] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isValidUser, setIsValidUser] = useState(true);
+  const [validEntry, setValidEntry] = useState(true);
   const router = useRouter();
 
   const doSignIn = (e) => {
     e.preventDefault();
+    if (userName === ""){
+      setValidEntry(false);
+      return;
+    } 
+    setValidEntry(true);
     if(isAdmin){
       confirmarAdmin();
     } else {
@@ -29,18 +35,19 @@ export default function SignInSide() {
   }
 
   const confirmarUser = async (e) => {
-    if (userName === "") return;
     const userID = await fetch(`../api/loginUsuario/${userName}`).then(x => x.json());
+    
     if(userID.length === 0) {
       setIsValidUser(false);
     } else {
       setIsValidUser(true);
-      console.log("Usuario: ".concat(userID[0].ID_Usuario));
+      router.push("user/home");
+      console.log("Usuario Valido");
     }
   }
   const confirmarAdmin = async (e) => {
-    if (userName === "") return;
     const userID = await fetch(`../api/loginAdmin/${userName}`).then(x => x.json());
+    
     if(userID.length === 0) {
       setIsValidUser(false);
     } else {
@@ -93,8 +100,8 @@ export default function SignInSide() {
                 autoComplete="userName"
                 onChange = {(e) => {setUsername(e.target.value)}}
                 autoFocus
-                error={!isValidUser}
-                helperText={isValidUser? null:"Usuario Invalido"}
+                error={!isValidUser && validEntry}
+                helperText={validEntry? isValidUser? null:"Usuario Invalido" : "Introduzca un usuario"}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
