@@ -21,18 +21,43 @@ import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
 
 import {
-    Grid,
-    Paper,
-    Box,
-    IconButton,
-    Link
+  Grid,
+  Paper,
+  Container,
+  Box,
+  IconButton,
+  Link,
+  Stack,
+  Tooltip,
 } from '@mui/material'
 import { NextLink } from 'next/Link'
-import { DataGrid } from '@mui/x-data-grid';
+
 
 const drawerWidth = 240;
+
+
+/////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
+// ESCALA DE 5 COLORES. Acomodados de mejor estado a peor estado
+const superGreen = 'rgb(15, 189, 8)'
+const green = 'rgb(80, 204, 75)'
+const orange = 'rgb(237, 210, 36)'
+const superOrange = 'rgb(230, 139, 11)'
+const red = 'rgb(242, 131, 124)'
+const superRed = 'rgb(209, 25, 0)'
+
+const semaforizacion = [
+  { description: 'Excelente', color: superGreen },
+  { description: 'Normal', color: green },
+  { description: 'Precautorio', color: orange },
+  { description: 'Decadente', color: superOrange },
+  { description: 'Malo', color: red },
+  { description: 'Pésimo', color: superRed },
+]
+
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -101,113 +126,152 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function Home() {
 
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
-    // Dictionary with wbsite routes
-    const sidebarElements = [
+  // Dictionary with wbsite routes
+  const sidebarElements = [
     { name: 'Inicio', icon: <HomeOutlinedIcon />, route: 'home' },
     { name: 'Realizar consulta', icon: <PersonSearchOutlinedIcon />, route: 'search' },
     { name: 'Consulta general', icon: <LeaderboardOutlinedIcon />, route: 'searchGroup' },
     { name: 'Cargar datos', icon: <CloudUploadOutlinedIcon />, route: 'loadData' },
     { name: 'Modificar datos', icon: <EditOutlinedIcon />, route: 'modifyData' },
     { name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, route: '/' },
-    ];
+  ];
 
-    const appBarText = 'Bienvenido a la plataforma'
+  const appBarText = 'Bienvenido a la plataforma'
 
-    return (
-        <>
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{
-                        marginRight: 5,
-                        ...(open && { display: 'none' }),
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        {appBarText}
+  return (
+    <>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              {appBarText}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {sidebarElements.map((item, index) => (
+              <Link
+                component={NextLink}
+                href={item.route}
+                underline={'none'}
+                key={index}
+                color={'gray'}>
+                {item.name === 'Cerrar sesión' ? <Divider key={'divider'} /> : null}
+
+                <ListItemButton
+                  key={index}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                  }}
+                >
+
+                  <ListItemIcon
+
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </Link>
+            ))}
+          </List>
+        </Drawer>
+
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+
+          <Container>
+            <Grid container>
+
+              <Grid item xs={9}>
+
+              </Grid>
+
+              <Grid item xs={3} sx={{}}>
+                <Paper elevation={3} sx={{ padding: 2, height: '100%' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+                    <Typography variant="h6" color="initial"><strong>Código de colores</strong>
                     </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    {sidebarElements.map((item, index) => (
-                        <Link
-                        component={NextLink}
-                        href={item.route}
-                        underline={'none'}
-                        key={index}
-                        color={'gray'}>
-                        {item.name === 'Cerrar sesión' ? <Divider key={'divider'} /> : null}
-
-                        <ListItemButton
-                            key={index}
-                            sx={{
-                            minHeight: 48,
-                            justifyContent: open ? 'initial' : 'center',
-                            px: 2.5,
-                            }}
-                        >
-
-                            <ListItemIcon
-
-                            sx={{
-                                minWidth: 0,
-                                mr: open ? 3 : 'auto',
-                                justifyContent: 'center',
-                            }}
-                            >
-                            {item.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </Link>
+                    <Tooltip sx={{ ml: 2, }} placement="bottom-end" title={
+                      <Typography variant="body1" color="white">
+                      Cuando una prueba <strong><em>no</em></strong> se mida en la escala de cinco posibles interpretaciones dadas a continuación,
+                       se utilizan las variantes más fuertes de los colores para la semaforización.
+                       En esos casos, el color determina el resultado general de la prueba y su interpretacion queda a disposición del Doctor.
+                      </Typography>
+                    }>
+                    <InfoOutlinedIcon />
+                  </Tooltip>
+                </Box>
+                <Container>
+                  {
+                    semaforizacion.map((state, id) => (
+                      <Box key={id}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            margin: 2,
+                          }}>
+                          <Typography variant="body2" color="initial">{state.description}</Typography>
+                          <Paper sx={{ width: '40px', height: '40px', backgroundColor: state.color }}></Paper>
+                        </Box>
+                      </Box>
                     ))}
-                </List>
-            </Drawer>
+                  <Divider sx={{ my: 2 }} />
 
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <DrawerHeader />
+                  <Typography variant="subtitle" color="GrayText">
+                    Este es el código de colores por el cual se interpretan
+                    los resultados de las pruebas de tamizaje en la sección de consulta.
+                  </Typography>
 
-                <Grid container>
-                    <Grid item xs={2}>
-                        {/** AQUI VA EL SIDEBAR */}
-                        {/** <Sidebar />*/}
-                    </Grid>
+                </Container>
 
-                    <Grid item xs={10}>
-                        {/** AQUI VA EL CONTENIDO QUE SE IRÁ ACTUALIZANDO */}
-                        {/** <Topbar titleText={'Bienvenido a la plataforma'} />*/}
-                        {/**Aqui va a ir el componente de data grid para una vista general de todos los pacientes */}
-                    </Grid>
+              </Paper>
+            </Grid>
 
-                </Grid>
-            </Box>
-        </Box>
-        </>
-    )
+          </Grid>
+        </Container>
+      </Box>
+    </Box>
+    </>
+  )
 }
