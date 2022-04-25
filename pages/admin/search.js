@@ -173,18 +173,18 @@ export default function Search() {
         //console.log(resID);
         for (var i = 0; i < resID.length; i++) {
           var fecha = resID[i].Fecha
-          fecha = fecha.substring(0,10)
+          fecha = fecha.substring(0, 10)
           resID[i].Fecha = fecha
         }
         setPatientData(resID);
-  
+
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userID/${pacID.patientID}`).then(info => info.json())
         console.log(info)
         setPatientPersonalInfo(info)
-  
+
         setQueryMade(true)
-  
+
       }
       else if (nombre.patientName != '' & habilitado.enableIdSearch) {
         //console.log(nombre);
@@ -193,17 +193,17 @@ export default function Search() {
         //console.log(resNom);
         for (var i = 0; i < resNom.length; i++) {
           var fecha = resNom[i].Fecha
-          fecha = fecha.substring(0,10)
+          fecha = fecha.substring(0, 10)
           resNom[i].Fecha = fecha
         }
         setPatientData(resNom);
-  
-  
+
+
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userName/${nombre.patientName}`).then(info => info.json())
         console.log(info)
         setPatientPersonalInfo(info)
-  
+
         setQueryMade(true)
       }
       else {
@@ -231,7 +231,7 @@ export default function Search() {
   let columns = [
 
     { field: "ID_Resultado" },
-    { field: "Fecha"},
+    { field: "Fecha" },
     {
       field: "Reloj",
       cellClassName: (params) => {
@@ -246,21 +246,22 @@ export default function Search() {
         });
       }
     },
-    { field: "MMSE_Total", 
-    cellClassName: (params) => {
-      if (params.value == -1) {
-        return '';
+    {
+      field: "MMSE_Total",
+      cellClassName: (params) => {
+        if (params.value == -1) {
+          return '';
+        }
+
+        return clsx('MMSE', {
+          normal: 25 <= params.value && params.value <= 30,
+          dcl: 22 <= params.value && params.value <= 24,
+          demenciaLeve: 18 <= params.value && params.value < 22,
+          demenciaModerada: 12 <= params.value && params.value <= 18,
+          demenciaSevera: params.value < 12,
+
+        });
       }
-
-      return clsx('MMSE', {
-        normal: 25 <= params.value && params.value <= 30,
-        dcl: 22 <= params.value && params.value <= 24,
-        demenciaLeve: 18 <= params.value && params.value < 22,
-        demenciaModerada: 12 <= params.value && params.value <= 18,
-        demenciaSevera: params.value < 12,
-
-      });
-    }
     },
     {
       field: "GDS_Total",
@@ -300,8 +301,8 @@ export default function Search() {
         }
         // 1 es masculino. 2 es femenino
         return clsx('LWB', {
-          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H'  || params.value >= 7 && patientPersonalInfo.Genero === 'M',
-          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H'  || params.value < 7 && patientPersonalInfo.Genero === 'M',
+          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H' || params.value >= 7 && patientPersonalInfo.Genero === 'M',
+          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H' || params.value < 7 && patientPersonalInfo.Genero === 'M',
 
         });
       }
@@ -320,7 +321,7 @@ export default function Search() {
         });
       }
     },
-    { 
+    {
       field: "Fuerza_Domin",
       cellClassName: (params) => {
         if (params.value == -1) {
@@ -328,13 +329,13 @@ export default function Search() {
         }
 
         return clsx('Fuerza', {
-          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M' ,
+          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M',
           sarcodinia: params.value <= 27 && patientPersonalInfo.Genero === 'H' || params.value <= 20 && patientPersonalInfo.Genero === 'M'
 
         });
       }
-   },
-    { 
+    },
+    {
       field: "SPPB_Global",
       cellClassName: (params) => {
         if (params.value == -1) {
@@ -346,8 +347,8 @@ export default function Search() {
           anormal: params.value < 8,
         });
       }
-   },
-    { 
+    },
+    {
       field: "CFS_Fraility",
       cellClassName: (params) => {
         if (params.value == -1) {
@@ -360,8 +361,8 @@ export default function Search() {
           fragil: 3 <= params.value && params.value <= 5,
         });
       }
-   },
-    { 
+    },
+    {
       field: "Gijon",
       cellClassName: (params) => {
         if (params.value == -1) {
@@ -374,7 +375,7 @@ export default function Search() {
           riesgoAlto: 10 <= params.value,
         });
       }
-   }
+    }
 
   ]
 
@@ -519,7 +520,6 @@ export default function Search() {
               <Paper sx={{ p: 2 }} elevation={2}>
                 <Container
                 >
-                  {/** agregar use effect para que en el primer render solo ponga placeholder values y no deba de leer el objeto vacio de patientData */}
 
                   <Typography sx={{ textAlign: 'center', pb: 1 }} variant="h6" color="initial" >Datos del paciente</Typography>
                   <Stack>
@@ -529,8 +529,6 @@ export default function Search() {
                     <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
                     <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
                   </Stack>
-
-
                 </Container>
               </Paper>
 
@@ -565,28 +563,35 @@ export default function Search() {
 
               <Divider />
 
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography
-                  variant='h6'
-                  sx={{
-                    marginY: '1em'
-                  }}>Aqui se despliegan los resultados de la búsqueda </Typography>
-                <Tooltip
-                  sx={{ ml: '0.5em' }}
-                  placement={'right'}
-                  title={
-                    <Typography variant="subtitle2" color="white">
-                      Cada prueba tiene su escala. Algunas cuentan con 3 interpretaciones
-                      pero otras terminan con 5. Los colores con <em><strong>tonalidades más claras</strong></em> de verde, amarillo y rojo son utilizadas para brindar
-                      una <em><strong>semaforización más descriptiva</strong></em>
-                    </Typography>
-                  }
-                >
-                  <InfoOutlinedIcon />
-                </Tooltip>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography
+                    variant='h6'
+                    sx={{
+                      marginY: '1em'
+                    }}>Aqui se despliegan los resultados de la búsqueda </Typography>
+                  <Tooltip
+                    sx={{ ml: '0.5em' }}
+                    placement={'right'}
+                    title={
+                      <Typography variant="subtitle2" color="white">
+                        Cada prueba tiene su escala. Algunas cuentan con 3 interpretaciones
+                        pero otras terminan con 5. Los colores con <em><strong>tonalidades más claras</strong></em> de verde, amarillo y rojo son utilizadas para brindar
+                        una <em><strong>semaforización más descriptiva</strong></em>
+                      </Typography>
+                    }
+                  >
+                    <InfoOutlinedIcon />
+                  </Tooltip>
+                </Box>
+
+                    
+                <Button variant="contained" color="secondary" disabled={false}>
+                  Obtener gráficas adicionales
+                </Button>
+                
               </Box>
-
-
 
               {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
               <Box
