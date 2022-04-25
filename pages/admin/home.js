@@ -147,7 +147,7 @@ export default function Home() {
     { name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, route: '/' },
   ];
 
-  const appBarText = 'Bienvenido a la plataforma'
+  const appBarText = 'Inicio'
 
   return (
     <>
@@ -223,55 +223,88 @@ export default function Home() {
 
               <Grid item xs={9}>
 
+                <Grid container  spacing={2}>
+
+                  <Grid item xs={12}>
+                    <Box>
+                      <Typography variant="h5" color="initial">Objetivo de la plataforma</Typography>
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sx={{mr: '4em'}}>
+                    <Typography variant="body1" color="initial">
+                    Que sea una herramienta adicional al flujo de trabajo de las personas encargadas de administrar los resultados de las 
+                    pruebas de tamizaje. Esto con el motivo de poder interpretar de manera eficaz grandes conjuntos de datos
+                    gracias a la semaforización.
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} sx={{mt: '1em'}}>
+                    <Box>
+                      <Typography variant="h5" color="initial">Colaboración</Typography>
+                    </Box>
+                  </Grid>
+
+                    <Grid item xs={12} sx={{mr: '4em'}}>
+                    <Typography variant="body1" color="initial">
+                      Esta plataforma está hecha con ayuda de la experiencia del Dr. [INSERTE NOMBRE DE DOCTOR]
+                    </Typography>
+                    <img width= "50%" src="http://sds.uanl.mx/wp-content/uploads/2020/01/logo-facultad-de-medicina.png"/>
+                    <img width= "50%" src="http://www.carmenurdiales.org/wp-content/uploads/2015/07/logo_CHM.jpg"/>
+
+                    </Grid>
+
+                </Grid>
+
               </Grid>
 
-              <Grid item xs={3} sx={{}}>
+              <Grid item xs={3}>
                 <Paper elevation={3} sx={{ padding: 2, height: '100%' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
                     <Typography variant="h6" color="initial"><strong>Código de colores</strong>
                     </Typography>
                     <Tooltip sx={{ ml: 2, }} placement="bottom-end" title={
                       <Typography variant="body1" color="white">
-                      Cuando una prueba <strong><em>no</em></strong> se mida en la escala de cinco posibles interpretaciones dadas a continuación,
-                       se utilizan las variantes más fuertes de los colores para la semaforización.
-                       En esos casos, el color determina el resultado general de la prueba y su interpretacion queda a disposición del Doctor.
+                        Cuando una prueba <strong><em>no</em></strong> se mida en la escala de seis posibles interpretaciones dadas a continuación,
+                        se utilizan las variantes más fuertes de los colores para la semaforización.
+                        En esos casos, el color determina el resultado general de la prueba y su interpretacion queda a disposición del Doctor.
                       </Typography>
                     }>
-                    <InfoOutlinedIcon />
-                  </Tooltip>
-                </Box>
-                <Container>
-                  {
-                    semaforizacion.map((state, id) => (
-                      <Box key={id}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            margin: 2,
-                          }}>
-                          <Typography variant="body2" color="initial">{state.description}</Typography>
-                          <Paper sx={{ width: '40px', height: '40px', backgroundColor: state.color }}></Paper>
+                      <InfoOutlinedIcon />
+                    </Tooltip>
+                  </Box>
+                  <Container>
+                    {
+                      semaforizacion.map((state, id) => (
+                        <Box key={id}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              margin: 2,
+                            }}>
+                            <Typography variant="body2" color="initial">{state.description}</Typography>
+                            <Paper sx={{ width: '40px', height: '40px', backgroundColor: state.color }}></Paper>
+                          </Box>
                         </Box>
-                      </Box>
-                    ))}
-                  <Divider sx={{ my: 2 }} />
+                      ))}
+                    <Divider sx={{ my: 2 }} />
 
-                  <Typography variant="subtitle" color="GrayText">
-                    Este es el código de colores por el cual se interpretan
-                    los resultados de las pruebas de tamizaje en la sección de consulta.
-                  </Typography>
+                    <Typography variant="subtitle" color="GrayText">
+                      Este es el código de colores por el cual se interpretan
+                      los resultados de las pruebas de tamizaje en la sección de consulta.
+                    </Typography>
 
-                </Container>
+                  </Container>
 
-              </Paper>
+                </Paper>
+              </Grid>
+
             </Grid>
-
-          </Grid>
-        </Container>
+          </Container>
+        </Box>
       </Box>
-    </Box>
     </>
   )
 }
