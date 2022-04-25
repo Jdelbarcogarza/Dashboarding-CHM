@@ -6,7 +6,6 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -33,6 +32,7 @@ import {
   Link,
   Stack,
   Tooltip,
+  Divider
 } from '@mui/material'
 import { NextLink } from 'next/Link'
 
@@ -247,12 +247,14 @@ export default function Home() {
 
                   <Grid item xs={12} sx={{ mr: '4em' }}>
                     <Typography variant="body1" color="initial">
-                      Esta plataforma está hecha con ayuda de la experiencia del Dr. [INSERTE NOMBRE DE DOCTOR]
+                      Esta plataforma está hecha con ayuda de la experiencia del Dr. Daniel Gámez perteneciente 
+                      al hospital universitario, y en colaboración con la Comisión del Hermano Mayor para el cuidado de sus miembros
+                      y pacientes de la tercera edad.
                     </Typography>
 
                   </Grid>
 
-                  <Grid item xs={12} sx={{ display: 'flex' }}>
+                  <Grid item xs={12} sx={{ display: 'flex', mt: 2 }}>
                     <Box sx={{
                       objectFit: 'cover',
                       width: '100%',
@@ -261,7 +263,7 @@ export default function Home() {
                       }}>
                       <img width="100%" height={"100%"} src="http://sds.uanl.mx/wp-content/uploads/2020/01/logo-facultad-de-medicina.png" />
                     </Box>
-
+                      
                     <Box sx={{
                       objectFit: 'cover',
                       width: '100%',
