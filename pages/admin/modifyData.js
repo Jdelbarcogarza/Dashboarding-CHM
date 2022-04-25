@@ -139,10 +139,16 @@ export default function ModifyData() {
     const [patientid, setPatientID] = useState('');
 
     // Valores de atributo
-    const [atributo2, setAtributo2] = useState('');
+    const [atributo, setAtributo] = useState('');
 
     // Valores de calificacion
     const [grade, setGrade] = useState(0);
+
+    // Valores de fecha
+    const [fecha, setFecha] = useState(new Date('2000-02-01'));
+
+    // Valores de fecha
+    const [status, setStatus] = useState('');
 
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
@@ -161,26 +167,54 @@ export default function ModifyData() {
         const pacID = {patientid};
         const habilitado = {enableIdSearch};
 
-        const a2 = {atributo2};
-        const g = {grade};
+        // console.log(a2.atributo.value);
+        // console.log(g.grade);
+        // console.log(fecha);
 
-        console.log(a2.atributo2.value);
-        console.log(g.grade);
-
-        if (pacID.patientid != '' & !habilitado.enableIdSearch) {
-            console.log(pacID);
-            const resID = await fetch(`/api/update/userID/${pacID.patientid}/${a2.atributo2.value}/${g.grade}`, {method: 'PUT'}).then(resID => resID.json())
-            console.log(resID);
+        if (atributo != null) {
+            var dataObject = {
+                prueba: atributo.value,
+                cal: grade,
+                fechaDate: fecha,
+            }
         }
-        if (nombre.patientName != '' & habilitado.enableIdSearch) {
-            console.log(nombre);
-            const resNom = await fetch(`/api/update/userName/${nombre.patientName}/${a2.atributo2.value}/${g.grade}`, {method: 'PUT'}).then(resNom => resNom.json())
-            console.log(resNom);
+        else {
+            setStatus("Es necesario llenar los campos solicitados")
+            return
+        }
+
+        try {
+            if (pacID.patientid != '' & !habilitado.enableIdSearch & atributo != '') {
+                console.log(pacID);
+                const resID = await fetch(`/api/update/userID/${pacID.patientid}`, {
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify(dataObject)
+                }).then(resID => resID.json())
+                console.log(resID);
+                setStatus(resID.msg)
+            }
+            else if (nombre.patientName != '' & habilitado.enableIdSearch & atributo != '') {
+                console.log(nombre);
+                const resNom = await fetch(`/api/update/userName/${nombre.patientName}`, {
+                    method: 'PUT',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify(dataObject)
+                }).then(resNom => resNom.json())
+                console.log(resNom);
+                setStatus(resNom.msg)
+            }
+            else {
+                setStatus("Es necesario llenar los campos solicitados")
+            }
+        }
+        catch {
+            setStatus("Actualización fallida")
         }
     }
 
-    const handleAtributo2Change = (event, newAtributo) => {
-        setAtributo2(newAtributo);
+    const handleAtributoChange = (event, newAtributo) => {
+        setAtributo(newAtributo);
     };
 
     return (
@@ -286,24 +320,37 @@ export default function ModifyData() {
                                     <Box>
                                         <Button sx={{ width: 340 }} variant='contained' onClick={handleSubmit}>Actualizar Datos</Button>
                                     </Box>
+                                    {status}
                                 </Stack>
                             </Grid>
 
                             <Stack spacing={5} sx={{ width: 400 }}>
-                                <Autocomplete
-                                    options={atributosPrueba}
-                                    groupBy={(option) => option.prueba}
-                                    getOptionLabel={(option) => option.atributo}
-                                    onChange={handleAtributo2Change}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            label="Seleccione el atributo de la prueba a actualizar"
-                                            placeholder="Atributo"
-                                        />
-                                    )}
-                                />
+                                <Stack spacing={4}>
+                                    <TextField
+                                        label="Fecha de la prueba"
+                                        type="date"
+                                        defaultValue="2000-01-01"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        onChange={(e) => {setFecha(e.target.value)}}
+                                    />
+
+                                    <Autocomplete
+                                        options={atributosPrueba}
+                                        groupBy={(option) => option.prueba}
+                                        getOptionLabel={(option) => option.atributo}
+                                        onChange={handleAtributoChange}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                variant="standard"
+                                                label="Seleccione el atributo de la prueba a actualizar"
+                                                placeholder="Atributo"
+                                            />
+                                        )}
+                                    />
+                                </Stack>
 
                                 <Box>
                                     <Typography id="non-linear-slider" gutterBottom>
@@ -315,6 +362,7 @@ export default function ModifyData() {
                                         valueLabelDisplay="auto"
                                     />
                                 </Box>
+
                             </Stack>
                         </Grid>
                     </Container>
