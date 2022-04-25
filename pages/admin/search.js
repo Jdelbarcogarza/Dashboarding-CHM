@@ -534,30 +534,6 @@ export default function Search() {
 
             </Grid>
 
-            <Stack spacing={5} sx={{ width: 400 }}>
-
-
-
-              <Autocomplete
-                hidden // QUITAR ESTE PROP PARA HACER VISIBLE EL COMPONENTE
-                multiple
-                options={atributosPrueba}
-                groupBy={(option) => option.prueba}
-                getOptionLabel={(option) => option.atributo}
-                onChange={handleAtributoChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Seleccione los atributos de la prueba"
-                    placeholder="Atributos"
-                  />
-                )}
-              />
-
-
-            </Stack>
-
             {/** SECCIÓN DE RESULTADOS CON TABLA */}
             <Grid item xs={12}>
 
