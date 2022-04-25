@@ -223,7 +223,7 @@ export default function Home() {
 
               <Grid item xs={9}>
 
-                <Grid container  spacing={2}>
+                <Grid container spacing={2}>
 
                   <Grid item xs={12}>
                     <Box>
@@ -231,29 +231,46 @@ export default function Home() {
                     </Box>
                   </Grid>
 
-                  <Grid item xs={12} sx={{mr: '4em'}}>
+                  <Grid item xs={12} sx={{ mr: '4em' }}>
                     <Typography variant="body1" color="initial">
-                    Que sea una herramienta adicional al flujo de trabajo de las personas encargadas de administrar los resultados de las 
-                    pruebas de tamizaje. Esto con el motivo de poder interpretar de manera eficaz grandes conjuntos de datos
-                    gracias a la semaforización.
+                      Que sea una herramienta adicional al flujo de trabajo de las personas encargadas de administrar los resultados de las
+                      pruebas de tamizaje. Esto con el motivo de poder interpretar de manera eficaz grandes conjuntos de datos
+                      gracias a la semaforización.
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} sx={{mt: '1em'}}>
+                  <Grid item xs={12} sx={{ mt: '1em' }}>
                     <Box>
                       <Typography variant="h5" color="initial">Colaboración</Typography>
                     </Box>
                   </Grid>
 
-                    <Grid item xs={12} sx={{mr: '4em'}}>
+                  <Grid item xs={12} sx={{ mr: '4em' }}>
                     <Typography variant="body1" color="initial">
                       Esta plataforma está hecha con ayuda de la experiencia del Dr. [INSERTE NOMBRE DE DOCTOR]
                     </Typography>
-                    <img width= "50%" src="http://sds.uanl.mx/wp-content/uploads/2020/01/logo-facultad-de-medicina.png"/>
-                    <img width= "50%" src="http://www.carmenurdiales.org/wp-content/uploads/2015/07/logo_CHM.jpg"/>
 
-                    </Grid>
+                  </Grid>
 
+                  <Grid item xs={12} sx={{ display: 'flex' }}>
+                    <Box sx={{
+                      objectFit: 'cover',
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center'
+                      }}>
+                      <img width="100%" height={"100%"} src="http://sds.uanl.mx/wp-content/uploads/2020/01/logo-facultad-de-medicina.png" />
+                    </Box>
+
+                    <Box sx={{
+                      objectFit: 'cover',
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center'
+                      }}>
+                      <img width="50%" height={"100%"} src="http://www.carmenurdiales.org/wp-content/uploads/2015/07/logo_CHM.jpg" />
+                    </Box>
+                  </Grid>
                 </Grid>
 
               </Grid>
