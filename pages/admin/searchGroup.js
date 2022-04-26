@@ -161,117 +161,136 @@ export default function SearchGroup() {
     // datos permanentes de paciente
     const [patientPersonalInfo, setPatientPersonalInfo] = useState([]);
 
+    // Zonas
+    const [zonas, setZonas] = useState([]);
+
+    // Decanatos
+    const [decanatos, setDecanatos] = useState([]);
+
+    // Parroquias
+    const [parroquias, setParroquias] = useState([]);
+
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
     function handleSwitchUbi() {
-        setEnableUbi(!enableUbi)
+      setEnableUbi(!enableUbi)
+      setZonasVariable();
+    }
+
+    const setZonasVariable = async (e) => {
+      const tZonasJson = await fetch(`/api/location/${gender}`).then(tZonas => tZonas.json())
+      const tZonas = [];
+      for (let i = 0; i < tZonasJson.length; i++) {
+        tZonas.push(tZonasJson[i]["Nombre"]);
+      }
+      setZonas(tZonas);
     }
 
     const handleAtributoChange = (event, newAtributo) => {
-        setAtributo(newAtributo);
+      setAtributo(newAtributo);
     };
 
     function handleSwitchChange() {
-        setEnableCalificacion(!enableCalificacion);
+      setEnableCalificacion(!enableCalificacion);
     }
 
     const handleGradeAtributoChange = (event, newAtributo) => {
-        setGradeAtr(newAtributo);
+      setGradeAtr(newAtributo);
     };
 
     const handleGradeChange = (event, newGrade) => {
-        setGrade(newGrade);
+      setGrade(newGrade);
     };
 
     const handleAgeChange = (event, newAge) => {
-        setAge(newAge);
+      setAge(newAge);
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const edad = age[0] + "-" + age[1];
+      const edad = age[0] + "-" + age[1];
 
-        if (enableCalificacion) {
+      if (enableCalificacion) {
 
-            var tests = "";
+          var tests = "";
 
-            // Envia "$" si no se selecciono ninguna prueba (por default se seleccionan todas)
-            // o concatena todas las pruebas que se seleccionaron en un mismo string
-            if (atributo.length == 0) {
-                tests = "$"
-            }
-            else {
-                var i = 0; for (i = 0; i < atributo.length; i++) {
-                    if (atributo.length >= 1) {
-                        tests = tests + "!" + atributo[i].value;
-                    }
-                }
-            }
+          // Envia "$" si no se selecciono ninguna prueba (por default se seleccionan todas)
+          // o concatena todas las pruebas que se seleccionaron en un mismo string
+          if (atributo.length == 0) {
+              tests = "$"
+          }
+          else {
+              var i = 0; for (i = 0; i < atributo.length; i++) {
+                  if (atributo.length >= 1) {
+                      tests = tests + "!" + atributo[i].value;
+                  }
+              }
+          }
 
-            if (enableUbi) {
-                const res1 = await fetch(`/api/searchPrueba/groupMaxDate/prueba/${gender}/${edad}/${tests}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(tests);
-                console.log(res1);
-                for (var i = 0; i < res1.length; i++) {
-                  var fecha = res1[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res1[i].Fecha = fecha
-                }
-                setPatientData(res1);
-            }
-            else if (parroquia != '' & decanato != '' & zona != '') {
-                const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res2 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-prueba/${gender}/${edad}/${ubi}/${tests}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(ubi);
-                console.log(tests);
-                console.log(res2);
-                for (var i = 0; i < res2.length; i++) {
-                  var fecha = res2[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res2[i].Fecha = fecha
-                }
-                setPatientData(res2);
-            }
+          if (enableUbi) {
+              const res1 = await fetch(`/api/searchPrueba/groupMaxDate/prueba/${gender}/${edad}/${tests}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(tests);
+              console.log(res1);
+              for (var i = 0; i < res1.length; i++) {
+                var fecha = res1[i].Fecha
+                fecha = fecha.substring(0,10)
+                res1[i].Fecha = fecha
+              }
+              setPatientData(res1);
+          }
+          else if (parroquia != '' & decanato != '' & zona != '') {
+              const ubi = parroquia + '-' + decanato + '-' + zona;
+              const res2 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-prueba/${gender}/${edad}/${ubi}/${tests}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(ubi);
+              console.log(tests);
+              console.log(res2);
+              for (var i = 0; i < res2.length; i++) {
+                var fecha = res2[i].Fecha
+                fecha = fecha.substring(0,10)
+                res2[i].Fecha = fecha
+              }
+              setPatientData(res2);
+          }
 
-        }
-        else if (gradeAtr != verif) {
+      }
+      else if (gradeAtr != verif) {
 
-            const gA = grade[0] + "-" + grade[1] + "-" + gradeAtr.value;
+          const gA = grade[0] + "-" + grade[1] + "-" + gradeAtr.value;
 
-            if (enableUbi) {
-                const res3 = await fetch(`/api/searchPrueba/groupMaxDate/calif/${gender}/${edad}/${gA}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(gA);
-                console.log(res3);
-                for (var i = 0; i < res3.length; i++) {
-                  var fecha = res3[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res3[i].Fecha = fecha
-                }
-                setPatientData(res3);
-            }
-            else if (parroquia != '' & decanato != '' & zona != '') {
-                const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res4 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-calif/${gender}/${edad}/${ubi}/${gA}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(ubi);
-                console.log(gA);
-                console.log(res4);
-                for (var i = 0; i < res4.length; i++) {
-                  var fecha = res4[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res4[i].Fecha = fecha
-                }
-                setPatientData(res4);
-            }
-        }
+          if (enableUbi) {
+              const res3 = await fetch(`/api/searchPrueba/groupMaxDate/calif/${gender}/${edad}/${gA}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(gA);
+              console.log(res3);
+              for (var i = 0; i < res3.length; i++) {
+                var fecha = res3[i].Fecha
+                fecha = fecha.substring(0,10)
+                res3[i].Fecha = fecha
+              }
+              setPatientData(res3);
+          }
+          else if (parroquia != '' & decanato != '' & zona != '') {
+              const ubi = parroquia + '-' + decanato + '-' + zona;
+              const res4 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-calif/${gender}/${edad}/${ubi}/${gA}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(ubi);
+              console.log(gA);
+              console.log(res4);
+              for (var i = 0; i < res4.length; i++) {
+                var fecha = res4[i].Fecha
+                fecha = fecha.substring(0,10)
+                res4[i].Fecha = fecha
+              }
+              setPatientData(res4);
+          }
+      }
     }
 
     /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
@@ -591,8 +610,11 @@ export default function SearchGroup() {
                                             onChange={(e) => { setZona(e.target.value) }}
                                             disabled={enableUbi}
                                         >
-                                            <MenuItem value={1}>Zona 1</MenuItem>
-                                            <MenuItem value={2}>Zona 2</MenuItem>
+                                        {zonas.map((zs, i) => {
+                                          return (
+                                            <MenuItem key={index} value = {(i + 1) * 10}>{zs}</MenuItem>
+                                          )
+                                        })}
                                         </Select>
                                     </FormControl>
                                 </Box>
