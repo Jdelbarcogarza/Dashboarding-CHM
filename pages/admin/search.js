@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -31,7 +31,6 @@ import {
   Grid,
   Container,
   TextField,
-  Autocomplete,
   Stack,
   Switch,
   Button,
@@ -41,6 +40,10 @@ import {
 
 import { DataGrid } from '@mui/x-data-grid'
 import clsx from 'clsx'
+
+import Chart from 'chart.js/auto';
+import { Line, Bar } from 'react-chartjs-2';
+
 
 const drawerWidth = 240;
 
@@ -131,6 +134,33 @@ export default function Search() {
 
   const [queryMade, setQueryMade] = useState(false);
 
+  
+  ///////////////// FUNCION PARA DESPLEGAR GRÁFICAS ADICIONALES Y ESCONDER DATA GRID
+  
+  // state para las graficas de chart js
+  const [displayCharts, setDisplayCharts] = useState(false)
+
+  function displayData() {
+    setDisplayCharts(!displayCharts)
+  }
+
+  const [userChartData, setUserChartData] = useState({})
+
+  useEffect(() => {
+  
+    setUserChartData({
+      labels: ['GDS'],
+      datasets: [{
+        label: 'GDS', 
+        data: patientData.map((data) => data.GDS_Total),
+        backgroundColor: 'green'
+      }]
+    })
+  
+    displayData()
+   
+  }, [patientData])
+
   ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
   function handleSwitchChange() {
@@ -150,7 +180,6 @@ export default function Search() {
     const a = { atributo };
     const tests = "";
 
-    console.log(a.atributo.length);
 
     if (a.atributo.length == 0) {
       tests = "$"
@@ -163,14 +192,12 @@ export default function Search() {
       }
     }
 
-    console.log(tests);
 
     try {
       if (pacID.patientID != '' & !habilitado.enableIdSearch) {
         // endpoint que devuelve solo resultados del tamizaje
         var resID = await fetch(`/api/searchPrueba/one/ID/${tests}/${pacID.patientID}`).then(resID => resID.json())
-        //console.log("Esto es resID");
-        //console.log(resID);
+
         for (var i = 0; i < resID.length; i++) {
           var fecha = resID[i].Fecha
           fecha = fecha.substring(0, 10)
@@ -178,30 +205,34 @@ export default function Search() {
         }
         setPatientData(resID);
 
+        
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userID/${pacID.patientID}`).then(info => info.json())
-        console.log(info)
         setPatientPersonalInfo(info)
 
         setQueryMade(true)
 
       }
       else if (nombre.patientName != '' & habilitado.enableIdSearch) {
-        //console.log(nombre);
+
         var resNom = await fetch(`/api/searchPrueba/one/Name/${tests}/${nombre.patientName}`).then(resNom => resNom.json())
-        //console.log("Esto es resNom");
-        //console.log(resNom);
+
         for (var i = 0; i < resNom.length; i++) {
           var fecha = resNom[i].Fecha
           fecha = fecha.substring(0, 10)
           resNom[i].Fecha = fecha
         }
         setPatientData(resNom);
+        console.log(patientData[0].GDS_Total)
+        console.log(patientData[0])
 
+
+
+
+        
 
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userName/${nombre.patientName}`).then(info => info.json())
-        console.log(info)
         setPatientPersonalInfo(info)
 
         setQueryMade(true)
@@ -217,11 +248,6 @@ export default function Search() {
     }
   }
 
-  ///////////////// FUNCION PARA DESPLEGAR GRÁFICAS ADICIONALES Y ESCONDER DATA GRID
-
-  function hideDataGrid() {
-    
-  }
 
 
   /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
@@ -496,11 +522,10 @@ export default function Search() {
                   <TextField
                     label='Nombre del paciente'
                     value={patientName}
-                    onChange={(e) => { setPatientName(e.target.value) }}
+                    onChange={(e) => { setPatientName(e.target.value)}}
                     variant='standard'
                     disabled={!enableIdSearch}
                     fullWidth />
-                  {/*console.log("el valor es ", patientName)*/}
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
@@ -511,7 +536,6 @@ export default function Search() {
                     variant='standard'
                     helperText={'La busqueda por ID desactivará la consulta por nombre'}
                     disabled={enableIdSearch} />
-                  {/*console.log("el valor es ", patientID)*/}
                   <Switch onChange={handleSwitchChange} />
                 </Box>
                 <Box>
@@ -568,13 +592,12 @@ export default function Search() {
                     <InfoOutlinedIcon />
                   </Tooltip>
                 </Box>
-                    {console.log(queryMade)}
                     
                 <Button 
                 disabled={!queryMade}
                 variant="contained" color="secondary"
                 onClick={() => {
-                  alert("ei")
+                  displayData()
                 }}
                 >
                   Obtener gráficas adicionales
@@ -697,6 +720,10 @@ export default function Search() {
                   autoHeight
                 />
               </Box>
+                {displayCharts && queryMade ? <Bar data={userChartData} /> : null}
+
+
+
             </Grid>
           </Grid>
 
