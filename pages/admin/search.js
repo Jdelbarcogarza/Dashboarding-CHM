@@ -230,7 +230,7 @@ export default function Search() {
 
   let columns = [
 
-    { field: "ID_Resultado" },
+    { field: "ID_Resultado", headerName: "ID" },
     { field: "Fecha"},
     {
       field: "Reloj",
@@ -246,7 +246,7 @@ export default function Search() {
         });
       }
     },
-    { field: "MMSE_Total", 
+    { field: "MMSE_Total", headerName: "MMSE", 
     cellClassName: (params) => {
       if (params.value == -1) {
         return '';
@@ -263,7 +263,7 @@ export default function Search() {
     }
     },
     {
-      field: "GDS_Total",
+      field: "GDS_Total", headerName: 'GDS',
       cellClassName: (params) => {
         if (params.value == -1) {
           return '';
@@ -277,7 +277,7 @@ export default function Search() {
       }
     },
     {
-      field: "Katz_Total",
+      field: "Katz_Total", headerName: 'Katz',
       cellClassName: (params) => {
         if (params.value == -1) {
           return '';
@@ -293,7 +293,7 @@ export default function Search() {
       }
     },
     {
-      field: "LWB_Total",
+      field: "LWB_Total", headerName: 'LWB',
       cellClassName: (params) => {
         if (params.value == -1) {
           return '';
@@ -307,7 +307,7 @@ export default function Search() {
       }
     },
     {
-      field: "Sarc_F",
+      field: "Sarc_F", headerName: 'Sarc F',
       cellClassName: (params) => {
         if (params.value == -1) {
           return '';
@@ -321,7 +321,7 @@ export default function Search() {
       }
     },
     { 
-      field: "Fuerza_Domin",
+      field: "Fuerza_Domin", headerName: 'Fuerza',
       cellClassName: (params) => {
         if (params.value == -1) {
           return '';
@@ -335,7 +335,7 @@ export default function Search() {
       }
    },
     { 
-      field: "SPPB_Global",
+      field: "SPPB_Global", headerName: 'SPPB',
       cellClassName: (params) => {
         if (params.value == -1) {
           return '';
@@ -348,7 +348,7 @@ export default function Search() {
       }
    },
     { 
-      field: "CFS_Fraility",
+      field: "CFS_Fraility", headerName: 'CFS',
       cellClassName: (params) => {
         if (params.value == -1) {
           return '';
