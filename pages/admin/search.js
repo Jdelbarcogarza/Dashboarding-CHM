@@ -217,6 +217,13 @@ export default function Search() {
     }
   }
 
+  ///////////////// FUNCION PARA DESPLEGAR GRÁFICAS ADICIONALES Y ESCONDER DATA GRID
+
+  function hideDataGrid() {
+    
+  }
+
+
   /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
   // ESCALA DE 5 COLORES. Acomodados de mejor estado a peor estado
   const superGreen = 'rgb(15, 189, 8)'
@@ -561,9 +568,11 @@ export default function Search() {
                     <InfoOutlinedIcon />
                   </Tooltip>
                 </Box>
-                    {console.log(patientData)}
+                    {console.log(queryMade)}
                     
-                <Button variant="contained" color="secondary"
+                <Button 
+                disabled={!queryMade}
+                variant="contained" color="secondary"
                 onClick={() => {
                   alert("ei")
                 }}
@@ -687,9 +696,7 @@ export default function Search() {
                   rowsPerPageOptions={[5]}
                   autoHeight
                 />
-
               </Box>
-
             </Grid>
           </Grid>
 
