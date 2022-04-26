@@ -561,16 +561,21 @@ export default function Search() {
                     <InfoOutlinedIcon />
                   </Tooltip>
                 </Box>
-
+                    {console.log(patientData)}
                     
-                <Button variant="contained" color="secondary" disabled={false}>
+                <Button variant="contained" color="secondary"
+                onClick={() => {
+                  alert("ei")
+                }}
+                >
                   Obtener gráficas adicionales
-                </Button>
+                </Button>                
                 
               </Box>
 
               {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
               <Box
+                hidden={false}
                 sx={{
                   // prueba de Reloj
                   '& .reloj.normal': {
