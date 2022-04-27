@@ -601,7 +601,7 @@ export default function Search() {
                   variant="contained"
                   color="secondary"
                   startIcon={displayCharts ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}>
-                  {!displayCharts ? <>Ver gráficas adicionales</> : <>Cerrar gráficas adicionales</>}
+                  {!displayCharts ? <>Mostrar gráficas adicionales</> : <>Cerrar gráficas adicionales</>}
                 </Button>
 
               </Box>
