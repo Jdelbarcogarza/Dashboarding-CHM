@@ -134,9 +134,9 @@ export default function Search() {
 
   const [queryMade, setQueryMade] = useState(false);
 
-  
+
   ///////////////// FUNCION PARA DESPLEGAR GRÁFICAS ADICIONALES Y ESCONDER DATA GRID
-  
+
   // state para las graficas de chart js
   const [displayCharts, setDisplayCharts] = useState(false)
 
@@ -147,18 +147,16 @@ export default function Search() {
   const [userChartData, setUserChartData] = useState({})
 
   useEffect(() => {
-  
+
     setUserChartData({
       labels: ['GDS'],
       datasets: [{
-        label: 'GDS', 
+        label: 'GDS',
         data: patientData.map((data) => data.GDS_Total),
         backgroundColor: 'green'
       }]
     })
-  
-    displayData()
-   
+
   }, [patientData])
 
   ///////////////////////////// Funciones y Constantes handle /////////////////////////////
@@ -203,11 +201,12 @@ export default function Search() {
           fecha = fecha.substring(0, 10)
           resID[i].Fecha = fecha
         }
-        setPatientData(resID);
 
-        
+
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userID/${pacID.patientID}`).then(info => info.json())
+
+        setPatientData(resID);
         setPatientPersonalInfo(info)
 
         setQueryMade(true)
@@ -222,18 +221,14 @@ export default function Search() {
           fecha = fecha.substring(0, 10)
           resNom[i].Fecha = fecha
         }
-        setPatientData(resNom);
-        console.log(patientData[0].GDS_Total)
-        console.log(patientData[0])
-
-
-
-
-        
 
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userName/${nombre.patientName}`).then(info => info.json())
+
+        // despues de guardar la informacion. Actualizar estado de variables. Primero informacion permanente y luego la variable 
         setPatientPersonalInfo(info)
+        setPatientData(resNom);
+        console.log(patientData[0])
 
         setQueryMade(true)
       }
@@ -522,7 +517,7 @@ export default function Search() {
                   <TextField
                     label='Nombre del paciente'
                     value={patientName}
-                    onChange={(e) => { setPatientName(e.target.value)}}
+                    onChange={(e) => { setPatientName(e.target.value) }}
                     variant='standard'
                     disabled={!enableIdSearch}
                     fullWidth />
@@ -539,7 +534,11 @@ export default function Search() {
                   <Switch onChange={handleSwitchChange} />
                 </Box>
                 <Box>
-                  <Button variant='contained' onClick={handleSubmit}>Realizar busqueda</Button>
+                  <Button
+                    variant='contained'
+                    onClick={handleSubmit}>
+                    Realizar busqueda
+                  </Button>
                 </Box>
               </Stack>
             </Grid>
@@ -558,7 +557,7 @@ export default function Search() {
                     <Typography variant="body1" color="initial"><strong>ID de usuario:</strong> <em>{queryMade ? patientPersonalInfo.ID_Usuario : '#'}</em></Typography>
                     <Typography variant="body1" color="initial"><strong>Nombre:</strong> <em>{queryMade ? patientPersonalInfo.Nombre : '#'}</em></Typography>
                     <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
-                    <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 'H' ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
                   </Stack>
                 </Container>
               </Paper>
@@ -592,17 +591,17 @@ export default function Search() {
                     <InfoOutlinedIcon />
                   </Tooltip>
                 </Box>
-                    
-                <Button 
-                disabled={!queryMade}
-                variant="contained" color="secondary"
-                onClick={() => {
-                  displayData()
-                }}
+
+                <Button
+                  disabled={!queryMade}
+                  variant="contained" color="secondary"
+                  onClick={() => {
+                    displayData()
+                  }}
                 >
                   Obtener gráficas adicionales
-                </Button>                
-                
+                </Button>
+
               </Box>
 
               {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
@@ -720,8 +719,10 @@ export default function Search() {
                   autoHeight
                 />
               </Box>
-                {displayCharts && queryMade ? <Bar data={userChartData} /> : null}
 
+              <Box hidden={!displayCharts} sx={{width: '50%'}}>
+                {displayCharts ? <Bar data={userChartData} /> : null}
+              </Box>
 
 
             </Grid>
