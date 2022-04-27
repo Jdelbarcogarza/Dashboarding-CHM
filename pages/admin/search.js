@@ -35,7 +35,9 @@ import {
   Switch,
   Button,
   Paper,
-  Tooltip
+  Tooltip,
+  FormGroup,
+  FormControlLabel
 } from '@mui/material'
 
 import { DataGrid } from '@mui/x-data-grid'
@@ -592,15 +594,11 @@ export default function Search() {
                   </Tooltip>
                 </Box>
 
-                <Button
-                  disabled={!queryMade}
-                  variant="contained" color="secondary"
-                  onClick={() => {
-                    displayData()
-                  }}
-                >
-                  Obtener gráficas adicionales
-                </Button>
+                
+
+                <FormGroup sx={{}}>
+                  <FormControlLabel control={<Switch onChange={displayData} color="secondary" />} label="Obtener gráficas adicionales" />
+                </FormGroup>
 
               </Box>
 
@@ -720,7 +718,7 @@ export default function Search() {
                 />
               </Box>
 
-              <Box hidden={!displayCharts} sx={{width: '50%'}}>
+              <Box hidden={!displayCharts} sx={{ width: '50%' }}>
                 {displayCharts ? <Bar data={userChartData} /> : null}
               </Box>
 
