@@ -39,7 +39,11 @@ import {
   Paper,
   Tooltip,
   FormGroup,
-  FormControlLabel
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  FormLabel
 } from '@mui/material'
 
 import { DataGrid } from '@mui/x-data-grid'
@@ -138,6 +142,9 @@ export default function Search() {
 
   const [queryMade, setQueryMade] = useState(false);
 
+  ////////////////// CONTROL DE RADIOGROUP PARA SELECCION DE GRÁFICAS
+
+  const [graphType, setGraphType] = useState("Bar")
 
   ///////////////// FUNCION PARA DESPLEGAR GRÁFICAS ADICIONALES Y ESCONDER DATA GRID
 
@@ -822,68 +829,116 @@ export default function Search() {
                 />
               </Box>
 
+              <Divider sx={{ mt: 4 }} hidden={!displayCharts} />
+
               {/** AQUI COMIENZA EL GRID PARA ACOMODAR LAS GRAFICAS DE LAS PRUEBAS */}
               <Grid container spacing={4} hidden={!displayCharts}>
 
+
+                <Grid hidden={!displayCharts} item xs={12}
+                  sx={{ mt: 3 }}>
+                  <Typography hidden={!displayCharts}
+                    sx={{ my: 1 }}
+                    variant="h6"
+                    color="initial">Gráficas de progreso de tamizaje</Typography>
+
+                  <FormControl>
+                    <FormLabel id="type-of-graph">Seleccione un tipo de gráfica</FormLabel>
+                    <RadioGroup row defaultValue={"Bar"}>
+                      <FormControlLabel
+                        value={"Bar"}
+                        onChange={() => { setGraphType("Bar") }}
+                        control={<Radio />}
+                        label="Barra" />
+
+                      <FormControlLabel
+                        value={"Line"}
+                        onChange={() => { setGraphType("Line") }}
+                        control={<Radio />} label="Línea" />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartReloj} /> : null}
+
+                    {displayCharts && graphType === 'Bar' ? <Bar data={chartReloj} /> :
+                      displayCharts ? <Line data={chartReloj} /> :
+                        null}
                   </Box>
                 </Grid>
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartMMSE} /> : null}
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartMMSE} /> :
+                      displayCharts ? <Line data={chartMMSE} /> :
+                        null}
                   </Box>
                 </Grid>
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartGDS} /> : null}
-                  </Box>
-                </Grid>
-
-
-                <Grid item xs={6}>
-                  <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartKatz} /> : null}
-                  </Box>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartLWB} /> : null}
-                  </Box>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartSarcF} /> : null}
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartGDS} /> :
+                      displayCharts ? <Line data={chartGDS} /> :
+                        null}
                   </Box>
                 </Grid>
 
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartFuerza} /> : null}
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartKatz} /> :
+                      displayCharts ? <Line data={chartKatz} /> :
+                        null}
                   </Box>
                 </Grid>
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartSPPB} /> : null}
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartLWB} /> :
+                      displayCharts ? <Line data={chartLWB} /> :
+                        null}
                   </Box>
                 </Grid>
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartCFS_Fraility} /> : null}
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartSarcF} /> :
+                      displayCharts ? <Line data={chartSarcF} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartFuerza} /> :
+                      displayCharts ? <Line data={chartFuerza} /> :
+                        null}
                   </Box>
                 </Grid>
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={chartGijon} /> : null}
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartSPPB} /> :
+                      displayCharts ? <Line data={chartSPPB} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartCFS_Fraility} /> :
+                      displayCharts ? <Line data={chartCFS_Fraility} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartGijon} /> :
+                      displayCharts ? <Line data={chartGijon} /> :
+                        null}
                   </Box>
                 </Grid>
 
