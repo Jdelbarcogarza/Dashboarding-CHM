@@ -594,10 +594,10 @@ export default function Search() {
                   </Tooltip>
                 </Box>
 
-                
-
                 <FormGroup sx={{}}>
-                  <FormControlLabel control={<Switch onChange={displayData} color="secondary" />} label="Obtener gráficas adicionales" />
+                  <FormControlLabel
+                    control={<Switch onChange={displayData} color="secondary" />}
+                    label="Obtener gráficas adicionales" />
                 </FormGroup>
 
               </Box>
