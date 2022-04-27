@@ -141,22 +141,122 @@ export default function Search() {
 
   ///////////////// FUNCION PARA DESPLEGAR GRÁFICAS ADICIONALES Y ESCONDER DATA GRID
 
-  // state para las graficas de chart js
+  // state para mostrar/ocultar graficas de chart js.
   const [displayCharts, setDisplayCharts] = useState(false)
 
   function displayData() {
     setDisplayCharts(!displayCharts)
   }
 
-  const [userChartData, setUserChartData] = useState({})
+  const [chartReloj, setChartReloj] = useState({})
+  const [chartMMSE, setChartMMSE] = useState({})
+  const [chartGDS, setChartGDS] = useState({})
+  const [chartKatz, setChartKatz] = useState({})
+  const [chartLWB, setChartLWB] = useState({})
+  const [chartSarcF, setChartSarcF] = useState({})
+  const [chartFuerza, setChartFuerza] = useState({})
+  const [chartSPPB, setChartSPPB] = useState({})
+  const [chartCFS_Fraility, setChartCFS_Fraility] = useState({})
+  const [chartGijon, setChartGijon] = useState({})
 
   useEffect(() => {
 
-    setUserChartData({
-      labels: ['GDS'],
+    // Prueba de reloj
+    setChartReloj({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Reloj',
+        data: patientData.map((data) => data.Reloj),
+        backgroundColor: 'blue'
+      }]
+    })
+
+    // Prueba MMSE
+    setChartMMSE({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'MMSE',
+        data: patientData.map((data) => data.MMSE_Total),
+        backgroundColor: 'red'
+      }]
+    })
+
+    // Prueba GDS
+    setChartGDS({
+      labels: patientData.map((data) => data.Fecha),
       datasets: [{
         label: 'GDS',
         data: patientData.map((data) => data.GDS_Total),
+        backgroundColor: 'green'
+      }]
+    })
+
+    // Prueba Katz
+    setChartKatz({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Katz',
+        data: patientData.map((data) => data.Katz_Total),
+        backgroundColor: 'green'
+      }]
+    })
+
+    // Prueba LWB
+    setChartLWB({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'LWB',
+        data: patientData.map((data) => data.LWB_Total),
+        backgroundColor: 'green'
+      }]
+    })
+
+    // Prueba Sarc F
+    setChartSarcF({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'GDS',
+        data: patientData.map((data) => data.Sarc_F),
+        backgroundColor: 'green'
+      }]
+    })
+
+    // Prueba Fuerza 
+    setChartFuerza({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Fuerza',
+        data: patientData.map((data) => data.Fuerza_Domin),
+        backgroundColor: 'green'
+      }]
+    })
+
+    // Prueba SPPB
+    setChartSPPB({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'SPPB',
+        data: patientData.map((data) => data.SPPB_Global),
+        backgroundColor: 'green'
+      }]
+    })
+
+    // CFS Fraility
+    setChartCFS_Fraility({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'CFS Fraility',
+        data: patientData.map((data) => data.CFS_Fraility),
+        backgroundColor: 'green'
+      }]
+    })
+
+    // Prueba Gijon
+    setChartGijon({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Gijon',
+        data: patientData.map((data) => data.Gijon),
         backgroundColor: 'green'
       }]
     })
@@ -724,22 +824,66 @@ export default function Search() {
 
               {/** AQUI COMIENZA EL GRID PARA ACOMODAR LAS GRAFICAS DE LAS PRUEBAS */}
               <Grid container spacing={4} hidden={!displayCharts}>
-                
+
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={userChartData} /> : null}
+                    {displayCharts ? <Bar data={chartReloj} /> : null}
                   </Box>
                 </Grid>
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={userChartData} /> : null}
+                    {displayCharts ? <Bar data={chartMMSE} /> : null}
                   </Box>
                 </Grid>
 
                 <Grid item xs={6}>
                   <Box sx={{ width: '100%' }}>
-                    {displayCharts ? <Bar data={userChartData} /> : null}
+                    {displayCharts ? <Bar data={chartGDS} /> : null}
+                  </Box>
+                </Grid>
+
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={chartKatz} /> : null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={chartLWB} /> : null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={chartSarcF} /> : null}
+                  </Box>
+                </Grid>
+
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={chartFuerza} /> : null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={chartSPPB} /> : null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={chartCFS_Fraility} /> : null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={chartGijon} /> : null}
                   </Box>
                 </Grid>
 
