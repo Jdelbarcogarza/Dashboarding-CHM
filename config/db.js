@@ -5,6 +5,8 @@ var pass = ""
 
 if (dir.indexOf("Users\\Pato2808") != -1) {
   pass = "pato2808"
+} else if (dir.indexOf("Users\\jdelb") != -1){
+  pass = "Pas#35741"
 }
 else {
   pass = "12345"
