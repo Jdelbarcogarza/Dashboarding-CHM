@@ -167,7 +167,7 @@ export default function Search() {
       datasets: [{
         label: 'Reloj',
         data: patientData.map((data) => data.Reloj),
-        backgroundColor: 'blue'
+        backgroundColor: '#007bb2'
       }]
     })
 
@@ -187,7 +187,7 @@ export default function Search() {
       datasets: [{
         label: 'GDS',
         data: patientData.map((data) => data.GDS_Total),
-        backgroundColor: 'green'
+        backgroundColor: '#00e676'
       }]
     })
 
@@ -197,7 +197,7 @@ export default function Search() {
       datasets: [{
         label: 'Katz',
         data: patientData.map((data) => data.Katz_Total),
-        backgroundColor: 'green'
+        backgroundColor: '#651fff'
       }]
     })
 
@@ -207,7 +207,7 @@ export default function Search() {
       datasets: [{
         label: 'LWB',
         data: patientData.map((data) => data.LWB_Total),
-        backgroundColor: 'green'
+        backgroundColor: '#ff9100'
       }]
     })
 
@@ -217,7 +217,7 @@ export default function Search() {
       datasets: [{
         label: 'GDS',
         data: patientData.map((data) => data.Sarc_F),
-        backgroundColor: 'green'
+        backgroundColor: '#ed4b82'
       }]
     })
 
@@ -227,7 +227,7 @@ export default function Search() {
       datasets: [{
         label: 'Fuerza',
         data: patientData.map((data) => data.Fuerza_Domin),
-        backgroundColor: 'green'
+        backgroundColor: '#0277bd'
       }]
     })
 
@@ -237,7 +237,7 @@ export default function Search() {
       datasets: [{
         label: 'SPPB',
         data: patientData.map((data) => data.SPPB_Global),
-        backgroundColor: 'green'
+        backgroundColor: '#cddc39'
       }]
     })
 
@@ -247,7 +247,7 @@ export default function Search() {
       datasets: [{
         label: 'CFS Fraility',
         data: patientData.map((data) => data.CFS_Fraility),
-        backgroundColor: 'green'
+        backgroundColor: '#ae7519'
       }]
     })
 
@@ -257,7 +257,7 @@ export default function Search() {
       datasets: [{
         label: 'Gijon',
         data: patientData.map((data) => data.Gijon),
-        backgroundColor: 'green'
+        backgroundColor: '#535da8'
       }]
     })
 
