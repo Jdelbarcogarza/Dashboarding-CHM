@@ -260,6 +260,21 @@ export default function SearchGroup() {
               setPatientData(res1);
           }
           else if (parroquia != '' & decanato != '' & zona != '') {
+              for(let i = 0; i < parroquia.length; i++){
+                if(!isNaN(parroquia[i])){
+                  parroquia = parroquia.substring(i);
+                }
+              }
+              for(let i = 0; i < decanato.length; i++){
+                if(!isNaN(decanato[i])){
+                  decanato = decanato.substring(i);
+                }
+              }
+              for(let i = 0; i < zona.length; i++){
+                if(!isNaN(zona[i])){
+                  zona = zona.substring(i);
+                }
+              }
               const ubi = parroquia + '-' + decanato + '-' + zona;
               const res2 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-prueba/${gender}/${edad}/${ubi}/${tests}`).then(resID => resID.json())
               console.log(gender);
