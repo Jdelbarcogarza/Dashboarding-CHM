@@ -171,19 +171,37 @@ export default function SearchGroup() {
     const [parroquias, setParroquias] = useState([]);
 
     ///////////////////////////// Funciones y Constantes handle /////////////////////////////
-
+    
     function handleSwitchUbi() {
-      setEnableUbi(!enableUbi)
+      setEnableUbi(!enableUbi);
       setZonasVariable();
     }
 
     const setZonasVariable = async (e) => {
-      const tZonasJson = await fetch(`/api/location/${gender}`).then(tZonas => tZonas.json())
+      const tZonasJson = await fetch(`/api/location/zona/1`).then(tZonas => tZonas.json())
       const tZonas = [];
       for (let i = 0; i < tZonasJson.length; i++) {
         tZonas.push(tZonasJson[i]["Nombre"]);
       }
       setZonas(tZonas);
+    }
+
+    const setDecanatosVariable = async (e, nomZona) => {
+      const tDecanatosJson = await fetch(`/api/location/decanato/${nomZona}`).then(tDecanatos => tDecanatos.json())
+      const tDecanatos = [];
+      for (let i = 0; i < tDecanatosJson.length; i++) {
+        tDecanatos.push(tDecanatosJson[i]["Nombre"]);
+      }
+      setDecanatos(tDecanatos);
+    }
+
+    const setParroquiasVariable = async (e, nomDecanato) => {
+      const tParroquiasJson = await fetch(`/api/location/parroquia/${nomDecanato}`).then(tParroquias => tParroquias.json())
+      const tParroquias = [];
+      for (let i = 0; i < tParroquiasJson.length; i++) {
+        tParroquias.push(tParroquiasJson[i]["Nombre"]);
+      }
+      setParroquias(tParroquias);
     }
 
     const handleAtributoChange = (event, newAtributo) => {
@@ -607,12 +625,13 @@ export default function SearchGroup() {
                                         <Select
                                             value={zona}
                                             label="Zona"
-                                            onChange={(e) => { setZona(e.target.value) }}
+                                            onChange={ (e) => {setZona(e.target.value)
+                                                              setDecanatosVariable(e.target.value, e.target.value)}}
                                             disabled={enableUbi}
                                         >
                                         {zonas.map((zs, i) => {
                                           return (
-                                            <MenuItem key={index} value = {(i + 1) * 10}>{zs}</MenuItem>
+                                            <MenuItem key={i} value={zonas[i]}> {zs} </MenuItem>
                                           )
                                         })}
                                         </Select>
@@ -625,11 +644,15 @@ export default function SearchGroup() {
                                         <Select
                                             value={decanato}
                                             label="Decanato"
-                                            onChange={(e) => { setDecanato(e.target.value) }}
+                                            onChange={(e) => { setDecanato(e.target.value)
+                                                               setParroquiasVariable(e.target.value, e.target.value)}}
                                             disabled={enableUbi}
                                         >
-                                            <MenuItem value={1}>Decanato 1</MenuItem>
-                                            <MenuItem value={2}>Decanato 2</MenuItem>
+                                        {decanatos.map((dc, i) => {
+                                          return (
+                                            <MenuItem key={i} value={decanatos[i]}>{dc}</MenuItem>
+                                          )
+                                        })}
                                         </Select>
                                     </FormControl>
                                 </Box>
@@ -643,8 +666,11 @@ export default function SearchGroup() {
                                             onChange={(e) => { setParroquia(e.target.value) }}
                                             disabled={enableUbi}
                                         >
-                                            <MenuItem value={1}>Parroquia 1</MenuItem>
-                                            <MenuItem value={2}>Parroquia 2</MenuItem>
+                                        {parroquias.map((pr, i) => {
+                                          return (
+                                            <MenuItem key={i} value={parroquias[i]}>{pr}</MenuItem>
+                                          )
+                                        })}
                                         </Select>
                                     </FormControl>
                                 </Box>
