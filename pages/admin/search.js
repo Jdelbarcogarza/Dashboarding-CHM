@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -24,6 +24,8 @@ import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 import { NextLink } from 'next/Link'
 import {
@@ -31,16 +33,25 @@ import {
   Grid,
   Container,
   TextField,
-  Autocomplete,
   Stack,
   Switch,
   Button,
   Paper,
-  Tooltip
+  Tooltip,
+  FormGroup,
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  FormLabel
 } from '@mui/material'
 
 import { DataGrid } from '@mui/x-data-grid'
 import clsx from 'clsx'
+
+import Chart from 'chart.js/auto';
+import { Line, Bar } from 'react-chartjs-2';
+
 
 const drawerWidth = 240;
 
@@ -131,6 +142,134 @@ export default function Search() {
 
   const [queryMade, setQueryMade] = useState(false);
 
+  ////////////////// CONTROL DE RADIOGROUP PARA SELECCION DE GRÁFICAS
+
+  const [graphType, setGraphType] = useState("Bar")
+
+  ///////////////// FUNCION PARA DESPLEGAR GRÁFICAS ADICIONALES Y ESCONDER DATA GRID
+
+  // state para mostrar/ocultar graficas de chart js.
+  const [displayCharts, setDisplayCharts] = useState(false)
+
+  function displayData() {
+    setDisplayCharts(!displayCharts)
+  }
+
+  const [chartReloj, setChartReloj] = useState({})
+  const [chartMMSE, setChartMMSE] = useState({})
+  const [chartGDS, setChartGDS] = useState({})
+  const [chartKatz, setChartKatz] = useState({})
+  const [chartLWB, setChartLWB] = useState({})
+  const [chartSarcF, setChartSarcF] = useState({})
+  const [chartFuerza, setChartFuerza] = useState({})
+  const [chartSPPB, setChartSPPB] = useState({})
+  const [chartCFS_Fraility, setChartCFS_Fraility] = useState({})
+  const [chartGijon, setChartGijon] = useState({})
+
+  useEffect(() => {
+
+    // Prueba de reloj
+    setChartReloj({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Reloj',
+        data: patientData.map((data) => data.Reloj),
+        backgroundColor: '#007bb2'
+      }]
+    })
+
+    // Prueba MMSE
+    setChartMMSE({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'MMSE',
+        data: patientData.map((data) => data.MMSE_Total),
+        backgroundColor: 'red'
+      }]
+    })
+
+    // Prueba GDS
+    setChartGDS({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'GDS',
+        data: patientData.map((data) => data.GDS_Total),
+        backgroundColor: '#00e676'
+      }]
+    })
+
+    // Prueba Katz
+    setChartKatz({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Katz',
+        data: patientData.map((data) => data.Katz_Total),
+        backgroundColor: '#651fff'
+      }]
+    })
+
+    // Prueba LWB
+    setChartLWB({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'LWB',
+        data: patientData.map((data) => data.LWB_Total),
+        backgroundColor: '#ff9100'
+      }]
+    })
+
+    // Prueba Sarc F
+    setChartSarcF({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'GDS',
+        data: patientData.map((data) => data.Sarc_F),
+        backgroundColor: '#ed4b82'
+      }]
+    })
+
+    // Prueba Fuerza 
+    setChartFuerza({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Fuerza',
+        data: patientData.map((data) => data.Fuerza_Domin),
+        backgroundColor: '#0277bd'
+      }]
+    })
+
+    // Prueba SPPB
+    setChartSPPB({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'SPPB',
+        data: patientData.map((data) => data.SPPB_Global),
+        backgroundColor: '#cddc39'
+      }]
+    })
+
+    // CFS Fraility
+    setChartCFS_Fraility({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'CFS Fraility',
+        data: patientData.map((data) => data.CFS_Fraility),
+        backgroundColor: '#ae7519'
+      }]
+    })
+
+    // Prueba Gijon
+    setChartGijon({
+      labels: patientData.map((data) => data.Fecha),
+      datasets: [{
+        label: 'Gijon',
+        data: patientData.map((data) => data.Gijon),
+        backgroundColor: '#535da8'
+      }]
+    })
+
+  }, [patientData])
+
   ///////////////////////////// Funciones y Constantes handle /////////////////////////////
 
   function handleSwitchChange() {
@@ -150,7 +289,6 @@ export default function Search() {
     const a = { atributo };
     const tests = "";
 
-    console.log(a.atributo.length);
 
     if (a.atributo.length == 0) {
       tests = "$"
@@ -163,47 +301,45 @@ export default function Search() {
       }
     }
 
-    console.log(tests);
 
     try {
       if (pacID.patientID != '' & !habilitado.enableIdSearch) {
         // endpoint que devuelve solo resultados del tamizaje
         var resID = await fetch(`/api/searchPrueba/one/ID/${tests}/${pacID.patientID}`).then(resID => resID.json())
-        //console.log("Esto es resID");
-        //console.log(resID);
+
         for (var i = 0; i < resID.length; i++) {
           var fecha = resID[i].Fecha
-          fecha = fecha.substring(0,10)
+          fecha = fecha.substring(0, 10)
           resID[i].Fecha = fecha
         }
-        setPatientData(resID);
-  
+
+
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userID/${pacID.patientID}`).then(info => info.json())
-        console.log(info)
+
+        setPatientData(resID);
         setPatientPersonalInfo(info)
-  
+
         setQueryMade(true)
-  
+
       }
       else if (nombre.patientName != '' & habilitado.enableIdSearch) {
-        //console.log(nombre);
+
         var resNom = await fetch(`/api/searchPrueba/one/Name/${tests}/${nombre.patientName}`).then(resNom => resNom.json())
-        //console.log("Esto es resNom");
-        //console.log(resNom);
+
         for (var i = 0; i < resNom.length; i++) {
           var fecha = resNom[i].Fecha
-          fecha = fecha.substring(0,10)
+          fecha = fecha.substring(0, 10)
           resNom[i].Fecha = fecha
         }
-        setPatientData(resNom);
-  
-  
+
         // endpoint que retorna informacion del paciente
         const info = await fetch(`/api/userName/${nombre.patientName}`).then(info => info.json())
-        console.log(info)
+
+        // despues de guardar la informacion. Actualizar estado de variables. Primero informacion permanente y luego la variable 
         setPatientPersonalInfo(info)
-  
+        setPatientData(resNom);
+
         setQueryMade(true)
       }
       else {
@@ -216,6 +352,8 @@ export default function Search() {
       setQueryMade(false)
     }
   }
+
+
 
   /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
   // ESCALA DE 5 COLORES. Acomodados de mejor estado a peor estado
@@ -252,15 +390,15 @@ export default function Search() {
         return '';
       }
 
-      return clsx('MMSE', {
-        normal: 25 <= params.value && params.value <= 30,
-        dcl: 22 <= params.value && params.value <= 24,
-        demenciaLeve: 18 <= params.value && params.value < 22,
-        demenciaModerada: 12 <= params.value && params.value <= 18,
-        demenciaSevera: params.value < 12,
+        return clsx('MMSE', {
+          normal: 25 <= params.value && params.value <= 30,
+          dcl: 22 <= params.value && params.value <= 24,
+          demenciaLeve: 18 <= params.value && params.value < 22,
+          demenciaModerada: 12 <= params.value && params.value <= 18,
+          demenciaSevera: params.value < 12,
 
-      });
-    }
+        });
+      }
     },
     {
       field: "GDS_Total", headerName: 'GDS',
@@ -300,8 +438,8 @@ export default function Search() {
         }
         // 1 es masculino. 2 es femenino
         return clsx('LWB', {
-          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H'  || params.value >= 7 && patientPersonalInfo.Genero === 'M',
-          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H'  || params.value < 7 && patientPersonalInfo.Genero === 'M',
+          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H' || params.value >= 7 && patientPersonalInfo.Genero === 'M',
+          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H' || params.value < 7 && patientPersonalInfo.Genero === 'M',
 
         });
       }
@@ -328,7 +466,7 @@ export default function Search() {
         }
 
         return clsx('Fuerza', {
-          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M' ,
+          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M',
           sarcodinia: params.value <= 27 && patientPersonalInfo.Genero === 'H' || params.value <= 20 && patientPersonalInfo.Genero === 'M'
 
         });
@@ -360,8 +498,8 @@ export default function Search() {
           fragil: 3 <= params.value && params.value <= 5,
         });
       }
-   },
-    { 
+    },
+    {
       field: "Gijon",
       cellClassName: (params) => {
         if (params.value == -1) {
@@ -374,7 +512,7 @@ export default function Search() {
           riesgoAlto: 10 <= params.value,
         });
       }
-   }
+    }
 
   ]
 
@@ -492,7 +630,6 @@ export default function Search() {
                     variant='standard'
                     disabled={!enableIdSearch}
                     fullWidth />
-                  {/*console.log("el valor es ", patientName)*/}
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'baseline', width: '60%' }}>
@@ -503,11 +640,14 @@ export default function Search() {
                     variant='standard'
                     helperText={'La busqueda por ID desactivará la consulta por nombre'}
                     disabled={enableIdSearch} />
-                  {/*console.log("el valor es ", patientID)*/}
                   <Switch onChange={handleSwitchChange} />
                 </Box>
                 <Box>
-                  <Button variant='contained' onClick={handleSubmit}>Realizar busqueda</Button>
+                  <Button
+                    variant='contained'
+                    onClick={handleSubmit}>
+                    Realizar busqueda
+                  </Button>
                 </Box>
               </Stack>
             </Grid>
@@ -519,7 +659,6 @@ export default function Search() {
               <Paper sx={{ p: 2 }} elevation={2}>
                 <Container
                 >
-                  {/** agregar use effect para que en el primer render solo ponga placeholder values y no deba de leer el objeto vacio de patientData */}
 
                   <Typography sx={{ textAlign: 'center', pb: 1 }} variant="h6" color="initial" >Datos del paciente</Typography>
                   <Stack>
@@ -527,69 +666,54 @@ export default function Search() {
                     <Typography variant="body1" color="initial"><strong>ID de usuario:</strong> <em>{queryMade ? patientPersonalInfo.ID_Usuario : '#'}</em></Typography>
                     <Typography variant="body1" color="initial"><strong>Nombre:</strong> <em>{queryMade ? patientPersonalInfo.Nombre : '#'}</em></Typography>
                     <Typography variant="body1" color="initial"><strong>Año de nacimiento:</strong> <em>{queryMade ? patientPersonalInfo.Año_Nac : '#'}</em></Typography>
-                    <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 1 ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
+                    <Typography variant="body1" color="initial"><strong>Genero:</strong> <em>{queryMade ? (patientPersonalInfo.Genero == 'H' ? 'Masculino' : 'Femenino') : '#'}</em></Typography>
                   </Stack>
-
-
                 </Container>
               </Paper>
 
             </Grid>
-
-            <Stack spacing={5} sx={{ width: 400 }}>
-
-
-
-              <Autocomplete
-                hidden // QUITAR ESTE PROP PARA HACER VISIBLE EL COMPONENTE
-                multiple
-                options={atributosPrueba}
-                groupBy={(option) => option.prueba}
-                getOptionLabel={(option) => option.atributo}
-                onChange={handleAtributoChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Seleccione los atributos de la prueba"
-                    placeholder="Atributos"
-                  />
-                )}
-              />
-
-
-            </Stack>
 
             {/** SECCIÓN DE RESULTADOS CON TABLA */}
             <Grid item xs={12}>
 
               <Divider />
 
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography
-                  variant='h6'
-                  sx={{
-                    marginY: '1em'
-                  }}>Aqui se despliegan los resultados de la búsqueda </Typography>
-                <Tooltip
-                  sx={{ ml: '0.5em' }}
-                  placement={'right'}
-                  title={
-                    <Typography variant="subtitle2" color="white">
-                      Cada prueba tiene su escala. Algunas cuentan con 3 interpretaciones
-                      pero otras terminan con 5. Los colores con <em><strong>tonalidades más claras</strong></em> de verde, amarillo y rojo son utilizadas para brindar
-                      una <em><strong>semaforización más descriptiva</strong></em>
-                    </Typography>
-                  }
-                >
-                  <InfoOutlinedIcon />
-                </Tooltip>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography
+                    variant='h6'
+                    sx={{
+                      marginY: '1em'
+                    }}>Aqui se despliegan los resultados de la búsqueda </Typography>
+                  <Tooltip
+                    sx={{ ml: '0.5em' }}
+                    placement={'right'}
+                    title={
+                      <Typography variant="subtitle2" color="white">
+                        Cada prueba tiene su escala. Algunas cuentan con 3 interpretaciones
+                        pero otras terminan con 5. Los colores con <em><strong>tonalidades más claras</strong></em> de verde, amarillo y rojo son utilizadas para brindar
+                        una <em><strong>semaforización más descriptiva</strong></em>
+                      </Typography>
+                    }
+                  >
+                    <InfoOutlinedIcon />
+                  </Tooltip>
+                </Box>
+
+                <Button
+                  onClick={displayData}
+                  variant="contained"
+                  color="secondary"
+                  startIcon={displayCharts ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}>
+                  {!displayCharts ? <>Mostrar gráficas adicionales</> : <>Cerrar gráficas adicionales</>}
+                </Button>
+
               </Box>
-
-
 
               {/** BOX PARA DAR STYLING A LAS CELDAS CON SU RESPECTIVO COLOR */}
               <Box
+                hidden={false}
                 sx={{
                   // prueba de Reloj
                   '& .reloj.normal': {
@@ -701,8 +825,124 @@ export default function Search() {
                   rowsPerPageOptions={[5]}
                   autoHeight
                 />
-
               </Box>
+
+              <Divider sx={{ mt: 4 }} hidden={!displayCharts} />
+
+              {/** AQUI COMIENZA EL GRID PARA ACOMODAR LAS GRAFICAS DE LAS PRUEBAS */}
+              <Grid container spacing={4} hidden={!displayCharts}>
+
+
+                <Grid hidden={!displayCharts} item xs={12}
+                  sx={{ mt: 3 }}>
+                  <Typography hidden={!displayCharts}
+                    sx={{ my: 1 }}
+                    variant="h6"
+                    color="initial">Gráficas de progreso de tamizaje</Typography>
+
+                  <FormControl>
+                    <FormLabel id="type-of-graph">Seleccione un tipo de gráfica</FormLabel>
+                    <RadioGroup row defaultValue={"Bar"}>
+                      <FormControlLabel
+                        value={"Bar"}
+                        onChange={() => { setGraphType("Bar") }}
+                        control={<Radio />}
+                        label="Barra" />
+
+                      <FormControlLabel
+                        value={"Line"}
+                        onChange={() => { setGraphType("Line") }}
+                        control={<Radio />} label="Línea" />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+
+                    {displayCharts && graphType === 'Bar' ? <Bar data={chartReloj} /> :
+                      displayCharts ? <Line data={chartReloj} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartMMSE} /> :
+                      displayCharts ? <Line data={chartMMSE} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartGDS} /> :
+                      displayCharts ? <Line data={chartGDS} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartKatz} /> :
+                      displayCharts ? <Line data={chartKatz} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartLWB} /> :
+                      displayCharts ? <Line data={chartLWB} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartSarcF} /> :
+                      displayCharts ? <Line data={chartSarcF} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartFuerza} /> :
+                      displayCharts ? <Line data={chartFuerza} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartSPPB} /> :
+                      displayCharts ? <Line data={chartSPPB} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartCFS_Fraility} /> :
+                      displayCharts ? <Line data={chartCFS_Fraility} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                  {displayCharts && graphType === 'Bar' ? <Bar data={chartGijon} /> :
+                      displayCharts ? <Line data={chartGijon} /> :
+                        null}
+                  </Box>
+                </Grid>
+
+              </Grid>
+
+
 
             </Grid>
           </Grid>
@@ -714,21 +954,3 @@ export default function Search() {
 
   );
 }
-
-const atributosPrueba = [
-  { prueba: 'Reloj', atributo: 'Reloj', value: 'Reloj' },
-  { prueba: 'MMSE', atributo: 'Orientacion Temporal', value: 'Orient_Temp' },
-  { prueba: 'MMSE', atributo: 'Orientacion Espacial', value: 'Orient_Esp' },
-  { prueba: 'MMSE', atributo: 'Registro', value: 'Registro' },
-  { prueba: 'MMSE', atributo: 'Calculo', value: 'Calculo' },
-  { prueba: 'MMSE', atributo: 'Memoria', value: 'Memoria' },
-  { prueba: 'MMSE', atributo: 'Eject', value: 'Eject' },
-  { prueba: 'GDS', atributo: 'GDS', value: 'GDS_Total' },
-  { prueba: 'Katz', atributo: 'Katz', value: 'Katz_Total' },
-  { prueba: 'LWB', atributo: 'LWB', value: 'LWB_Total' },
-  { prueba: 'Sarc F', atributo: 'Sarc F', value: 'Sarc_F' },
-  { prueba: 'Fuerza', atributo: 'Fuerza', value: 'Fuerza_Domin' },
-  { prueba: 'SPPB', atributo: 'SPPB', value: 'SPPB_Global' },
-  { prueba: 'CFS Fraility', atributo: 'CFS Fraility', value: 'CFS_Fraility' },
-  { prueba: 'Gijon', atributo: 'Gijon', value: 'Gijon' },
-];
