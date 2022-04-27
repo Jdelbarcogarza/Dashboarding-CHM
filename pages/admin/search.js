@@ -24,6 +24,8 @@ import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 import { NextLink } from 'next/Link'
 import {
@@ -594,11 +596,13 @@ export default function Search() {
                   </Tooltip>
                 </Box>
 
-                <FormGroup sx={{}}>
-                  <FormControlLabel
-                    control={<Switch onChange={displayData} color="secondary" />}
-                    label="Obtener gráficas adicionales" />
-                </FormGroup>
+                <Button
+                  onClick={displayData}
+                  variant="contained"
+                  color="secondary"
+                  startIcon={displayCharts ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}>
+                  {!displayCharts ? <>Ver gráficas adicionales</> : <>Cerrar gráficas adicionales</>}
+                </Button>
 
               </Box>
 
