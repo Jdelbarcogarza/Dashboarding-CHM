@@ -161,117 +161,169 @@ export default function SearchGroup() {
     // datos permanentes de paciente
     const [patientPersonalInfo, setPatientPersonalInfo] = useState([]);
 
-    ///////////////////////////// Funciones y Constantes handle /////////////////////////////
+    // Zonas
+    const [zonas, setZonas] = useState([]);
 
+    // Decanatos
+    const [decanatos, setDecanatos] = useState([]);
+
+    // Parroquias
+    const [parroquias, setParroquias] = useState([]);
+
+    ///////////////////////////// Funciones y Constantes handle /////////////////////////////
+    
     function handleSwitchUbi() {
-        setEnableUbi(!enableUbi)
+      setEnableUbi(!enableUbi);
+      setZonasVariable();
+    }
+
+    const setZonasVariable = async (e) => {
+      const tZonasJson = await fetch(`/api/location/zona/1`).then(tZonas => tZonas.json())
+      const tZonas = [];
+      for (let i = 0; i < tZonasJson.length; i++) {
+        tZonas.push(tZonasJson[i]["Nombre"]);
+      }
+      setZonas(tZonas);
+    }
+
+    const setDecanatosVariable = async (e, nomZona) => {
+      const tDecanatosJson = await fetch(`/api/location/decanato/${nomZona}`).then(tDecanatos => tDecanatos.json())
+      const tDecanatos = [];
+      for (let i = 0; i < tDecanatosJson.length; i++) {
+        tDecanatos.push(tDecanatosJson[i]["Nombre"]);
+      }
+      setDecanatos(tDecanatos);
+    }
+
+    const setParroquiasVariable = async (e, nomDecanato) => {
+      const tParroquiasJson = await fetch(`/api/location/parroquia/${nomDecanato}`).then(tParroquias => tParroquias.json())
+      const tParroquias = [];
+      for (let i = 0; i < tParroquiasJson.length; i++) {
+        tParroquias.push(tParroquiasJson[i]["Nombre"]);
+      }
+      setParroquias(tParroquias);
     }
 
     const handleAtributoChange = (event, newAtributo) => {
-        setAtributo(newAtributo);
+      setAtributo(newAtributo);
     };
 
     function handleSwitchChange() {
-        setEnableCalificacion(!enableCalificacion);
+      setEnableCalificacion(!enableCalificacion);
     }
 
     const handleGradeAtributoChange = (event, newAtributo) => {
-        setGradeAtr(newAtributo);
+      setGradeAtr(newAtributo);
     };
 
     const handleGradeChange = (event, newGrade) => {
-        setGrade(newGrade);
+      setGrade(newGrade);
     };
 
     const handleAgeChange = (event, newAge) => {
-        setAge(newAge);
+      setAge(newAge);
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const edad = age[0] + "-" + age[1];
+      const edad = age[0] + "-" + age[1];
 
-        if (enableCalificacion) {
+      if (enableCalificacion) {
 
-            var tests = "";
+          var tests = "";
 
-            // Envia "$" si no se selecciono ninguna prueba (por default se seleccionan todas)
-            // o concatena todas las pruebas que se seleccionaron en un mismo string
-            if (atributo.length == 0) {
-                tests = "$"
-            }
-            else {
-                var i = 0; for (i = 0; i < atributo.length; i++) {
-                    if (atributo.length >= 1) {
-                        tests = tests + "!" + atributo[i].value;
-                    }
+          // Envia "$" si no se selecciono ninguna prueba (por default se seleccionan todas)
+          // o concatena todas las pruebas que se seleccionaron en un mismo string
+          if (atributo.length == 0) {
+              tests = "$"
+          }
+          else {
+              var i = 0; for (i = 0; i < atributo.length; i++) {
+                  if (atributo.length >= 1) {
+                      tests = tests + "!" + atributo[i].value;
+                  }
+              }
+          }
+
+          if (enableUbi) {
+              const res1 = await fetch(`/api/searchPrueba/groupMaxDate/prueba/${gender}/${edad}/${tests}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(tests);
+              console.log(res1);
+              for (var i = 0; i < res1.length; i++) {
+                var fecha = res1[i].Fecha
+                fecha = fecha.substring(0,10)
+                res1[i].Fecha = fecha
+              }
+              setPatientData(res1);
+          }
+          else if (parroquia != '' & decanato != '' & zona != '') {
+              for(let i = 0; i < parroquia.length; i++){
+                if(!isNaN(parroquia[i])){
+                  parroquia = parroquia.substring(i);
                 }
-            }
-
-            if (enableUbi) {
-                const res1 = await fetch(`/api/searchPrueba/groupMaxDate/prueba/${gender}/${edad}/${tests}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(tests);
-                console.log(res1);
-                for (var i = 0; i < res1.length; i++) {
-                  var fecha = res1[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res1[i].Fecha = fecha
+              }
+              for(let i = 0; i < decanato.length; i++){
+                if(!isNaN(decanato[i])){
+                  decanato = decanato.substring(i);
                 }
-                setPatientData(res1);
-            }
-            else if (parroquia != '' & decanato != '' & zona != '') {
-                const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res2 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-prueba/${gender}/${edad}/${ubi}/${tests}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(ubi);
-                console.log(tests);
-                console.log(res2);
-                for (var i = 0; i < res2.length; i++) {
-                  var fecha = res2[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res2[i].Fecha = fecha
+              }
+              for(let i = 0; i < zona.length; i++){
+                if(!isNaN(zona[i])){
+                  zona = zona.substring(i);
                 }
-                setPatientData(res2);
-            }
+              }
+              const ubi = parroquia + '-' + decanato + '-' + zona;
+              const res2 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-prueba/${gender}/${edad}/${ubi}/${tests}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(ubi);
+              console.log(tests);
+              console.log(res2);
+              for (var i = 0; i < res2.length; i++) {
+                var fecha = res2[i].Fecha
+                fecha = fecha.substring(0,10)
+                res2[i].Fecha = fecha
+              }
+              setPatientData(res2);
+          }
 
-        }
-        else if (gradeAtr != verif) {
+      }
+      else if (gradeAtr != verif) {
 
-            const gA = grade[0] + "-" + grade[1] + "-" + gradeAtr.value;
+          const gA = grade[0] + "-" + grade[1] + "-" + gradeAtr.value;
 
-            if (enableUbi) {
-                const res3 = await fetch(`/api/searchPrueba/groupMaxDate/calif/${gender}/${edad}/${gA}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(gA);
-                console.log(res3);
-                for (var i = 0; i < res3.length; i++) {
-                  var fecha = res3[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res3[i].Fecha = fecha
-                }
-                setPatientData(res3);
-            }
-            else if (parroquia != '' & decanato != '' & zona != '') {
-                const ubi = parroquia + '-' + decanato + '-' + zona;
-                const res4 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-calif/${gender}/${edad}/${ubi}/${gA}`).then(resID => resID.json())
-                console.log(gender);
-                console.log(edad);
-                console.log(ubi);
-                console.log(gA);
-                console.log(res4);
-                for (var i = 0; i < res4.length; i++) {
-                  var fecha = res4[i].Fecha
-                  fecha = fecha.substring(0,10)
-                  res4[i].Fecha = fecha
-                }
-                setPatientData(res4);
-            }
-        }
+          if (enableUbi) {
+              const res3 = await fetch(`/api/searchPrueba/groupMaxDate/calif/${gender}/${edad}/${gA}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(gA);
+              console.log(res3);
+              for (var i = 0; i < res3.length; i++) {
+                var fecha = res3[i].Fecha
+                fecha = fecha.substring(0,10)
+                res3[i].Fecha = fecha
+              }
+              setPatientData(res3);
+          }
+          else if (parroquia != '' & decanato != '' & zona != '') {
+              const ubi = parroquia + '-' + decanato + '-' + zona;
+              const res4 = await fetch(`/api/searchPrueba/groupMaxDate/ubi-calif/${gender}/${edad}/${ubi}/${gA}`).then(resID => resID.json())
+              console.log(gender);
+              console.log(edad);
+              console.log(ubi);
+              console.log(gA);
+              console.log(res4);
+              for (var i = 0; i < res4.length; i++) {
+                var fecha = res4[i].Fecha
+                fecha = fecha.substring(0,10)
+                res4[i].Fecha = fecha
+              }
+              setPatientData(res4);
+          }
+      }
     }
 
     /////////////////////////////// COLORES DE SEMAFORIZACION DE DATAGRID
@@ -588,11 +640,15 @@ export default function SearchGroup() {
                                         <Select
                                             value={zona}
                                             label="Zona"
-                                            onChange={(e) => { setZona(e.target.value) }}
+                                            onChange={ (e) => {setZona(e.target.value)
+                                                              setDecanatosVariable(e.target.value, e.target.value)}}
                                             disabled={enableUbi}
                                         >
-                                            <MenuItem value={1}>Zona 1</MenuItem>
-                                            <MenuItem value={2}>Zona 2</MenuItem>
+                                        {zonas.map((zs, i) => {
+                                          return (
+                                            <MenuItem key={i} value={zonas[i]}> {zs} </MenuItem>
+                                          )
+                                        })}
                                         </Select>
                                     </FormControl>
                                 </Box>
@@ -603,11 +659,15 @@ export default function SearchGroup() {
                                         <Select
                                             value={decanato}
                                             label="Decanato"
-                                            onChange={(e) => { setDecanato(e.target.value) }}
+                                            onChange={(e) => { setDecanato(e.target.value)
+                                                               setParroquiasVariable(e.target.value, e.target.value)}}
                                             disabled={enableUbi}
                                         >
-                                            <MenuItem value={1}>Decanato 1</MenuItem>
-                                            <MenuItem value={2}>Decanato 2</MenuItem>
+                                        {decanatos.map((dc, i) => {
+                                          return (
+                                            <MenuItem key={i} value={decanatos[i]}>{dc}</MenuItem>
+                                          )
+                                        })}
                                         </Select>
                                     </FormControl>
                                 </Box>
@@ -621,8 +681,11 @@ export default function SearchGroup() {
                                             onChange={(e) => { setParroquia(e.target.value) }}
                                             disabled={enableUbi}
                                         >
-                                            <MenuItem value={1}>Parroquia 1</MenuItem>
-                                            <MenuItem value={2}>Parroquia 2</MenuItem>
+                                        {parroquias.map((pr, i) => {
+                                          return (
+                                            <MenuItem key={i} value={parroquias[i]}>{pr}</MenuItem>
+                                          )
+                                        })}
                                         </Select>
                                     </FormControl>
                                 </Box>
