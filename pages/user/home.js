@@ -143,7 +143,7 @@ export default function Home({res}) {
     description: frases[0].description,
     image: 'https://source.unsplash.com/random/?prayer',
     imageText: 'main image description',
-    linkText: 'Continue reading…',
+    linkText: 'Seguir Leyendo...',
   };
 
   const dateBuilder = (d) => {
