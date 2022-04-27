@@ -339,7 +339,6 @@ export default function Search() {
         // despues de guardar la informacion. Actualizar estado de variables. Primero informacion permanente y luego la variable 
         setPatientPersonalInfo(info)
         setPatientData(resNom);
-        console.log(patientData[0])
 
         setQueryMade(true)
       }
