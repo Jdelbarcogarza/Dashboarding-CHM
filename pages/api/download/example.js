@@ -1,11 +1,15 @@
 import fs from "fs";
 
 export default (req, res) => {
-  // Modificar según la ruta de cada quien
-  const ruta =
-    "/Users/Pato2808/Desktop/Escuela/Trabajos/Semestre 4/Const. de Software/Reto/C.MTY.TC2005B.413.2211.Equipo3/public/ExcelTemplate/BaseDatos.xlsx";
+  // Extrae la ruta de cada servidor local
+  var dir = __dirname
+  var pos = dir.indexOf("C.MTY.TC2005B.413.2211.Equipo3")
+  dir = dir.slice(0,pos+31)
+  dir = dir + "public\\ExcelTemplate\\BaseDatos.xlsx"
 
-  fs.readFile(ruta, (err, data) => {
+  console.log(dir)
+
+  fs.readFile(dir, (err, data) => {
     if (err) {
       return res.status(500).json({ msg: "Error downloading file" });
     }
