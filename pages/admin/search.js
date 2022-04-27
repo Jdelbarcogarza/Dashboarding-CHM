@@ -722,9 +722,29 @@ export default function Search() {
                 />
               </Box>
 
-              <Box hidden={!displayCharts} sx={{ width: '50%' }}>
-                {displayCharts ? <Bar data={userChartData} /> : null}
-              </Box>
+              {/** AQUI COMIENZA EL GRID PARA ACOMODAR LAS GRAFICAS DE LAS PRUEBAS */}
+              <Grid container spacing={4} hidden={!displayCharts}>
+                
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={userChartData} /> : null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={userChartData} /> : null}
+                  </Box>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Box sx={{ width: '100%' }}>
+                    {displayCharts ? <Bar data={userChartData} /> : null}
+                  </Box>
+                </Grid>
+
+              </Grid>
+
 
 
             </Grid>
