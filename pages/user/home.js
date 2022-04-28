@@ -168,7 +168,9 @@ export default function Home({res}) {
       return `${hora}:${min} am`
     }
     else {
-      hora = hora - 12
+      if (hora != 12) {
+        hora = hora - 12
+      }
       if (min < 10) {
         return `${hora}:0${min} pm`
       }

@@ -222,7 +222,7 @@ export default function Search() {
     setChartSarcF({
       labels: patientData.map((data) => data.Fecha),
       datasets: [{
-        label: 'GDS',
+        label: 'Sarc F',
         data: patientData.map((data) => data.Sarc_F),
         backgroundColor: '#ed4b82'
       }]
