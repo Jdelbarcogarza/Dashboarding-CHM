@@ -3,7 +3,7 @@ import { connection } from "../../../../config/db";
 export default async function handler(req, res) {
 
   const [rows] = await connection.query(
-    `SELECT p.Nombre 
+    `SELECT p.ID_Parroquia, p.Nombre 
     FROM Parroquia p, Decanato d
     WHERE p.ID_Decanato = d.ID_Decanato AND
     d.Nombre = "${req.query.parroquia}"`

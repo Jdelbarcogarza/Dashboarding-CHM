@@ -176,6 +176,11 @@ export default function SearchGroup() {
   // Parroquias
   const [parroquias, setParroquias] = useState([]);
 
+  // IDs
+  const [zonasIDs, setZonasIDs] = useState([]);
+  const [decanatosIDs, setDecanatosIDs] = useState([]);
+  const [parroquiasIDs, setParroquiasIDs] = useState([]);
+
   ////////////////// CONTROL DE RADIOGROUP PARA SELECCION DE GRÁFICAS
 
   const [graphType, setGraphType] = useState("Bar")
@@ -325,28 +330,40 @@ export default function SearchGroup() {
   const setZonasVariable = async (e) => {
     const tZonasJson = await fetch(`/api/location/zona/1`).then(tZonas => tZonas.json())
     const tZonas = [];
+    const tZonasID = [];
     for (let i = 0; i < tZonasJson.length; i++) {
       tZonas.push(tZonasJson[i]["Nombre"]);
+      tZonasID.push(tZonasJson[i]["ID_Zona"]);
     }
     setZonas(tZonas);
+    setZonasIDs(tZonasID);
+    console.log(tZonasID);
   }
 
   const setDecanatosVariable = async (e, nomZona) => {
     const tDecanatosJson = await fetch(`/api/location/decanato/${nomZona}`).then(tDecanatos => tDecanatos.json())
     const tDecanatos = [];
+    const tDecanatosID = [];
     for (let i = 0; i < tDecanatosJson.length; i++) {
       tDecanatos.push(tDecanatosJson[i]["Nombre"]);
+      tDecanatosID.push(tDecanatosJson[i]["ID_Decanato"]);
     }
     setDecanatos(tDecanatos);
+    setDecanatosIDs(tDecanatosID);
+    console.log(tDecanatosID);
   }
 
   const setParroquiasVariable = async (e, nomDecanato) => {
     const tParroquiasJson = await fetch(`/api/location/parroquia/${nomDecanato}`).then(tParroquias => tParroquias.json())
     const tParroquias = [];
+    const tParroquiasID = [];
     for (let i = 0; i < tParroquiasJson.length; i++) {
       tParroquias.push(tParroquiasJson[i]["Nombre"]);
+      tParroquiasID.push(tParroquiasJson[i]["ID_Parroquia"]);
     }
     setParroquias(tParroquias);
+    setParroquiasIDs(tParroquiasID);
+    console.log(tParroquiasID);
   }
 
   const handleAtributoChange = (event, newAtributo) => {
@@ -511,6 +528,10 @@ export default function SearchGroup() {
         setPatientData(res1);
       }
       else if (parroquia != '' & decanato != '' & zona != '') {
+        parroquia = parroquiasIDs[parroquias.indexOf(parroquia)];
+        decanato = decanatosIDs[decanatos.indexOf(decanato)];
+        zona = zonasIDs[zonas.indexOf(zona)];
+
         for(let i = 0; i < parroquia.length; i++){
           if(!isNaN(parroquia[i])){
             parroquia = parroquia.substring(i);
