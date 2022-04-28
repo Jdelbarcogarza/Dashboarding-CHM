@@ -1,6 +1,6 @@
 import {spawn} from 'child_process';
 
-export default (req, res) => {
+export default startPythonProcess = (req, res) => {
     try {
         // Extrae la ruta de cada servidor local
         var dir = __dirname
