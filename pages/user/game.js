@@ -13,6 +13,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Unity, {UnityContext} from 'react-unity-webgl';
 
 // mis imports
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -105,6 +106,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+const unityContext = new UnityContext({
+  loaderUrl: '../../game/Build/WebGLBuild.loader.js',
+  dataUrl: '../../game/Build/WebGLBuild.data',
+  frameworkUrl: '../../game/Build/WebGLBuild.framework.js',
+  codeUrl: '../../game/Build/WebGLBuild.wasm',
+});
+
 export default function Home() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -192,14 +200,14 @@ export default function Home() {
                     </List>
                 </Drawer>
 
-                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <Box component="main" sx={{ flexGrow: 1, p: 0.5 }}>
                     <DrawerHeader />
                     <Container>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Typography variant='h6'>Favor de llenar los campos como corresponde</Typography>
-                            </Grid>
-                        </Grid>
+                    <Unity unityContext={unityContext} style={{
+                        height: 650,
+                        width: 1150,
+                      }}
+                    />
                     </Container>
                 </Box>
             </Box>
