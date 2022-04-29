@@ -282,7 +282,7 @@ export default function Search() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const nombre = { patientName };
     const pacID = { patientID };
     const habilitado = { enableIdSearch };
@@ -351,6 +351,7 @@ export default function Search() {
     catch {
       setQueryMade(false)
     }
+    confirmarUser();
   }
 
 
@@ -540,6 +541,14 @@ export default function Search() {
 
   const appBarText = 'Realizar busqueda de pacientes'
 
+  // validacion de busqueda
+  const [isInvalidUser, setIsInvalidUser] = useState(true);
+
+  const confirmarUser = async (e) => {
+    const userID = await fetch(`../api/loginUsuario/${patientName}`).then(x => x.json());
+    setIsInvalidUser(!userID.length == 0);
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -629,6 +638,8 @@ export default function Search() {
                     onChange={(e) => { setPatientName(e.target.value) }}
                     variant='standard'
                     disabled={!enableIdSearch}
+                    error = {!isInvalidUser && enableIdSearch}
+                    helperText={!isInvalidUser? "Usuario Invalido":null}
                     fullWidth />
                 </Box>
 
@@ -638,7 +649,7 @@ export default function Search() {
                     value={patientID}
                     onChange={(e) => { setpatientID(e.target.value) }}
                     variant='standard'
-                    helperText={'La busqueda por ID desactivará la consulta por nombre'}
+                    helperText = 'La busqueda por ID desactivará la consulta por nombre'
                     disabled={enableIdSearch} />
                   <Switch onChange={handleSwitchChange} />
                 </Box>

@@ -140,7 +140,7 @@ export default function LoadData() {
     // Id de la parroquia
     const [parrID, setParrID] = useState(); 
 
-    
+
 
     async function handleUpload(e) {
         e.preventDefault();
@@ -335,7 +335,6 @@ export default function LoadData() {
                         />
                         <Button 
                             variant='contained'
-                            onClick={buscarParroquia}
                         >
                             Buscar
                         </Button>
