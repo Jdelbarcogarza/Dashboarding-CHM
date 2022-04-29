@@ -15,7 +15,7 @@ else {
 const connection = createPool({
   host: "localhost",
   user: "root",
-  password: pass,
+  password: "pato2808",
   database: "chm_database",
   port: 3306,
 });
