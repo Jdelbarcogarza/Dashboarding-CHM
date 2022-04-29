@@ -30,6 +30,7 @@ import {
     Paper,
     Box,
     Container,
+    TextField,
     Button,
     IconButton,
     Stack,
@@ -107,7 +108,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function LoadData() {
-
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -136,6 +136,11 @@ export default function LoadData() {
 
     // Constante que guarda el estatus de la carga del archivo a la base de datos
     const [estatus, setEstatus] = useState();
+
+    // Id de la parroquia
+    const [parrID, setParrID] = useState(); 
+
+    
 
     async function handleUpload(e) {
         e.preventDefault();
@@ -323,6 +328,17 @@ export default function LoadData() {
                         </Grid>
 
                         <Divider sx={{ my: 4 }} />
+                        
+                        <TextField
+                            label='Nombre de la parroquia'
+                            variant='standard'
+                        />
+                        <Button 
+                            variant='contained'
+                            onClick={buscarParroquia}
+                        >
+                            Buscar
+                        </Button>
 
                         <Grid item xs={12}>
                             <Box sx={{display: 'flex', alignItems: 'center', position: 'fixed', bottom: '2em'}} >
