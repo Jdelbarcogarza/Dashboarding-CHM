@@ -1013,7 +1013,7 @@ export default function SearchGroup() {
                         valueLabelDisplay="auto"
                         disabled={enableCalificacion}
                         min={0}
-                        max={30}
+                        max={100}
                       />
                     </Box>
                   </Stack>
