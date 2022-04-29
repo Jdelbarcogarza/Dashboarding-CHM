@@ -109,7 +109,18 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function LoadData() {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [nomParr, setNomParr] = useState();
+    const [IDParr, setIDParr] = useState();
+
+    const handleParrSearch = async (e) => {
+        const resID = await fetch(`../api/searchParrID/${nomParr}`).then(resID => resID.json())
+        if(resID.length == 0) {
+            setIDParr("No existe");
+        } else {
+            setIDParr(resID[0]["ID_Parroquia"]);
+        }
+    };
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -327,14 +338,34 @@ export default function LoadData() {
 
                         </Grid>
 
-                        <Divider sx={{ my: 4 }} />
+                        <Divider sx={{ mt: 4, mb: 2, ml: 4, mr: 4 }} />
+
+                        <h2>Buscador de IDs de Parroquias</h2>
+                        <Grid container>
+                            <Box sx={{justifyContent: 'center', width: '30%', mr:"20px"}}>
+                                <TextField
+                                    label='Nombre de la parroquia'
+                                    variant="standard"
+                                    value= {nomParr}
+                                    onChange={(e) => {setNomParr(e.target.value)}}
+                                    fullWidth />
+                            </Box>
+                            <Box sx={{border: '3px solid grey', width: '50px', height:'50px'}}>
+                                {IDParr != "No existe"? 
+                                    <h1 style={{textAlign: "center", lineHeight: '45px'}}>
+                                        {IDParr}
+                                    </h1> :
+                                    <p>
+                                        {IDParr}
+                                    </p>
+                                }
+                            </Box>
+                        </Grid>
                         
-                        <TextField
-                            label='Nombre de la parroquia'
-                            variant='standard'
-                        />
                         <Button 
                             variant='contained'
+                            onClick={handleParrSearch}
+                            sx = {{my: '10px'}}
                         >
                             Buscar
                         </Button>
