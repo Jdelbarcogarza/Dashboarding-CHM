@@ -2,10 +2,15 @@ import pandas as pd
 import random as rand
 from datetime import date
 import sys
+import os
 
-# Modificar según la ruta de cada quien
-rutaExcel = "c:\\Users\\nenas\\OneDrive\\Documents\\GitHub\\C.MTY.TC2005B.413.2211.Equipo3\\public\\Excel\\" + sys.argv[1]
-rutaTxt = "c:\\Users\\nenas\\OneDrive\\Documents\\GitHub\\C.MTY.TC2005B.413.2211.Equipo3\\public\\updateDatabase\\commands.txt"
+# Obtener rutas
+folder_actual = os.path.dirname(os.path.abspath(__file__))
+
+rutaTxt = os.path.join(folder_actual, "commands.txt")
+
+rutaExcel = folder_actual[:len(folder_actual)-15]
+rutaExcel = os.path.join(rutaExcel, "Excel", sys.argv[1])
 
 def generarSQLInserts(data, row):
     checkUser = "checkIfUserExists("
