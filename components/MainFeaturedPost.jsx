@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button'
 
 function MainFeaturedPost(props) {
   const { post } = props;
@@ -49,9 +50,8 @@ function MainFeaturedPost(props) {
             <Typography variant="h5" color="inherit" paragraph>
               {post.description}
             </Typography>
-            <Link variant="subtitle1" href="https://es.catholic.net/op/articulos/72660/cat/753/frases-del-evangelio-para-vivirlas-cada-dia.html">
-              {post.linkText}
-            </Link>
+            
+            <Button color="info" variant="contained" target="_blank" href="https://es.catholic.net/op/articulos/72660/cat/753/frases-del-evangelio-para-vivirlas-cada-dia.html" >{post.linkText}</Button>
           </Box>
         </Grid>
       </Grid>
