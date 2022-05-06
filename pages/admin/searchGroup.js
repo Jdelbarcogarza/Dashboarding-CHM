@@ -280,7 +280,7 @@ export default function SearchGroup() {
 
     // Prueba Fuerza 
     setChartFuerza({
-      labels: patientData.map((data) => data.ID_Usuario),
+      labels: patientData.map((data) => data.Fecha),
       datasets: [{
         label: 'Fuerza',
         data: patientData.map((data) => data.Fuerza_Domin),
@@ -699,8 +699,8 @@ export default function SearchGroup() {
         }
         // 1 es masculino. 2 es femenino
         return clsx('LWB', {
-          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H'  || params.value >= 7 && patientPersonalInfo.Genero === 'M',
-          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H'  || params.value < 7 && patientPersonalInfo.Genero === 'M',
+          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H' || params.value >= 7 && patientPersonalInfo.Genero === 'M',
+          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H' || params.value < 7 && patientPersonalInfo.Genero === 'M',
 
         });
       }
@@ -727,7 +727,7 @@ export default function SearchGroup() {
         }
 
         return clsx('Fuerza', {
-          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M' ,
+          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M',
           sarcodinia: params.value <= 27 && patientPersonalInfo.Genero === 'H' || params.value <= 20 && patientPersonalInfo.Genero === 'M'
 
         });

@@ -36,8 +36,13 @@ export default function SignInSide() {
 
   const confirmarUser = async (e) => {
     const userID = await fetch(`../api/loginUsuario/${userName}`).then(x => x.json());
-    setIsValidUser(!userID.length == 0);
+    if(userID.length === 0) {
+      setIsValidUser(false);
+    } else {
+      setIsValidUser(true);
       router.push("user/home");
+      console.log("Usuario Valido");
+    }
   }
   const confirmarAdmin = async (e) => {
     const userID = await fetch(`../api/loginAdmin/${userName}`).then(x => x.json());

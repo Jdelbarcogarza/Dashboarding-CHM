@@ -155,6 +155,9 @@ export default function Home({res,frase}) {
     var hora = d.getHours();
     var min = d.getMinutes();
     if (hora < 12) {
+      if (hora == 0) {
+        hora = 12
+      }
       if (min < 10) {
         return `${hora}:0${min} am`
       }

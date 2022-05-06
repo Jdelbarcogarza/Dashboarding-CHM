@@ -58,8 +58,8 @@ export default async function handler(req, res) {
                         id = id.ID_Usuario;
         
                         // Se inserta el resultado de tamizaje
-                        var query1 = query[3].substring(0,19);
-                        var query2 = query[3].substring(19,query[3].length);
+                        var query1 = query[3].substring(0,25);
+                        var query2 = query[3].substring(25,query[3].length);
                         [rows] = await connection.query('CALL ' + query1 + id + query2);
                     }
                 }
