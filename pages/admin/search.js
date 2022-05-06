@@ -350,6 +350,8 @@ export default function Search() {
     }
     catch {
       setQueryMade(false)
+      setPatientPersonalInfo([])
+      setPatientData([])
     }
     confirmarUser();
   }

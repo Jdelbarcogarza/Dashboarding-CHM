@@ -107,7 +107,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function Home({res}) {
+export default function Home({res,frase}) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -128,19 +128,12 @@ export default function Home({res}) {
 
   const appBarText = 'Bienvenido a la plataforma';
 
-  const frases = [
-    {title: "Quién este libre de pecado que tire la primera piedra. ~ Juan 8,1-7", description: "Muchas veces juzgamos a los demás cuando nosotros hacemos lo mismo o incluso peor. Procuremos ser más tolerantes con los defectos de los que nos rodean. Intentemos  comprenderles y ponernos en su lugar."},
-    {title: "La viga en el ojo ajeno. ~ Lucas 6,41-42", description: "Estamos dispuestos a criticar, a ver los defectos que nos molestan de nuestros semejantes, pero no vemos los nuestros. Si nos miramos en el espejo del alma y cada noche proponernos corregirlos y ser tolerantes y comprensivos para corregir con cariño los errores que veamos."},
-    {title: "No tengáis miedo. ~ Juan 14,1", description: "¿De verdad confiamos en Él? ¿Ponemos nuestra vida en sus manos? Si le dejamos hacer su voluntad y no la nuestra, pensando que como Padre quiere lo mejor para nosotros, el miedo desaparecerá de nuestra vida."},
-    {title: "Los soldados se burlan de él. ~ Lc 23, 36-37", description: "Siguen burlándose de Él. No entienden nada. Nosotros no vamos a negarle, no nos avergonzaremos de ser sus discípulos"},
-    {title: "Aparta de mí este cáliz. ~ Lucas 22,42", description: "Jesús era hombre y sufrió enormemente. En nuestro camino hay desgracias y dificultades, pero si Él nos acompaña todo será más fácil. Nos dará fuerzas para continuar."}
-  ]
-
-  const num = Math.floor(Math.random() * (4 - 0));
+  console.log(res)
+  console.log(frase)
 
   const mainFeaturedPost = {
-    title: frases[0].title,
-    description: frases[0].description,
+    title: frase.title,
+    description: frase.description,
     image: 'https://source.unsplash.com/random/?prayer',
     imageText: 'main image description',
     linkText: 'Seguir Leyendo...',
@@ -263,9 +256,6 @@ export default function Home({res}) {
                   <Container>
                     <Climate post={clima} />
                     <MainFeaturedPost post={mainFeaturedPost} />
-                      <Grid>
-                        
-                      </Grid>
                   </Container>
               </Box>
           </Box>
@@ -277,9 +267,13 @@ export async function getStaticProps() {
   const url = 'https://api.openweathermap.org/data/2.5/weather?q=Monterrey&units=metric&lang=es&appid=895284fb2d2c50a520ea537456963d9c'
   const res = await fetch(url).then(info => info.json())
 
+  const url2 = 'http://localhost:3000/api/frases'
+  const frase = await fetch(url2).then(info => info.json())
+
+
   return {
     props: {
-      res,
+      res, frase,
     },
   }
 }
