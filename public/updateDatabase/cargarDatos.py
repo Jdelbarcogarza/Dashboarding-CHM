@@ -16,7 +16,7 @@ def generarSQLInserts(data, row):
     checkUser = "checkIfUserExists("
     checkPrueba = "checkIfPruebaExists("
     userInsert = "insertUsuario("
-    resTamizajeInsert = "insertResTamizaje("
+    resTamizajeInsert = "insertResTamizajePython("
     
     checkUser += "'" + str(df.iloc[row]["Nombre"]) + "'," #nombre
     checkUser += "'H'," if (df.iloc[row]["Genero"] == 1) else "'M'," #genero
