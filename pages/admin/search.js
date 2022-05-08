@@ -131,9 +131,6 @@ export default function Search() {
   const [patientName, setPatientName] = useState("");
   const [patientID, setpatientID] = useState('');
 
-  // Valores de atributo
-  const [atributo, setAtributo] = useState('');
-
   // Resultado de query
   const [patientData, setPatientData] = useState([]);
 
@@ -286,26 +283,11 @@ export default function Search() {
     const nombre = { patientName };
     const pacID = { patientID };
     const habilitado = { enableIdSearch };
-    const a = { atributo };
-    const tests = "";
-
-
-    if (a.atributo.length == 0) {
-      tests = "$"
-    }
-    else {
-      var i = 0; for (i = 0; i < a.atributo.length; i++) {
-        if (a.atributo.length >= 1) {
-          tests = tests + "!" + a.atributo[i].value;
-        }
-      }
-    }
-
 
     try {
       if (pacID.patientID != '' & !habilitado.enableIdSearch) {
         // endpoint que devuelve solo resultados del tamizaje
-        var resID = await fetch(`/api/searchPrueba/one/ID/${tests}/${pacID.patientID}`).then(resID => resID.json())
+        var resID = await fetch(`/api/searchPrueba/one/ID/${pacID.patientID}`).then(resID => resID.json())
 
         for (var i = 0; i < resID.length; i++) {
           var fecha = resID[i].Fecha
@@ -325,7 +307,7 @@ export default function Search() {
       }
       else if (nombre.patientName != '' & habilitado.enableIdSearch) {
 
-        var resNom = await fetch(`/api/searchPrueba/one/Name/${tests}/${nombre.patientName}`).then(resNom => resNom.json())
+        var resNom = await fetch(`/api/searchPrueba/one/Name/${nombre.patientName}`).then(resNom => resNom.json())
 
         for (var i = 0; i < resNom.length; i++) {
           var fecha = resNom[i].Fecha
@@ -831,7 +813,7 @@ export default function Search() {
                 }}
               >
                 <DataGrid
-                  getRowId={(id) => id.ID_Resultado} // Asigna que el id unico es el atributo ID_Usuario
+                  getRowId={(id) => id.ID_Resultado} // Asigna que el id unico es el atributo ID_Resultado
                   columns={columns}
                   rows={patientData}
                   pageSize={5}

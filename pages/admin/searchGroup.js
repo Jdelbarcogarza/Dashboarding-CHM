@@ -328,7 +328,7 @@ export default function SearchGroup() {
   }
 
   const setZonasVariable = async (e) => {
-    const tZonasJson = await fetch(`/api/location/zona/1`).then(tZonas => tZonas.json())
+    const tZonasJson = await fetch(`/api/location/zonas`).then(tZonas => tZonas.json())
     const tZonas = [];
     const tZonasID = [];
     for (let i = 0; i < tZonasJson.length; i++) {
