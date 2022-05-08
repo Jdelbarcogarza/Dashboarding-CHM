@@ -161,7 +161,7 @@ export default function LoadData() {
         if (document != undefined) {
             try {
                 // Procede a cargar los datos procesados del Excel en la base de datos
-                const resTxt = fetch('/api/uploadData/readTxt').then(resTxt => resTxt.json()).then(d => {
+                const resTxt = fetch('/api/uploadData/readTxt', {method: 'POST',}).then(resTxt => resTxt.json()).then(d => {
                     console.log(d)
                     if (d.msg == "File was read successfully") {
                         setEstatus("Archivo cargado exitosamente");

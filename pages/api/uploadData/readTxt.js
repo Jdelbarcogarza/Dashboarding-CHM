@@ -30,15 +30,10 @@ export default async function handler(req, res) {
                     // Inserta el nuevo usuario
                     [rows] = await connection.query('CALL ' + query[2]);
         
-                    // Busca el nuevo usuario insertado
-                    [rows] = await connection.query('CALL ' + query[0]);
-        
                     // Extrae los valores necesarios (ID) para el query
-                    id = rows[0];
-                    id = id[0];
-                    id = id.ID_Usuario;
-                    var query1 = query[3].substring(0,19);
-                    var query2 = query[3].substring(19,query[3].length);
+                    id = query[2].substring(15,22);
+                    var query1 = query[3].substring(0,25);
+                    var query2 = query[3].substring(25,query[3].length);
         
                     // Se inserta el resultado de tamizaje
                     [rows] = await connection.query('CALL ' + query1 + id + query2);
