@@ -699,8 +699,8 @@ export default function SearchGroup() {
         }
         // 1 es masculino. 2 es femenino
         return clsx('LWB', {
-          normal: params.value >= 5 && patientPersonalInfo.Genero === 'H' || params.value >= 7 && patientPersonalInfo.Genero === 'M',
-          anormal: params.value < 5 && patientPersonalInfo.Genero === 'H' || params.value < 7 && patientPersonalInfo.Genero === 'M',
+          normal: params.value >= 5,
+          anormal: params.value < 5,
 
         });
       }
@@ -727,9 +727,8 @@ export default function SearchGroup() {
         }
 
         return clsx('Fuerza', {
-          normal: params.value > 27 && patientPersonalInfo.Genero === 'H' || params.value > 20 && patientPersonalInfo.Genero === 'M',
-          sarcodinia: params.value <= 27 && patientPersonalInfo.Genero === 'H' || params.value <= 20 && patientPersonalInfo.Genero === 'M'
-
+          normal: params.value > 27,
+          sarcodinia: params.value <= 27,
         });
       }
    },
