@@ -1,0 +1,2 @@
+INSERT INTO Administrador(Nombre) VALUES ('Xavier Villanueva');
+INSERT INTO Administrador(Nombre) VALUES ('Daniel Gomez');

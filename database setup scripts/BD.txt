@@ -1,0 +1,62 @@
+DROP DATABASE IF EXISTS chm_database;
+CREATE DATABASE chm_database;
+USE chm_database;
+
+CREATE TABLE Usuario(  
+    ID_Usuario VARCHAR(7) NOT NULL PRIMARY KEY,
+    Nombre VARCHAR(50),
+    Año_Nac SMALLINT,
+    Genero CHAR,
+    ID_Parroquia INT
+);
+CREATE TABLE Parroquia(  
+    ID_Parroquia INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    ID_Decanato INT
+);
+CREATE TABLE Decanato(  
+    ID_Decanato INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(50),
+    ID_Zona INT
+);
+CREATE TABLE Zona(
+    ID_Zona INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(50)
+);
+CREATE TABLE Administrador(  
+    ID_Admin INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(50)
+);
+CREATE TABLE DetalleAdmin(
+    ID_Admin INT NOT NULL,
+    ID_Parroquia INT NOT NULL,
+    PRIMARY KEY(ID_Admin, ID_Parroquia)
+);
+CREATE TABLE ResultadosTamizaje(  
+    ID_Resultado INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    ID_Usuario VARCHAR(7) NOT NULL,
+    Fecha DATE NOT NULL,
+    Reloj INT,
+    MMSE_Total INT GENERATED ALWAYS AS (Reloj + Orient_Temp + Orient_Esp + Registro + Calculo + Memoria + Eject) STORED,
+    Orient_Temp INT,
+    Orient_Esp INT,
+    Registro INT,
+    Calculo INT,
+    Memoria INT,
+    Eject INT,
+    GDS_Total INT,
+    Katz_Total INT,
+    LWB_Total INT,
+    Sarc_F INT,
+    Fuerza_Domin FLOAT,
+    SPPB_Global INT,
+    CFS_Fraility INT,
+    Gijon INT
+);
+
+ALTER TABLE Usuario ADD FOREIGN KEY (ID_Parroquia) REFERENCES Parroquia(ID_Parroquia);
+ALTER TABLE Parroquia ADD FOREIGN KEY (ID_Decanato) REFERENCES Decanato(ID_Decanato);
+ALTER TABLE Decanato ADD FOREIGN KEY (ID_Zona) REFERENCES Zona(ID_Zona);
+ALTER TABLE DetalleAdmin ADD FOREIGN KEY (ID_Admin) REFERENCES Administrador(ID_Admin);
+ALTER TABLE DetalleAdmin ADD FOREIGN KEY (ID_Parroquia) REFERENCES Parroquia(ID_Parroquia);
+ALTER TABLE ResultadosTamizaje ADD FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario);

@@ -1,0 +1,85 @@
+DROP PROCEDURE IF EXISTS checkIfPruebaExists;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `checkIfPruebaExists`(nom VARCHAR(50), fecha DATE)
+BEGIN
+    SELECT resultadostamizaje.ID_Resultado FROM usuario, resultadostamizaje WHERE usuario.ID_Usuario = resultadostamizaje.ID_Usuario AND usuario.Nombre = nom AND resultadostamizaje.Fecha = fecha;
+END;
+
+
+DROP PROCEDURE IF EXISTS checkIfUserExists;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `checkIfUserExists`(nom VARCHAR(50), gen CHAR, parr INT)
+BEGIN
+    SELECT ID_Usuario FROM Usuario WHERE Nombre = nom AND Genero = gen AND ID_Parroquia = parr;
+END;
+
+DROP PROCEDURE IF EXISTS checkSignInAdmin;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `checkSignInAdmin`(nom varchar(50))
+BEGIN
+    SELECT ID_Admin FROM Administrador WHERE Nombre = nom;
+END;
+
+DROP PROCEDURE IF EXISTS checkSignInUsuario;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `checkSignInUsuario`(nom varchar(50))
+BEGIN
+    SELECT ID_Usuario FROM usuario WHERE Nombre = nom;
+END;
+
+DROP PROCEDURE IF EXISTS getAllUsers;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUsers`()
+BEGIN
+    SELECT * FROM usuario, resultadostamizaje WHERE usuario.ID_Usuario = resultadostamizaje.ID_Usuario;
+END;
+
+
+DROP PROCEDURE IF EXISTS getUserByID;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByID`(id VARCHAR(7))
+BEGIN
+    SELECT * FROM usuario WHERE ID_Usuario = id;
+END;
+
+
+DROP PROCEDURE IF EXISTS insertAdmin;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertAdmin`(nom VARCHAR(50))
+BEGIN
+	INSERT INTO Administrador(Nombre) VALUES (nom);
+END;
+
+
+DROP PROCEDURE IF EXISTS insertDecanato;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertDecanato`(nom VARCHAR(50), zon int)
+BEGIN
+	INSERT INTO Decanato(Nombre,ID_Zona) VALUES (nom,zon);
+END;
+
+
+DROP PROCEDURE IF EXISTS insertDetalleAdmin;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertDetalleAdmin`(adm int, parr int)
+BEGIN
+	INSERT INTO DetalleAdmin(ID_Admin, Id_Parroquia) VALUES (adm,parr);
+END;
+
+
+DROP PROCEDURE IF EXISTS insertParroquia;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertParroquia`(nom VARCHAR(50), deca int)
+BEGIN
+	INSERT INTO Parroquia(Nombre,ID_Decanato) VALUES (nom,deca);
+END;
+
+DROP PROCEDURE IF EXISTS insertUsuario;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertUsuario`(id VARCHAR(7), nom VARCHAR(50), año SMALLINT, gen char, parr int)
+BEGIN
+	INSERT INTO Usuario(ID_Usuario,Nombre,Año_Nac,Genero,ID_Parroquia) VALUES (id, nom, año, gen, parr);
+END;
+
+
+DROP PROCEDURE IF EXISTS insertZona;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertZona`(nom VARCHAR(50))
+BEGIN
+	INSERT INTO Zona(Nombre) VALUES (nom);
+END;
+
+
+DROP PROCEDURE IF EXISTS insertResTamizajePython;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertResTamizajePython`(ID_Usuario VARCHAR(7),Reloj int,Orient_Temp int,Orient_Esp int,Registro int,Calculo int,Memoria int,Eject int,GDS_Total int,Katz_Total int,LWB_Total int,Sarc_F int,Fuerza_Domin float,SPPB_Global int,CFS_Fraility int,Gijon int,Fecha date)
+BEGIN
+	INSERT INTO ResultadosTamizaje(ID_Usuario,Reloj,Orient_Temp,Orient_Esp,Registro,Calculo,Memoria,Eject,GDS_Total,Katz_Total,LWB_Total,Sarc_F,Fuerza_Domin,SPPB_Global,CFS_Fraility,Gijon,Fecha) VALUES (ID_Usuario,Reloj,Orient_Temp,Orient_Esp,Registro,Calculo,Memoria,Eject,GDS_Total,Katz_Total,LWB_Total,Sarc_F,Fuerza_Domin,SPPB_Global,CFS_Fraility,Gijon,Fecha);
+END

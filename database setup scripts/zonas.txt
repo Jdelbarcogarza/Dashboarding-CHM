@@ -1,0 +1,14 @@
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral I (Monterrey centro))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral II (Monterrey sur))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral III (Monterrey norte))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral IV (Zona Guadalupe))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral IX (San Nicolás de los Garza))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral V (San Pedro - Santa Catarina))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral VI (Monterrey - García))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral VII (Monterrey - Nor Poniente))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral VIII (Escobedo))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral X (Apodaca))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral XI (Santiago - Allende))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral XII (Juárez - Cadereyta - Cerralvo))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral XIII (Valle de las Salinas))");
+INSERT INTO Zona(Nombre) VALUES("Zona Pastoral XIV (Nororiente del Estado))");
